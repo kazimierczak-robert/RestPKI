@@ -23,6 +23,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:onClick="Outbox"
         android:text="Skrzynka nadawcza" />
 
     <Button
@@ -33,7 +34,8 @@
         android:layout_below="@+id/buttonOutbox"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="Skrzynka odbiorcza" />
+        android:text="Skrzynka odbiorcza"
+        android:onClick="Inbox"/>
 
 
         <Button

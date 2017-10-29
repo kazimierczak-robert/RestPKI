@@ -17,7 +17,24 @@
             </intent-filter>
         </activity>
         <activity android:name=".MenuActivity" />
-        <activity android:name=".OutboxActivity"></activity>
+        <activity
+            android:name=".InboxActivity"
+            android:label="@string/title_activity_inbox"
+            android:parentActivityName=".MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dawid.mobileapp.MenuActivity" />
+        </activity>
+        <activity
+            android:name=".OutboxActivity"
+            android:label="@string/title_activity_outbox"
+            android:parentActivityName=".MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dawid.mobileapp.MenuActivity" />
+        </activity>
     </application>
 
 </manifest>
