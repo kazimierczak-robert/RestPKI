@@ -55,9 +55,9 @@ public class LoginAsync extends AsyncTask<String, String, String> {
         String pass = password.getText().toString();
 
         String a = "abc";
-        for (int i = 0; i < 8000; i++)
+       /* for (int i = 0; i < 8000; i++)
             a += "abc";
-
+*/
         if(log.isEmpty() || pass.isEmpty())
         {
             returnMessage += "Wszystkie pola muszą być uzupełnione";
