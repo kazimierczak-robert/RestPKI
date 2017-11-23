@@ -5,12 +5,14 @@ from django.views import View
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, mixins, permissions, renderers
 from rest_framework.response import Response
 from rest_framework.status import HTTP_401_UNAUTHORIZED
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from rest_framework.decorators import detail_route
+
 
 from .models import Job, Employee, Certificate, CertificateRequest, CancellationReason, \
     CertificateExpirationRequest, Key, CRL, Message
@@ -40,10 +42,20 @@ def token_logout(request):
     return Response({"success": "Logout successful"})
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                  viewsets. GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    #renderer_classes = [renderers.JSONRenderer]  # w przegladrce jako JSON sie pojawi
+
+    @detail_route(methods=['get'], url_path='info')
+    def my_info(self, request, pk=None):
+        return HttpResponse(self.request.user.username)
 
 class JobViewSet(viewsets.ModelViewSet):
     queryset = Job.objects.all()
@@ -89,4 +101,3 @@ class MessageViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
-

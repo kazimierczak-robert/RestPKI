@@ -7,6 +7,7 @@ from .views import UserViewSet, JobViewSet, EmployeeViewSet, CertificateViewSet,
 from .views import token_login, token_logout
 
 router = routers.DefaultRouter()
+
 router.register(r'user', UserViewSet)
 router.register(r'job', JobViewSet)
 router.register(r'employee', EmployeeViewSet)
