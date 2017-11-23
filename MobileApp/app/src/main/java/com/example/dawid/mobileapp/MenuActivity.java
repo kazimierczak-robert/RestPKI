@@ -33,4 +33,9 @@ public class MenuActivity extends AppCompatActivity {
     {
         new InboxAsync(this).execute("");
     }
+
+    public void Settings(View view){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        this.startActivity(intent);
+    }
 }

@@ -38,6 +38,8 @@ public class LoginActivity extends Activity {
     }
     public void SignIn(View view)
     {
+        backButtonCount = 0;
+
         new LoginAsync(this).execute("");
     }
 }
