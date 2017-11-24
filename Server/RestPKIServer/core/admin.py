@@ -41,7 +41,7 @@ class CRLAdmin(admin.ModelAdmin):
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     model = Employee
-    list_display = ('id','user', 'name','surname','pesel','address','birth_day','job_id','company_email','password',
+    list_display = ('id','user', 'name','surname','pesel','address','birth_day','job_id','company_email',
                     'login_date','logout_date','created_by','creation_date','last_edited_by','last_edition_date')
 
 @admin.register(Job)

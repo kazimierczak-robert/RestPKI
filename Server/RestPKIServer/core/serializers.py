@@ -7,7 +7,7 @@ from .models import Job, Employee, Certificate, CertificateRequest, Cancellation
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['username',]
 
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,9 +15,11 @@ class JobSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class EmployeeSerializer(serializers.ModelSerializer):
+    user = UserSerializer(required=True)
+
     class Meta:
         model = Employee
-        fields = '__all__'
+        fields = ['id','user','name','surname','pesel','address','birth_day','job_id','company_email',]
 
 
 class CertificateSerializer(serializers.ModelSerializer):
