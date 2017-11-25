@@ -13,13 +13,18 @@ class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
         fields = '__all__'
+        extra_kwargs = {
+            'description': {
+                'validators': [],
+            }
+        }
+
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=True)
-
     class Meta:
         model = Employee
-        fields = ['id','user','name','surname','pesel','address','birth_day','job_id','company_email',]
+        fields = ['id','name','surname','pesel','address','birth_day','job_id','company_email',]
+        #depth = 1
 
 
 class CertificateSerializer(serializers.ModelSerializer):

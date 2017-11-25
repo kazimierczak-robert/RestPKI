@@ -22,7 +22,7 @@ class Employee(models.Model):
     pesel = models.CharField(max_length=13, unique=True)
     address = models.CharField(max_length=50)
     birth_day = models.DateField()
-    job_id = models.ForeignKey(Job, on_delete=models.CASCADE)
+    job_id = models.ForeignKey(Job)
     company_email = models.EmailField(unique=True)
     #password = models.CharField(max_length=64)  # hex
     login_date = models.DateTimeField(null=True, blank=True)
@@ -31,6 +31,7 @@ class Employee(models.Model):
     creation_date = models.DateTimeField(default=timezone.now)
     last_edited_by = models.ForeignKey('self', on_delete=models.CASCADE, default=None, null=True, related_name='+', blank=True)
     last_edition_date = models.DateTimeField(default=timezone.now)
+    isWorking = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

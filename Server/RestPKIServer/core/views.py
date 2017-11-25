@@ -87,9 +87,8 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         serializer = EmployeeSerializer(all_employees, many=True)
         return Response(serializer.data)
 
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
+    def update(self, request, pk=None, partial=False):  # pk = ID
+        instance = self.get_object()  # get Employee from request
         serializer = self.serializer_class(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             serializer.save(last_edition_date=timezone.now(), last_edited_by=Employee.objects.get(user=request.user))
@@ -102,14 +101,32 @@ class EmployeeViewSet(mixins.CreateModelMixin,
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
+        print(serializer)
 
         if serializer.is_valid():
+            user = User.objects.create_user(username=serializer.data['name'], password=serializer.data['name'])
+            #job, _ = Job.objects.get_or_create(description=serializer.data['job_id'])
             createdby = Employee.objects.get(user=request.user)
-            Employee.objects.create(last_edition_date=timezone.now(),
+            Employee.objects.create(user=user,
+                                    #job_id=job,
+                                    last_edition_date=timezone.now(),
                                     last_edited_by=createdby,
                                     created_by=createdby,
                                     **serializer.validated_data)
-            return Response(serializer.validated_data, status=HTTP_201_CREATED)
+            return Response({"status":"ok"}, status=HTTP_201_CREATED)
+
+        return Response({
+            'status': 'Bad request',
+            'message': serializer.errors
+        }, status=HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        instance = self.get_object()  # get Employee from request
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(isWorking=False)
+            # uniewaznik certyfikaty usera
+            return Response(serializer.validated_data, status=HTTP_200_OK)
 
         return Response({
             'status': 'Bad request',

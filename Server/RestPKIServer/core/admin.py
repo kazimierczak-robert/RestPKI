@@ -42,7 +42,7 @@ class CRLAdmin(admin.ModelAdmin):
 class EmployeeAdmin(admin.ModelAdmin):
     model = Employee
     list_display = ('id','user', 'name','surname','pesel','address','birth_day','job_id','company_email',
-                    'login_date','logout_date','created_by','creation_date','last_edited_by','last_edition_date')
+                    'login_date','logout_date','created_by','creation_date','last_edited_by','last_edition_date','isWorking')
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
