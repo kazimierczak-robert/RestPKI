@@ -6,9 +6,8 @@ from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
 import django.utils.timezone as timezone
 
-from rest_framework import viewsets, mixins, permissions, renderers
+from rest_framework import viewsets, mixins, permissions, renderers, status
 from rest_framework.response import Response
-from rest_framework.status import HTTP_401_UNAUTHORIZED, HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.decorators import detail_route
@@ -30,7 +29,7 @@ def token_login(request):
         password = request.POST.get("password")
         user = authenticate(username=username, password=password)
         if not user:
-            return Response({"error": "Login failed"}, status=HTTP_401_UNAUTHORIZED)
+            return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)
         token, _ = Token.objects.get_or_create(user=user)
         employee = Employee.objects.get(user=user)
         employee.login_date = timezone.now()
@@ -38,7 +37,7 @@ def token_login(request):
         return Response({"token": token.key})
     except Exception as e:
         print(e)
-        return Response({"error": "Login failed"}, status=HTTP_401_UNAUTHORIZED)
+        return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @csrf_exempt
 @api_view(['POST', ])
@@ -82,9 +81,11 @@ class EmployeeViewSet(mixins.CreateModelMixin,
 
     def list(self, request):
         if not request.user.is_staff:
-            raise PermissionDenied({"error": "You don't have permission to access"})
-        all_employees = Employee.objects.all()
-        serializer = EmployeeSerializer(all_employees, many=True)
+            me = Employee.objects.get(user=request.user)
+            serializer = self.serializer_class(me)
+        else:
+            all_employees = Employee.objects.all()
+            serializer = self.serializer_class(all_employees, many=True)
         return Response(serializer.data)
 
     def update(self, request, pk=None, partial=False):  # pk = ID
@@ -92,33 +93,31 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         serializer = self.serializer_class(instance, data=request.data, partial=partial)
         if serializer.is_valid():
             serializer.save(last_edition_date=timezone.now(), last_edited_by=Employee.objects.get(user=request.user))
-            return Response(serializer.validated_data, status=HTTP_200_OK)
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
         return Response({
             'status': 'Bad request',
             'message': serializer.errors
-        }, status=HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
-        print(serializer)
 
         if serializer.is_valid():
             user = User.objects.create_user(username=serializer.data['name'], password=serializer.data['name'])
-            #job, _ = Job.objects.get_or_create(description=serializer.data['job_id'])
             createdby = Employee.objects.get(user=request.user)
             Employee.objects.create(user=user,
-                                    #job_id=job,
                                     last_edition_date=timezone.now(),
                                     last_edited_by=createdby,
                                     created_by=createdby,
                                     **serializer.validated_data)
-            return Response({"status":"ok"}, status=HTTP_201_CREATED)
+            return Response({"status":"ok"}, status=status.HTTP_201_CREATED)
+            # lepiej nie serializer.validated_data, bo on nie potrafi zserializowac Job
 
         return Response({
             'status': 'Bad request',
             'message': serializer.errors
-        }, status=HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk=None):
         instance = self.get_object()  # get Employee from request
@@ -126,12 +125,19 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         if serializer.is_valid():
             serializer.save(isWorking=False)
             # uniewaznik certyfikaty usera
-            return Response(serializer.validated_data, status=HTTP_200_OK)
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
         return Response({
             'status': 'Bad request',
             'message': serializer.errors
-        }, status=HTTP_400_BAD_REQUEST)
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(['POST', ])
+@permission_classes((permissions.IsAuthenticated, ))
+def apply_csr(request):
+    pass
 
 
 class CertificateViewSet(viewsets.ModelViewSet):
