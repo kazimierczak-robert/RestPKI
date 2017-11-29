@@ -3,12 +3,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import django.utils.timezone as timezone  # date and time
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from rest_framework.authtoken.models import Token
-from django.conf import settings
-
-
 class Job(models.Model):
     description = models.TextField(unique=True)
 
@@ -42,26 +36,10 @@ class Certificate(models.Model):
     not_valid_after = models.DateTimeField()
     creation_date = models.DateTimeField(default=timezone.now)
     expiration_date = models.DateTimeField(null=True, blank=True)  # it can be earlier than NotValidAfter
-
-class CertificateRequest(models.Model):  # generating certificate equals update certificate
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    request_date = models.DateTimeField(default=timezone.now)
-    enc_private_key = models.CharField(max_length=342)  # 2048 bit/8 (1 char: 1B) -> 256B * 4/3 (3 chars - 4B)
-    public_key = models.CharField(max_length=342)
-    is_accepted = models.BooleanField()
-    decision_date = models.DateTimeField(null=True, blank=True)
+    cert = models.TextField()
 
 class CancellationReason(models.Model):
     descrption = models.TextField(unique=True)
-
-
-class CertificateExpirationRequest(models.Model):
-    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    request_date = models.DateTimeField(default=timezone.now)
-    reason_id = models.ForeignKey(CancellationReason, on_delete=models.CASCADE)
-    is_accepted = models.BooleanField(default=False)
-    decision_date = models.DateTimeField(null=True, blank=True)
-
 
 class Key(models.Model):
     certificate_id = models.ForeignKey(Certificate, on_delete=models.CASCADE)
@@ -76,7 +54,6 @@ class CRL(models.Model):
     certificate_id = models.OneToOneField(Certificate, on_delete=models.CASCADE)
     reason_id = models.ForeignKey(CancellationReason, on_delete=models.CASCADE)
     cancellation_date = models.DateTimeField(default=timezone.now)
-
 
 class Message(models.Model):
     sender_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')

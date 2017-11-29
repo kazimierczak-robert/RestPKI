@@ -1,8 +1,7 @@
 from django.contrib.auth.models import User
 
 from rest_framework import serializers
-from .models import Job, Employee, Certificate, CertificateRequest, CancellationReason, \
-    CertificateExpirationRequest, Key, CRL, Message
+from .models import Job, Employee, Certificate, CancellationReason, Key, CRL, Message
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,21 +31,9 @@ class CertificateSerializer(serializers.ModelSerializer):
         model = Certificate
         fields = '__all__'
 
-
-class CertificateRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CertificateRequest
-        fields = '__all__'
-
 class CancellationReasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = CancellationReason
-        fields = '__all__'
-
-
-class CertificateExpirationRequestSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CertificateExpirationRequest
         fields = '__all__'
 
 class KeySerializer(serializers.ModelSerializer):

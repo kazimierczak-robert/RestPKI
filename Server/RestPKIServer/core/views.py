@@ -13,12 +13,13 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.decorators import detail_route
 from rest_framework.exceptions import PermissionDenied
 
+from OpenSSL import crypto
 
-from .models import Job, Employee, Certificate, CertificateRequest, CancellationReason, \
-    CertificateExpirationRequest, Key, CRL, Message
+from datetime import datetime
+
+from .models import Job, Employee, Certificate, CancellationReason, Key, CRL, Message
 from .serializers import UserSerializer, JobSerializer, EmployeeSerializer, CertificateSerializer, \
-    CertificateRequestSerializer, CancellationReasonSerializer, CertificateExpirationRequestSerializer, \
-    KeySerializer, CRLSerializer, MessageSerializer
+    CancellationReasonSerializer, KeySerializer, CRLSerializer, MessageSerializer
 
 @csrf_exempt
 @api_view(['POST', ])
@@ -133,21 +134,77 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         }, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
-@api_view(['POST', ])
-@permission_classes((permissions.IsAuthenticated, ))
-def apply_csr(request):
+def create_self_signed_cert(name, surname):
+    # create a key pair
+    k = crypto.PKey()
+    k.generate_key(crypto.TYPE_RSA, 1024)
+
+    # create a self-signed cert
+    cert = crypto.X509()
+    cert.get_subject().C = "PL"
+    cert.get_subject().ST = "Poznan"
+    cert.get_subject().L = "Poznan"
+    cert.get_subject().O = str(name)+" "+str(surname)
+    cert.get_subject().OU = "Politechnika Poznanska"
+    cert.get_subject().CN = str(name).lower()+".pki.put.poznan.pl"
+    #cert.set_serial_number(1000)
+    cert.gmtime_adj_notBefore(0)
+    cert.gmtime_adj_notAfter(31556952)  # in seconds = 1 year
+    cert.set_issuer(cert.get_subject())
+    cert.set_pubkey(k)
+    cert.sign(k, 'sha256')
+
+    certificate = crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode('utf-8')
+    private_key = crypto.dump_privatekey(crypto.FILETYPE_PEM, k).decode('utf-8')
+    public_key = crypto.dump_publickey(crypto.FILETYPE_PEM, k).decode('utf-8')
+    not_before = cert.get_notBefore()
+    not_after = cert.get_notAfter()
+    return certificate, private_key, public_key, not_before, not_after
+
+def renew_cert(cert_obj, key_obj):
     pass
 
+@csrf_exempt
+@api_view(['GET',])
+@permission_classes((permissions.IsAuthenticated, ))
+def gen_or_renew_cert(request):
+    employee = Employee.objects.get(user=request.user)
+    certificate = Certificate.objects.filter(employee_id=employee).first()
+    if certificate:
+        # certyfikat istnieje - trzeba go odnowic
+        pass
+    else:
+        # certyfikat nie istnieje - trzeba go stworzyc
+        current_tz = timezone.get_current_timezone()
 
-class CertificateViewSet(viewsets.ModelViewSet):
+        new_cert = create_self_signed_cert(employee.name, employee.surname)
+        print(new_cert[0])
+
+        not_before = datetime.strptime(new_cert[3].decode('utf-8'),"%Y%m%d%H%M%SZ")
+        not_before = current_tz.localize(not_before)  # for convert to non-naive time
+
+        not_after = datetime.strptime(new_cert[4].decode('utf-8'),"%Y%m%d%H%M%SZ")
+        not_after = current_tz.localize(not_after)
+
+        cert_obj = Certificate.objects.create(employee_id=employee ,cert=new_cert[0], not_valid_before=not_before, not_valid_after=not_after,
+                                expiration_date=not_after)
+        Key.objects.create(certificate_id=cert_obj, enc_private_key=new_cert[1], public_key=new_cert[2],
+                           not_valid_before_private_key=not_before, not_valid_before_public_key=not_before,
+                           not_valid_after_private_key=not_after, not_valid_after_public_key=not_after)
+
+        data = {
+            "status": "ok",
+            "cert": new_cert[0],
+        }
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class CertificateViewSet(mixins.RetrieveModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                  viewsets. GenericViewSet):
     queryset = Certificate.objects.all()
     serializer_class = CertificateSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-class CertificateRequestViewSet(viewsets.ModelViewSet):
-    queryset = CertificateRequest.objects.all()
-    serializer_class = CertificateRequestSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
 class CancellationReasonViewSet(viewsets.ModelViewSet):
@@ -155,22 +212,25 @@ class CancellationReasonViewSet(viewsets.ModelViewSet):
     serializer_class = CancellationReasonSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-class CertificateExpirationRequestViewSet(viewsets.ModelViewSet):
-    queryset = CertificateExpirationRequest.objects.all()
-    serializer_class = CertificateExpirationRequestSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-class KeyViewSet(viewsets.ModelViewSet):
+class KeyViewSet(mixins.RetrieveModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                  viewsets. GenericViewSet):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-class CRLViewSet(viewsets.ModelViewSet):
+class CRLViewSet(mixins.RetrieveModelMixin,
+                   mixins.ListModelMixin,
+                  viewsets. GenericViewSet):
     queryset = CRL.objects.all()
     serializer_class = CRLSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-class MessageViewSet(viewsets.ModelViewSet):
+class MessageViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.ListModelMixin,
+                  viewsets. GenericViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
