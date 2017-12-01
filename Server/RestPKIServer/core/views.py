@@ -41,7 +41,7 @@ def token_login(request):
         return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)
 
 @csrf_exempt
-@api_view(['POST', ])
+@api_view(['GET', ])
 def token_logout(request):
     employee = Employee.objects.get(user=request.user)
     employee.logout_date = timezone.now()
@@ -80,16 +80,14 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     serializer_class = EmployeeSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def list(self, request):
-        if not request.user.is_staff:
-            me = Employee.objects.get(user=request.user)
-            serializer = self.serializer_class(me)
-        else:
-            all_employees = Employee.objects.all()
-            serializer = self.serializer_class(all_employees, many=True)
+    def me(self, request):
+        me = Employee.objects.get(user=request.user)
+        serializer = self.serializer_class(me)
         return Response(serializer.data)
 
     def update(self, request, pk=None, partial=False):  # pk = ID
+        if not request.user.is_staff:
+            return Response({"error":"you are not staff"}, status=status.HTTP_401_UNAUTHORIZED)
         instance = self.get_object()  # get Employee from request
         serializer = self.serializer_class(instance, data=request.data, partial=partial)
         if serializer.is_valid():
@@ -125,7 +123,7 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         serializer = self.serializer_class(instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save(isWorking=False)
-            # uniewaznik certyfikaty usera
+            revoke_cert(instance)
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
         return Response({
@@ -133,6 +131,12 @@ class EmployeeViewSet(mixins.CreateModelMixin,
             'message': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
 
+    @detail_route(methods=['get'], url_path='cert')
+    def cert(self, request, pk=None):
+        employee = Employee.objects.get(pk=pk)
+        instance = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
+        serializer = CertificateSerializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 def create_self_signed_cert(name, surname):
     # create a key pair
@@ -161,24 +165,35 @@ def create_self_signed_cert(name, surname):
     not_after = cert.get_notAfter()
     return certificate, private_key, public_key, not_before, not_after
 
-def renew_cert(cert_obj, key_obj):
-    pass
+def revoke_cert(employee, certificate=None, reason=None):
+    if not certificate:
+        certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
+    certificate.expiration_date = timezone.now()
+    key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
+    key.not_valid_after_private_key = timezone.now()
+    key.not_valid_after_public_key = timezone.now()
+    if reason:
+        CRL.objects.create(certificate_id=certificate, reason_id=reason)
+
 
 @csrf_exempt
 @api_view(['GET',])
 @permission_classes((permissions.IsAuthenticated, ))
 def gen_or_renew_cert(request):
-    employee = Employee.objects.get(user=request.user)
-    certificate = Certificate.objects.filter(employee_id=employee).first()
-    if certificate:
-        # certyfikat istnieje - trzeba go odnowic
-        pass
-    else:
+    if request.method == 'POST':
+        # POST reason_id
+        employee = Employee.objects.get(user=request.user)
+        certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
+        if certificate:
+            # certyfikat istnieje - trzeba stary uniewaznic i stworzyc nowy
+            # szukam reason for revoke
+            reason = CancellationReason.objects.filter(desscription="Uaktualnienie certyfikatu").first()
+            revoke_cert(employee, certificate, reason)
+
         # certyfikat nie istnieje - trzeba go stworzyc
         current_tz = timezone.get_current_timezone()
 
         new_cert = create_self_signed_cert(employee.name, employee.surname)
-        print(new_cert[0])
 
         not_before = datetime.strptime(new_cert[3].decode('utf-8'),"%Y%m%d%H%M%SZ")
         not_before = current_tz.localize(not_before)  # for convert to non-naive time
@@ -191,21 +206,42 @@ def gen_or_renew_cert(request):
         Key.objects.create(certificate_id=cert_obj, enc_private_key=new_cert[1], public_key=new_cert[2],
                            not_valid_before_private_key=not_before, not_valid_before_public_key=not_before,
                            not_valid_after_private_key=not_after, not_valid_after_public_key=not_after)
+        serializer = CertificateSerializer(cert_obj)
 
         data = {
-            "status": "ok",
-            "cert": new_cert[0],
+            "certificate": serializer.data,
+        }
+        return Response(data, status=status.HTTP_200_OK)
+    else:
+        employee = Employee.objects.get(user=request.user)
+        certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
+        serializer = CertificateSerializer(certificate)
+        data = {
+            "certificate": serializer.data,
         }
         return Response(data, status=status.HTTP_200_OK)
 
 
 class CertificateViewSet(mixins.RetrieveModelMixin,
-                   mixins.DestroyModelMixin,
                    mixins.ListModelMixin,
                   viewsets. GenericViewSet):
     queryset = Certificate.objects.all()
     serializer_class = CertificateSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+    @detail_route(methods=['post'], url_path='cert')
+    def revoke(self, request, pk=None):
+        certificate = self.get_object()
+        reason = CancellationReason.objects.filter(id=request.data['reason_id']).first()
+        if not reason:
+            reason = CancellationReason.objects.all().first()  # xD
+        certificate.expiration_date = timezone.now()
+        key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
+        key.not_valid_after_private_key = timezone.now()
+        key.not_valid_after_public_key = timezone.now()
+        CRL.objects.create(certificate_id=certificate, reason_id=reason)
+        return Response({"status":"ok"}, status=status.HTTP_200_OK)
+
 
 class CancellationReasonViewSet(viewsets.ModelViewSet):
     queryset = CancellationReason.objects.all()
@@ -213,19 +249,20 @@ class CancellationReasonViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
 class KeyViewSet(mixins.RetrieveModelMixin,
-                   mixins.DestroyModelMixin,
                    mixins.ListModelMixin,
                   viewsets. GenericViewSet):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-class CRLViewSet(mixins.RetrieveModelMixin,
+class CRLViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
                    mixins.ListModelMixin,
                   viewsets. GenericViewSet):
     queryset = CRL.objects.all()
     serializer_class = CRLSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
 
 class MessageViewSet(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,
@@ -234,3 +271,22 @@ class MessageViewSet(mixins.CreateModelMixin,
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+
+@csrf_exempt
+@api_view(['GET',])
+@permission_classes((permissions.IsAuthenticated, ))
+def inbox(request):
+    employee = Employee.objects.get(user=request.user)
+    list_of_messages = Message.objects.filter(recipient_id=employee)
+    serializer = MessageSerializer(list_of_messages, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@csrf_exempt
+@api_view(['GET',])
+@permission_classes((permissions.IsAuthenticated, ))
+def outbox(request):
+    employee = Employee.objects.get(user=request.user)
+    list_of_messages = Message.objects.filter(sender_id=employee)
+    serializer = MessageSerializer(list_of_messages, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

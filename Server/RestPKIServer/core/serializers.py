@@ -6,7 +6,7 @@ from .models import Job, Employee, Certificate, CancellationReason, Key, CRL, Me
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username',]
+        fields = ('username',)
 
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,7 +22,7 @@ class JobSerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['id','name','surname','pesel','address','birth_day','job_id','company_email',]
+        fields = ('id','name','surname','pesel','address','birth_day','job_id','company_email',)
         #depth = 1
 
 
@@ -42,11 +42,15 @@ class KeySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CRLSerializer(serializers.ModelSerializer):
+    reason_id = CancellationReason()
+
     class Meta:
         model = CRL
-        fields = '__all__'
+        fields = ('certificate_id', 'reason_id', 'cancellation_date',)
+        read_only_fields = ('cancellation_date',)
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = ('sender_id', 'recipient_id','enc_topic', 'enc_message', 'send_date',)
+        read_only_fields = ('send_date',)

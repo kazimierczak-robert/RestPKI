@@ -38,8 +38,14 @@ class Certificate(models.Model):
     expiration_date = models.DateTimeField(null=True, blank=True)  # it can be earlier than NotValidAfter
     cert = models.TextField()
 
+    def __str__(self):
+        return self.employee_id.user.username
+
 class CancellationReason(models.Model):
     descrption = models.TextField(unique=True)
+
+    def __str__(self):
+        return self.descrption
 
 class Key(models.Model):
     certificate_id = models.ForeignKey(Certificate, on_delete=models.CASCADE)
