@@ -16,7 +16,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
 
     private Activity activity;
     private ProgressBar progressBar;
-    private EditText login, password;
+    private EditText email, password;
 
     public LoginAsync(Activity activity)
     {
@@ -28,7 +28,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
         super.onPreExecute();
         progressBar = (ProgressBar) activity.findViewById(R.id.progressBarLogin);
         progressBar.setVisibility(View.VISIBLE);
-        login = (EditText) activity.findViewById(R.id.loginLogin);
+        email = (EditText) activity.findViewById(R.id.emailLogin);
         password = (EditText) activity.findViewById(R.id.passwordLogin);
     }
 
@@ -51,7 +51,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
     private String CheckData()
     {
         String returnMessage = "";
-        String log = login.getText().toString();
+        String log = email.getText().toString();
         String pass = password.getText().toString();
 
         String a = "abc";

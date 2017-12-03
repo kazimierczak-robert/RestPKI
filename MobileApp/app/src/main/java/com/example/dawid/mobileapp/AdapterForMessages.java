@@ -1,5 +1,6 @@
 package com.example.dawid.mobileapp;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,11 +18,12 @@ public class AdapterForMessages extends RecyclerView.Adapter {
 
     private ArrayList<Message> mMessages = new ArrayList<>();
     private RecyclerView mRecyclerView;
-
+    private Activity contextActivity;
     private class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mUser;
         public TextView mDate;
         public TextView mTopic;
+
         public MyViewHolder(View pItem) {
             super(pItem);
             mUser= (TextView) pItem.findViewById(R.id.message_user);
@@ -31,21 +33,26 @@ public class AdapterForMessages extends RecyclerView.Adapter {
         }
     }
 
-    public AdapterForMessages(ArrayList<Message> mMessages, RecyclerView pRecyclerView){
+    public AdapterForMessages(Activity activity, ArrayList<Message> mMessages, RecyclerView pRecyclerView){
         this.mMessages = mMessages;
         mRecyclerView = pRecyclerView;
+        contextActivity = activity;
     }
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int viewType) {
         final View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.messages_layout, viewGroup, false);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new MessageActivity().execute("");
+                int positionToShow = mRecyclerView.getChildAdapterPosition(v);
+               new MessageAsync(contextActivity).execute(mMessages.get(positionToShow).getUser(),
+                       mMessages.get(positionToShow).getDate(),
+                       mMessages.get(positionToShow).getTopic(),
+                       mMessages.get(positionToShow).getContent());
               /*  int positionToDelete = mRecyclerView.getChildAdapterPosition(v);
-                mMessages.remove(positionToDelete);
+                mMessages.remove(positionToDelete);+
                 notifyItemRemoved(positionToDelete);*/
             }
         });

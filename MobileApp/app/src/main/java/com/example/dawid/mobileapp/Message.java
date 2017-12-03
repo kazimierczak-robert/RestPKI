@@ -8,11 +8,18 @@ public class Message {
     private String User;
     private String Date;
     private String Topic;
+    private String Content;
 
-    public Message(String User, String Date, String Topic){
+    public Message(){
+
+    }
+
+    public Message(String User, String Date, String Topic, String Content){
         this.User = User;
         this.Date = Date;
         this.Topic = Topic;
+
+        this.Content = Content;
     }
 
     public String getUser() {
@@ -42,10 +49,14 @@ public class Message {
         Topic = topic;
     }
 
-
-
-    public Message(){
-
+    public String getContent() {
+        return Content;
     }
+
+    public void setContent(String content) {
+        Content = content;
+    }
+
+
 
 }

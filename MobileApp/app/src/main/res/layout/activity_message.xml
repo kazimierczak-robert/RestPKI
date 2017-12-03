@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,48 +24,64 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_message"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
     <TextView
-        android:id="@+id/textViewUserReceiveMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/appBarLayout3"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="18dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textViewDateReceiveMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textViewUserReceiveMessage"
-        android:layout_below="@+id/textViewUserReceiveMessage"
-        android:layout_marginEnd="17dp"
-        android:layout_marginTop="52dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textViewTopicReceiveMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewDateReceiveMessage"
-        android:layout_marginTop="28dp"
-        android:layout_toEndOf="@+id/textViewDateReceiveMessage"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textViewContentReceiveMessage"
+        android:id="@+id/textViewReceiveMessageUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textViewUserReceiveMessage"
-        android:layout_marginEnd="39dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appBarLayout3"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="18dp"
+        android:textSize="20sp"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewReceiveMessageDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/textViewReceiveMessageUser"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_below="@+id/textViewReceiveMessageUser"
+        android:textSize="14sp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewReceiveMessageTopic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/textViewReceiveMessageDate"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_below="@+id/textViewReceiveMessageDate"
+        android:textSize="16sp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textViewReceiveMessageContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/textViewReceiveMessageTopic"
+        android:layout_marginEnd="12dp"
+        android:layout_below="@+id/textViewReceiveMessageTopic"
+        android:layout_marginTop="12dp"
+        android:textSize="17sp"
+        android:text="TextView" />
+
+    <Button
+        android:id="@+id/buttonReceiveMessageReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewReceiveMessageContent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="Odpowiedz" />
 
 
 </RelativeLayout>
+    </ScrollView>

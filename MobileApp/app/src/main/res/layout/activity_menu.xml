@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:onClick="Outbox"
         android:text="Skrzynka nadawcza" />
 
@@ -32,8 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/buttonOutbox"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:text="Skrzynka odbiorcza"
         android:onClick="Inbox"/>
 
@@ -43,8 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_below="@+id/buttonInbox"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:text="Ustawienia"
         android:onClick="Settings"/>
 
@@ -57,8 +57,8 @@
         android:layout_marginTop="10dp"
         android:layout_below="@id/buttonSettings"
         android:onClick="LogOut"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:text="Wyloguj się" />
 
 
