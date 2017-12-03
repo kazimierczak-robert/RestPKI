@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from .models import Certificate, CertificateRequest, CertificateExpirationRequest, CancellationReason, \
+from .models import Certificate, CancellationReason, \
     Key, CRL, Employee, Job, Message
 
 admin.site.site_header = 'Panel administracyjny - PKI'
@@ -10,17 +10,7 @@ admin.site.index_title = 'Panel'
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
     model = Certificate
-    list_display = ('id','employee_id','not_valid_before','not_valid_after','creation_date','expiration_date')
-
-@admin.register(CertificateRequest)
-class CertificateRequestAdmin(admin.ModelAdmin):
-    model = CertificateRequest
-    list_display = ('id','employee_id','request_date','enc_private_key','public_key','is_accepted','decision_date')
-
-@admin.register(CertificateExpirationRequest)
-class CertificateExpirationRequestAdmin(admin.ModelAdmin):
-    model = CertificateExpirationRequest
-    list_display = ('id','employee_id','request_date','reason_id','is_accepted','decision_date')
+    list_display = ('id','employee_id','not_valid_before','not_valid_after','creation_date','expiration_date', 'cert')
 
 @admin.register(CancellationReason)
 class CancellationReasonAdmin(admin.ModelAdmin):
@@ -41,8 +31,8 @@ class CRLAdmin(admin.ModelAdmin):
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     model = Employee
-    list_display = ('id','user', 'name','surname','pesel','address','birth_day','job_id','company_email','password',
-                    'login_date','logout_date','created_by','creation_date','last_edited_by','last_edition_date')
+    list_display = ('id','user', 'name','surname','pesel','address','birth_day','job_id','company_email',
+                    'login_date','logout_date','created_by','creation_date','last_edited_by','last_edition_date','isWorking')
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
