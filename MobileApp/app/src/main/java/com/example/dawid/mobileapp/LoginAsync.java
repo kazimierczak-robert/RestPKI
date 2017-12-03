@@ -2,11 +2,26 @@ package com.example.dawid.mobileapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Dawid on 28.10.2017.
@@ -48,26 +63,82 @@ public class LoginAsync extends AsyncTask<String, String, String> {
 
     }
 
-    private String CheckData()
-    {
+    private String CheckData() {
         String returnMessage = "";
         String log = email.getText().toString();
         String pass = password.getText().toString();
 
-        String a = "abc";
-       /* for (int i = 0; i < 8000; i++)
-            a += "abc";
-*/
-        if(log.isEmpty() || pass.isEmpty())
-        {
+        if (log.isEmpty() || pass.isEmpty()) {
             returnMessage += "Wszystkie pola muszą być uzupełnione";
             Snackbar.make(activity.getCurrentFocus(), returnMessage, Snackbar.LENGTH_LONG).show();
-            return  returnMessage;
+            return returnMessage;
+        } else {
+            String token = "";
+            String wynik = laczenie();
+            if (wynik != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(wynik);
+                    token = jsonObj.getString("token");
+                    GlobalValue.setTokenGlobal(token);
+                    Intent intent = new Intent(activity, MenuActivity.class);
+                    activity.startActivity(intent);
+                    return returnMessage;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Snackbar.make(activity.getCurrentFocus(), "Zły login lub złe hasło", Snackbar.LENGTH_LONG).show();
+            return returnMessage;
+        }
+    }
+
+        public String laczenie(){
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/login/";
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("username", email.getText().toString())
+                    .appendQueryParameter("password", password.getText().toString());
+
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        Intent intent = new Intent(activity, MenuActivity.class);
-        activity.startActivity(intent);
-        return  returnMessage;
+        return response;
     }
 }
 

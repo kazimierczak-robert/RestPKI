@@ -39,7 +39,7 @@ public class LoginActivity extends Activity {
     public void SignIn(View view)
     {
         backButtonCount = 0;
-
+        GlobalValue GlobValue = ((GlobalValue) getApplicationContext());
         new LoginAsync(this).execute("");
     }
 }
