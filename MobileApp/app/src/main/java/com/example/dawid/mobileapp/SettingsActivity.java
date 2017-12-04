@@ -1,5 +1,6 @@
 package com.example.dawid.mobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void cancelCertificate(View view){
-
+        new SearchAsync(this).execute("");
     }
 }

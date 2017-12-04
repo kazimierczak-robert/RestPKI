@@ -74,12 +74,13 @@ public class LoginAsync extends AsyncTask<String, String, String> {
             return returnMessage;
         } else {
             String token = "";
-            String wynik = laczenie();
+            String wynik = signin();
             if (wynik != null) {
                 try {
                     JSONObject jsonObj = new JSONObject(wynik);
                     token = jsonObj.getString("token");
                     GlobalValue.setTokenGlobal(token);
+                    SaveCeriticate();
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
@@ -93,7 +94,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
         }
     }
 
-        public String laczenie(){
+        public String signin(){ // logowanie
         String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/login/";
         URL url;
         String response = "";
@@ -139,6 +140,58 @@ public class LoginAsync extends AsyncTask<String, String, String> {
         }
 
         return response;
+    }
+
+    public String getCerttificate()
+    {
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/cert/";
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
+            conn.connect();
+
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public void SaveCeriticate()
+    {
+        String wynik = getCerttificate();
+        String certificate;
+        Integer IDemployee;
+        if (wynik != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(wynik);
+                JSONObject objectjso = jsonObj.getJSONObject("certificate");
+                certificate = objectjso.getString("cert");
+                GlobalValue.setPublicCertificateGlobal(certificate);
+                IDemployee = objectjso.getInt("employee_id");
+                GlobalValue.setIDEmployeeGlobal(IDemployee);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
