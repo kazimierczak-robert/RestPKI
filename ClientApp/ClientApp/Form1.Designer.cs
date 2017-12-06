@@ -32,9 +32,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.DGVMessagesR = new System.Windows.Forms.DataGridView();
+            this.BGetMessagess = new System.Windows.Forms.Button();
+            this.BSendMessages = new System.Windows.Forms.Button();
+            this.BRevokeTheCertificate = new System.Windows.Forms.Button();
+            this.BGetTheCertificate = new System.Windows.Forms.Button();
+            this.BApplyForTheCertificate = new System.Windows.Forms.Button();
             this.PSendMessage = new System.Windows.Forms.Panel();
             this.LTopicR = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.BSend = new System.Windows.Forms.Button();
             this.CBRecNames = new System.Windows.Forms.ComboBox();
             this.LRecipient = new System.Windows.Forms.Label();
             this.LSender = new System.Windows.Forms.Label();
@@ -43,13 +49,7 @@
             this.TBTopicS = new System.Windows.Forms.TextBox();
             this.TBRecipient = new System.Windows.Forms.TextBox();
             this.TBMessageS = new System.Windows.Forms.TextBox();
-            this.BSend = new System.Windows.Forms.Button();
             this.TBMessageR = new System.Windows.Forms.TextBox();
-            this.BGetMessagess = new System.Windows.Forms.Button();
-            this.BSendMessages = new System.Windows.Forms.Button();
-            this.BRevokeTheCertificate = new System.Windows.Forms.Button();
-            this.BGetTheCertificate = new System.Windows.Forms.Button();
-            this.BApplyForTheCertificate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGVMessagesR)).BeginInit();
             this.PSendMessage.SuspendLayout();
             this.PGetMessage.SuspendLayout();
@@ -66,6 +66,66 @@
             this.DGVMessagesR.TabIndex = 9;
             this.toolTip.SetToolTip(this.DGVMessagesR, "Kliknij dwukrotnie na wiadomość, by odczytać");
             this.DGVMessagesR.Visible = false;
+            // 
+            // BGetMessagess
+            // 
+            this.BGetMessagess.BackgroundImage = global::ClientApp.Properties.Resources.SOdbiorcza;
+            this.BGetMessagess.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BGetMessagess.Location = new System.Drawing.Point(12, 356);
+            this.BGetMessagess.Name = "BGetMessagess";
+            this.BGetMessagess.Size = new System.Drawing.Size(80, 80);
+            this.BGetMessagess.TabIndex = 4;
+            this.toolTip.SetToolTip(this.BGetMessagess, "Skrzynka odbiorcza");
+            this.BGetMessagess.UseVisualStyleBackColor = true;
+            this.BGetMessagess.Click += new System.EventHandler(this.BGetMessagess_Click);
+            // 
+            // BSendMessages
+            // 
+            this.BSendMessages.BackgroundImage = global::ClientApp.Properties.Resources.SNadawcza;
+            this.BSendMessages.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BSendMessages.Location = new System.Drawing.Point(12, 270);
+            this.BSendMessages.Name = "BSendMessages";
+            this.BSendMessages.Size = new System.Drawing.Size(80, 80);
+            this.BSendMessages.TabIndex = 3;
+            this.toolTip.SetToolTip(this.BSendMessages, "Skrzynka nadawcza");
+            this.BSendMessages.UseVisualStyleBackColor = true;
+            this.BSendMessages.Click += new System.EventHandler(this.BSendMessages_Click);
+            // 
+            // BRevokeTheCertificate
+            // 
+            this.BRevokeTheCertificate.BackgroundImage = global::ClientApp.Properties.Resources.UniewaznijCert;
+            this.BRevokeTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BRevokeTheCertificate.Location = new System.Drawing.Point(12, 184);
+            this.BRevokeTheCertificate.Name = "BRevokeTheCertificate";
+            this.BRevokeTheCertificate.Size = new System.Drawing.Size(80, 80);
+            this.BRevokeTheCertificate.TabIndex = 2;
+            this.toolTip.SetToolTip(this.BRevokeTheCertificate, "Unieważnij certyfikat");
+            this.BRevokeTheCertificate.UseVisualStyleBackColor = true;
+            this.BRevokeTheCertificate.Click += new System.EventHandler(this.BRevokeTheCertificate_Click);
+            // 
+            // BGetTheCertificate
+            // 
+            this.BGetTheCertificate.BackgroundImage = global::ClientApp.Properties.Resources.PobierzCert;
+            this.BGetTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BGetTheCertificate.Location = new System.Drawing.Point(12, 98);
+            this.BGetTheCertificate.Name = "BGetTheCertificate";
+            this.BGetTheCertificate.Size = new System.Drawing.Size(80, 80);
+            this.BGetTheCertificate.TabIndex = 1;
+            this.toolTip.SetToolTip(this.BGetTheCertificate, "Pobierz certyfikat");
+            this.BGetTheCertificate.UseVisualStyleBackColor = true;
+            this.BGetTheCertificate.Click += new System.EventHandler(this.BGetTheCertificate_Click);
+            // 
+            // BApplyForTheCertificate
+            // 
+            this.BApplyForTheCertificate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BApplyForTheCertificate.BackgroundImage")));
+            this.BApplyForTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BApplyForTheCertificate.Location = new System.Drawing.Point(12, 12);
+            this.BApplyForTheCertificate.Name = "BApplyForTheCertificate";
+            this.BApplyForTheCertificate.Size = new System.Drawing.Size(80, 80);
+            this.BApplyForTheCertificate.TabIndex = 0;
+            this.toolTip.SetToolTip(this.BApplyForTheCertificate, "Złóż wniosek o wydanie certyfikatu");
+            this.BApplyForTheCertificate.UseVisualStyleBackColor = true;
+            this.BApplyForTheCertificate.Click += new System.EventHandler(this.BApplyForTheCertificate_Click);
             // 
             // PSendMessage
             // 
@@ -95,6 +155,18 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(474, 20);
             this.textBox2.TabIndex = 4;
+            // 
+            // BSend
+            // 
+            this.BSend.BackColor = System.Drawing.Color.SkyBlue;
+            this.BSend.FlatAppearance.BorderColor = System.Drawing.Color.CornflowerBlue;
+            this.BSend.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BSend.Location = new System.Drawing.Point(554, 15);
+            this.BSend.Name = "BSend";
+            this.BSend.Size = new System.Drawing.Size(63, 49);
+            this.BSend.TabIndex = 8;
+            this.BSend.Text = "Wyślij";
+            this.BSend.UseVisualStyleBackColor = false;
             // 
             // CBRecNames
             // 
@@ -169,16 +241,6 @@
             this.TBMessageS.Size = new System.Drawing.Size(616, 338);
             this.TBMessageS.TabIndex = 7;
             // 
-            // BSend
-            // 
-            this.BSend.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.BSend.Location = new System.Drawing.Point(554, 15);
-            this.BSend.Name = "BSend";
-            this.BSend.Size = new System.Drawing.Size(63, 49);
-            this.BSend.TabIndex = 8;
-            this.BSend.Text = "Wyślij";
-            this.BSend.UseVisualStyleBackColor = false;
-            // 
             // TBMessageR
             // 
             this.TBMessageR.Enabled = false;
@@ -190,66 +252,6 @@
             this.TBMessageR.TabIndex = 10;
             this.TBMessageR.Visible = false;
             this.TBMessageR.WordWrap = false;
-            // 
-            // BGetMessagess
-            // 
-            this.BGetMessagess.BackgroundImage = global::ClientApp.Properties.Resources.SOdbiorcza;
-            this.BGetMessagess.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BGetMessagess.Location = new System.Drawing.Point(12, 356);
-            this.BGetMessagess.Name = "BGetMessagess";
-            this.BGetMessagess.Size = new System.Drawing.Size(80, 80);
-            this.BGetMessagess.TabIndex = 4;
-            this.toolTip.SetToolTip(this.BGetMessagess, "Skrzynka odbiorcza");
-            this.BGetMessagess.UseVisualStyleBackColor = true;
-            this.BGetMessagess.Click += new System.EventHandler(this.BGetMessagess_Click);
-            // 
-            // BSendMessages
-            // 
-            this.BSendMessages.BackgroundImage = global::ClientApp.Properties.Resources.SNadawcza;
-            this.BSendMessages.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BSendMessages.Location = new System.Drawing.Point(12, 270);
-            this.BSendMessages.Name = "BSendMessages";
-            this.BSendMessages.Size = new System.Drawing.Size(80, 80);
-            this.BSendMessages.TabIndex = 3;
-            this.toolTip.SetToolTip(this.BSendMessages, "Skrzynka nadawcza");
-            this.BSendMessages.UseVisualStyleBackColor = true;
-            this.BSendMessages.Click += new System.EventHandler(this.BSendMessages_Click);
-            // 
-            // BRevokeTheCertificate
-            // 
-            this.BRevokeTheCertificate.BackgroundImage = global::ClientApp.Properties.Resources.UniewaznijCert;
-            this.BRevokeTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BRevokeTheCertificate.Location = new System.Drawing.Point(12, 184);
-            this.BRevokeTheCertificate.Name = "BRevokeTheCertificate";
-            this.BRevokeTheCertificate.Size = new System.Drawing.Size(80, 80);
-            this.BRevokeTheCertificate.TabIndex = 2;
-            this.toolTip.SetToolTip(this.BRevokeTheCertificate, "Unieważnij certyfikat");
-            this.BRevokeTheCertificate.UseVisualStyleBackColor = true;
-            this.BRevokeTheCertificate.Click += new System.EventHandler(this.BRevokeTheCertificate_Click);
-            // 
-            // BGetTheCertificate
-            // 
-            this.BGetTheCertificate.BackgroundImage = global::ClientApp.Properties.Resources.PobierzCert;
-            this.BGetTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BGetTheCertificate.Location = new System.Drawing.Point(12, 98);
-            this.BGetTheCertificate.Name = "BGetTheCertificate";
-            this.BGetTheCertificate.Size = new System.Drawing.Size(80, 80);
-            this.BGetTheCertificate.TabIndex = 1;
-            this.toolTip.SetToolTip(this.BGetTheCertificate, "Pobierz certyfikat");
-            this.BGetTheCertificate.UseVisualStyleBackColor = true;
-            this.BGetTheCertificate.Click += new System.EventHandler(this.BGetTheCertificate_Click);
-            // 
-            // BApplyForTheCertificate
-            // 
-            this.BApplyForTheCertificate.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("BApplyForTheCertificate.BackgroundImage")));
-            this.BApplyForTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BApplyForTheCertificate.Location = new System.Drawing.Point(12, 12);
-            this.BApplyForTheCertificate.Name = "BApplyForTheCertificate";
-            this.BApplyForTheCertificate.Size = new System.Drawing.Size(80, 80);
-            this.BApplyForTheCertificate.TabIndex = 0;
-            this.toolTip.SetToolTip(this.BApplyForTheCertificate, "Złóż wniosek o wydanie certyfikatu");
-            this.BApplyForTheCertificate.UseVisualStyleBackColor = true;
-            this.BApplyForTheCertificate.Click += new System.EventHandler(this.BApplyForTheCertificate_Click);
             // 
             // Form1
             // 
@@ -271,6 +273,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Klient PKI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogOut);
             ((System.ComponentModel.ISupportInitialize)(this.DGVMessagesR)).EndInit();
             this.PSendMessage.ResumeLayout(false);
             this.PSendMessage.PerformLayout();
