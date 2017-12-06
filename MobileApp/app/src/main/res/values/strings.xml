@@ -2,6 +2,7 @@
     <string name="app_name">Aplikacja mobilna</string>
     <string name="title_activity_inbox">Skrzynka odbiorcza</string>
     <string name="title_activity_outbox">Skrzynka nadawcza</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_settings">Ustawienia</string>
+    <string name="title_activity_message">Wiadomość</string>
+    <string name="title_activity_search">Napisz do</string>
 </resources>

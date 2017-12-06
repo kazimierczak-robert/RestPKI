@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -50,6 +51,20 @@ namespace ClientApp
             TBMessageS.Visible = false;
             DGVMessagesR.Visible = true;
             TBMessageR.Visible = true;
+        }
+
+        private void LogOut(object sender, FormClosingEventArgs e)
+        {
+            var request = new RestRequest("api/logout/", Method.GET);
+            request.AddHeader("Authorization", "Token " + Program.token);
+            var response = Program.client.Execute(request);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                e.Cancel = true;
+                MessageBox.Show("Klient nie może zostać wylogowany, skontaktuj się z administratorem systemu!", "Błąd!");
+            }
+
+
         }
     }
 }

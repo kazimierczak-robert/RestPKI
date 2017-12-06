@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +22,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -27,9 +30,9 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by Dawid on 28.10.2017.
  */
 
-public class LogOutAsync extends AsyncTask<String, String, String>{
+public class SearchAsync extends AsyncTask<String, String, String>{
     private Activity activity;
-    public LogOutAsync(Activity activity)
+    public SearchAsync(Activity activity)
     {
 
         this.activity = activity;
@@ -59,18 +62,41 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
     private String CheckData() {
         String returnMessage = "";
         String token = "";
-            String wynik = laczenie();
-            if (wynik != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(wynik);
-                    token = jsonObj.getString("detail");
-                    GlobalValue.setTokenGlobal(token);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+        ArrayList<Users> users = new ArrayList<>();
+        String wynik = laczenie();
+        if (wynik != null) {
+            JSONObject jsonObj = null;
+            try {
 
-        Intent intent = new Intent(activity, LoginActivity.class);
+
+                JSONArray docs = new JSONArray(wynik);
+
+                for(int i = 0; i < docs.length(); i++)
+                {
+                    JSONObject objectJS = docs.getJSONObject(i);
+                    int ID = objectJS.getInt("id");
+                    if(ID == GlobalValue.getIDEmployeeGlobal())
+                        continue;;
+                    String name = objectJS.getString("name");
+                    String surname = objectJS.getString("surname");
+
+                    String company_email = objectJS.getString("company_email");
+
+
+                    users.add(i, new Users(ID, name + " " + surname, company_email));
+
+                }
+                GlobalValue.setUsersListGlobal(users);
+                Intent intent = new Intent(activity, SearchActivity.class);
+                activity.startActivity(intent);
+                return returnMessage;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Intent intent = new Intent(activity, MenuActivity.class);
         activity.startActivity(intent);
         return returnMessage;
 
@@ -78,7 +104,7 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
     }
 
     public String laczenie(){
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/logout/";
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/employee/";
         URL url;
         String response = "";
         try {

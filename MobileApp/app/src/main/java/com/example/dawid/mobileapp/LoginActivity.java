@@ -8,13 +8,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity {
-    private EditText login, password;
+    private EditText email, password;
     private int backButtonCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        login = (EditText) findViewById(R.id.loginLogin);
+        email = (EditText) findViewById(R.id.emailLogin);
         password= (EditText) findViewById(R.id.passwordLogin);
     }
 
@@ -39,7 +39,7 @@ public class LoginActivity extends Activity {
     public void SignIn(View view)
     {
         backButtonCount = 0;
-
+        GlobalValue GlobValue = ((GlobalValue) getApplicationContext());
         new LoginAsync(this).execute("");
     }
 }

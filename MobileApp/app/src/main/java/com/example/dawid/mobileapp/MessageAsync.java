@@ -21,6 +21,7 @@ public class MessageAsync extends AsyncTask<String, String, String>{
     private TextView Date;
     private TextView Topic;
     private TextView MessageContent;
+
     public MessageAsync(Activity activity)
     {
 
@@ -36,7 +37,7 @@ public class MessageAsync extends AsyncTask<String, String, String>{
 
     @Override
     protected String doInBackground(String... params) {
-        return CheckData();
+        return CheckData(params[0], params[1], params[2], params[3]);
 
     }
 
@@ -47,12 +48,15 @@ public class MessageAsync extends AsyncTask<String, String, String>{
         super.onPostExecute(s);
     }
 
-    private String CheckData()
+    private String CheckData(String user, String date, String topic, String content)
     {
         String returnMessage = "";
 
         Intent intent = new Intent(activity, MessageActivity.class);
-        intent.putExtra("id", "Kowalski");
+        intent.putExtra("user", user);
+        intent.putExtra("date", date);
+        intent.putExtra("topic", topic);
+        intent.putExtra("content", content);
         activity.startActivity(intent);
         return  returnMessage;
     }
