@@ -9,8 +9,7 @@ import django.utils.timezone as timezone
 from rest_framework import viewsets, mixins, permissions, renderers, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import api_view, permission_classes, list_route, detail_route
 from rest_framework.exceptions import PermissionDenied
 
 from OpenSSL import crypto
@@ -80,6 +79,7 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     serializer_class = EmployeeSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
+    @list_route()
     def me(self, request):
         me = Employee.objects.get(user=request.user)
         serializer = self.serializer_class(me)
