@@ -40,24 +40,30 @@ namespace ClientApp
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 84);
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label2.Location = new System.Drawing.Point(104, 132);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(39, 13);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 21;
             this.label2.Text = "Hasło:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 58);
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(106, 99);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(36, 13);
+            this.label1.Size = new System.Drawing.Size(42, 13);
             this.label1.TabIndex = 20;
             this.label1.Text = "Login:";
             // 
             // TBLogin
             // 
-            this.TBLogin.Location = new System.Drawing.Point(65, 55);
+            this.TBLogin.Location = new System.Drawing.Point(151, 97);
             this.TBLogin.Name = "TBLogin";
             this.TBLogin.Size = new System.Drawing.Size(154, 20);
             this.TBLogin.TabIndex = 22;
@@ -65,7 +71,7 @@ namespace ClientApp
             // 
             // TBPassword
             // 
-            this.TBPassword.Location = new System.Drawing.Point(65, 81);
+            this.TBPassword.Location = new System.Drawing.Point(151, 130);
             this.TBPassword.Name = "TBPassword";
             this.TBPassword.PasswordChar = '*';
             this.TBPassword.Size = new System.Drawing.Size(154, 20);
@@ -74,10 +80,12 @@ namespace ClientApp
             // 
             // BLogIn
             // 
-            this.BLogIn.BackColor = System.Drawing.Color.SkyBlue;
-            this.BLogIn.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.BLogIn.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.BLogIn.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateGray;
             this.BLogIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BLogIn.Location = new System.Drawing.Point(65, 107);
+            this.BLogIn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.BLogIn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.BLogIn.Location = new System.Drawing.Point(151, 164);
             this.BLogIn.Name = "BLogIn";
             this.BLogIn.Size = new System.Drawing.Size(154, 24);
             this.BLogIn.TabIndex = 24;
@@ -89,12 +97,15 @@ namespace ClientApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(253, 179);
+            this.BackgroundImage = global::ClientApp.Properties.Resources.background;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(410, 291);
             this.Controls.Add(this.BLogIn);
-            this.Controls.Add(this.TBPassword);
-            this.Controls.Add(this.TBLogin);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.TBPassword);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.TBLogin);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "LogInPanel";
