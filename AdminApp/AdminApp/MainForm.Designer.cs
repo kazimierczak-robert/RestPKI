@@ -45,9 +45,15 @@
             this.BCancel = new System.Windows.Forms.Button();
             this.BApply = new System.Windows.Forms.Button();
             this.PEmployee = new System.Windows.Forms.Panel();
+            this.LEMail = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.LJob = new System.Windows.Forms.Label();
+            this.CBJob = new System.Windows.Forms.ComboBox();
             this.EmployeeID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EmployeeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EmployeeSurname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EmployeePESEL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EmployeeAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EmployeeBirthDay = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -59,7 +65,7 @@
             // 
             // BNewEmployee
             // 
-            this.BNewEmployee.Location = new System.Drawing.Point(506, 262);
+            this.BNewEmployee.Location = new System.Drawing.Point(656, 356);
             this.BNewEmployee.Name = "BNewEmployee";
             this.BNewEmployee.Size = new System.Drawing.Size(111, 23);
             this.BNewEmployee.TabIndex = 2;
@@ -80,6 +86,8 @@
             this.EmployeeID,
             this.EmployeeName,
             this.EmployeeSurname,
+            this.EmployeeEMail,
+            this.EmployeeJob,
             this.EmployeePESEL,
             this.EmployeeAddress,
             this.EmployeeBirthDay,
@@ -95,9 +103,8 @@
             this.DGVEmployees.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.DGVEmployees.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DGVEmployees.ShowCellErrors = false;
-            this.DGVEmployees.ShowCellToolTips = false;
             this.DGVEmployees.ShowRowErrors = false;
-            this.DGVEmployees.Size = new System.Drawing.Size(623, 243);
+            this.DGVEmployees.Size = new System.Drawing.Size(773, 331);
             this.DGVEmployees.TabIndex = 3;
             // 
             // TBID
@@ -199,7 +206,7 @@
             // 
             // BCancel
             // 
-            this.BCancel.Location = new System.Drawing.Point(23, 250);
+            this.BCancel.Location = new System.Drawing.Point(23, 344);
             this.BCancel.Name = "BCancel";
             this.BCancel.Size = new System.Drawing.Size(75, 23);
             this.BCancel.TabIndex = 16;
@@ -209,7 +216,7 @@
             // 
             // BApply
             // 
-            this.BApply.Location = new System.Drawing.Point(107, 250);
+            this.BApply.Location = new System.Drawing.Point(107, 344);
             this.BApply.Name = "BApply";
             this.BApply.Size = new System.Drawing.Size(75, 23);
             this.BApply.TabIndex = 17;
@@ -220,6 +227,10 @@
             // PEmployee
             // 
             this.PEmployee.BackColor = System.Drawing.Color.Transparent;
+            this.PEmployee.Controls.Add(this.CBJob);
+            this.PEmployee.Controls.Add(this.LJob);
+            this.PEmployee.Controls.Add(this.LEMail);
+            this.PEmployee.Controls.Add(this.textBox1);
             this.PEmployee.Controls.Add(this.TBID);
             this.PEmployee.Controls.Add(this.BApply);
             this.PEmployee.Controls.Add(this.textBox2);
@@ -234,10 +245,45 @@
             this.PEmployee.Controls.Add(this.LSurname);
             this.PEmployee.Controls.Add(this.LID);
             this.PEmployee.Controls.Add(this.LName);
-            this.PEmployee.Location = new System.Drawing.Point(635, 12);
+            this.PEmployee.Location = new System.Drawing.Point(785, 12);
             this.PEmployee.Name = "PEmployee";
-            this.PEmployee.Size = new System.Drawing.Size(200, 273);
+            this.PEmployee.Size = new System.Drawing.Size(200, 371);
             this.PEmployee.TabIndex = 18;
+            // 
+            // LEMail
+            // 
+            this.LEMail.AutoSize = true;
+            this.LEMail.Location = new System.Drawing.Point(19, 250);
+            this.LEMail.Name = "LEMail";
+            this.LEMail.Size = new System.Drawing.Size(36, 13);
+            this.LEMail.TabIndex = 19;
+            this.LEMail.Text = "E-Mail";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(22, 266);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(159, 20);
+            this.textBox1.TabIndex = 18;
+            // 
+            // LJob
+            // 
+            this.LJob.AutoSize = true;
+            this.LJob.Location = new System.Drawing.Point(19, 295);
+            this.LJob.Name = "LJob";
+            this.LJob.Size = new System.Drawing.Size(62, 13);
+            this.LJob.TabIndex = 21;
+            this.LJob.Text = "Stanowisko";
+            // 
+            // CBJob
+            // 
+            this.CBJob.FormattingEnabled = true;
+            this.CBJob.Location = new System.Drawing.Point(22, 311);
+            this.CBJob.MaxDropDownItems = 6;
+            this.CBJob.Name = "CBJob";
+            this.CBJob.Size = new System.Drawing.Size(159, 21);
+            this.CBJob.TabIndex = 22;
             // 
             // EmployeeID
             // 
@@ -253,7 +299,7 @@
             this.EmployeeName.Name = "EmployeeName";
             this.EmployeeName.ReadOnly = true;
             this.EmployeeName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeName.Width = 85;
+            this.EmployeeName.Width = 70;
             // 
             // EmployeeSurname
             // 
@@ -262,6 +308,21 @@
             this.EmployeeSurname.ReadOnly = true;
             this.EmployeeSurname.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.EmployeeSurname.Width = 103;
+            // 
+            // EmployeeEMail
+            // 
+            this.EmployeeEMail.HeaderText = "E-Mail";
+            this.EmployeeEMail.Name = "EmployeeEMail";
+            this.EmployeeEMail.ReadOnly = true;
+            this.EmployeeEMail.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // EmployeeJob
+            // 
+            this.EmployeeJob.HeaderText = "Stanowisko";
+            this.EmployeeJob.Name = "EmployeeJob";
+            this.EmployeeJob.ReadOnly = true;
+            this.EmployeeJob.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeJob.Width = 80;
             // 
             // EmployeePESEL
             // 
@@ -277,7 +338,7 @@
             this.EmployeeAddress.Name = "EmployeeAddress";
             this.EmployeeAddress.ReadOnly = true;
             this.EmployeeAddress.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeAddress.Width = 155;
+            this.EmployeeAddress.Width = 140;
             // 
             // EmployeeBirthDay
             // 
@@ -307,7 +368,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(842, 297);
+            this.ClientSize = new System.Drawing.Size(992, 389);
             this.Controls.Add(this.PEmployee);
             this.Controls.Add(this.DGVEmployees);
             this.Controls.Add(this.BNewEmployee);
@@ -315,6 +376,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Administrator PKI";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogOut);
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployees)).EndInit();
             this.PEmployee.ResumeLayout(false);
             this.PEmployee.PerformLayout();
@@ -341,9 +403,15 @@
         private System.Windows.Forms.Button BCancel;
         private System.Windows.Forms.Button BApply;
         private System.Windows.Forms.Panel PEmployee;
+        private System.Windows.Forms.Label LEMail;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox CBJob;
+        private System.Windows.Forms.Label LJob;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeID;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeName;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeSurname;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeEMail;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeJob;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeePESEL;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeBirthDay;
