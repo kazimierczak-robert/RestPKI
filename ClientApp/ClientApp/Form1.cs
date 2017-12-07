@@ -69,6 +69,7 @@ namespace ClientApp
                 CBRecNames.ValueMember = "id"; //EmployeeID
                 CBRecNames.DisplayMember = "company_email";
                 CBRecNames.DataSource = response.Data.Where(x=>x.id != infoAboutMe.id).ToList();
+                CBRecNames.DataSource = response.Data.Where(x=>x.id != infoAboutMe.id).ToList();
             }
             else
             {
@@ -98,6 +99,8 @@ namespace ClientApp
             TBMessageS.Visible = true;
             DGVMessagesR.Visible = false;
             TBMessageR.Visible = false;
+            PMessageS.Visible = false;
+            DGVMessageS.Visible = false;
 
             //Get emplo
         }
@@ -110,6 +113,8 @@ namespace ClientApp
             TBMessageS.Visible = false;
             DGVMessagesR.Visible = true;
             TBMessageR.Visible = true;
+            PMessageS.Visible = false;
+            DGVMessageS.Visible = false;
         }
 
         private void LogOut(object sender, FormClosingEventArgs e)
@@ -134,9 +139,20 @@ namespace ClientApp
             TBSender.Text = senderTB;
             TBTopicS.Text = topicTB;
         }
+
+        private void BInBox_Click(object sender, EventArgs e)
+        {
+            PMessageS.Visible = true;
+            DGVMessageS.Visible = true;
+            TBMessageR.Visible = true;
+
+            PGetMessage.Visible = false;
+            PSendMessage.Visible = false;
+            TBMessageS.Visible = false;
+        }
     }
 
-    
+
     class Employee
     {
         public int id { get; set; }

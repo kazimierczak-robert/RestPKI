@@ -94,25 +94,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SNadawcza.png" />
+    <None Include="Resources\background3.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Cert.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\SOdbiorcza.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\UniewaznijCert.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\PobierzCert.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\background2.png" />
+    <None Include="Resources\background4.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

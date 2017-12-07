@@ -30,6 +30,7 @@ namespace ClientApp
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogInPanel));
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.TBLogin = new System.Windows.Forms.TextBox();
@@ -42,7 +43,7 @@ namespace ClientApp
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label2.ForeColor = System.Drawing.Color.LightCyan;
             this.label2.Location = new System.Drawing.Point(104, 132);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
@@ -54,7 +55,7 @@ namespace ClientApp
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.ForeColor = System.Drawing.Color.LightCyan;
             this.label1.Location = new System.Drawing.Point(106, 99);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 13);
@@ -80,10 +81,10 @@ namespace ClientApp
             // 
             // BLogIn
             // 
-            this.BLogIn.BackColor = System.Drawing.SystemColors.WindowFrame;
-            this.BLogIn.FlatAppearance.BorderColor = System.Drawing.Color.DarkSlateGray;
+            this.BLogIn.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.BLogIn.FlatAppearance.BorderColor = System.Drawing.Color.LightGray;
             this.BLogIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BLogIn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.BLogIn.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.BLogIn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.BLogIn.Location = new System.Drawing.Point(151, 164);
             this.BLogIn.Name = "BLogIn";
@@ -97,7 +98,7 @@ namespace ClientApp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::ClientApp.Properties.Resources.background;
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(410, 291);
             this.Controls.Add(this.BLogIn);
@@ -106,7 +107,7 @@ namespace ClientApp
             this.Controls.Add(this.label2);
             this.Controls.Add(this.TBLogin);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "LogInPanel";
             this.ShowIcon = false;
