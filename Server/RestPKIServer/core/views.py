@@ -278,7 +278,7 @@ class MessageViewSet(mixins.CreateModelMixin,
 @permission_classes((permissions.IsAuthenticated, ))
 def inbox(request):
     employee = Employee.objects.get(user=request.user)
-    list_of_messages = Message.objects.filter(recipient_id=employee)
+    list_of_messages = Message.objects.filter(recipient_id=employee, copy=False)
     serializer = MessageSerializer(list_of_messages, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -287,6 +287,6 @@ def inbox(request):
 @permission_classes((permissions.IsAuthenticated, ))
 def outbox(request):
     employee = Employee.objects.get(user=request.user)
-    list_of_messages = Message.objects.filter(sender_id=employee)
+    list_of_messages = Message.objects.filter(sender_id=employee, copy=True)
     serializer = MessageSerializer(list_of_messages, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

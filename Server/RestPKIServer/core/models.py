@@ -67,3 +67,4 @@ class Message(models.Model):
     enc_topic = models.TextField()
     enc_message = models.TextField()
     send_date = models.DateTimeField(default=timezone.now)
+    copy = models.NullBooleanField(default=None)
