@@ -105,7 +105,10 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         if serializer.is_valid():
             password = User.objects.make_random_password()
             user = User.objects.create_user(username=serializer.data['name'], password=password)
-            createdby = Employee.objects.get(user=request.user)
+            try:
+                createdby = Employee.objects.get(user=request.user)
+            except:
+                createdby=None
             emp = Employee.objects.create(user=user,
                                     last_edition_date=timezone.now(),
                                     last_edited_by=createdby,
