@@ -22,8 +22,8 @@ class JobSerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
-        fields = ('id','name','surname','pesel','address','birth_day','job_id','company_email',)
-        #depth = 1
+        fields = ('id','name','surname','pesel','address','birth_day','job_id','company_email','isWorking',)
+        read_only_fields = ('isWorking', 'company_email',)
 
 
 class CertificateSerializer(serializers.ModelSerializer):
@@ -52,5 +52,5 @@ class CRLSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('sender_id', 'recipient_id','enc_topic', 'enc_message', 'send_date','copy',)
+        fields = ('id', 'sender_id', 'recipient_id','enc_topic', 'enc_message', 'send_date','copy',)
         read_only_fields = ('send_date',)

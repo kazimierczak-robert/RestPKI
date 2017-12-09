@@ -103,14 +103,17 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            user = User.objects.create_user(username=serializer.data['name'], password=serializer.data['name'])
+            password = User.objects.make_random_password()
+            user = User.objects.create_user(username=serializer.data['name'], password=password)
             createdby = Employee.objects.get(user=request.user)
-            Employee.objects.create(user=user,
+            emp = Employee.objects.create(user=user,
                                     last_edition_date=timezone.now(),
                                     last_edited_by=createdby,
                                     created_by=createdby,
+                                    company_email=serializer.data['name'],
                                     **serializer.validated_data)
-            return Response({"status":"ok"}, status=status.HTTP_201_CREATED)
+            emp = self.serializer_class(instance=emp)
+            return Response({"user": emp.data, "password":password}, status=status.HTTP_201_CREATED)
             # lepiej nie serializer.validated_data, bo on nie potrafi zserializowac Job
 
         return Response({
@@ -169,6 +172,7 @@ def revoke_cert(employee, certificate=None, reason=None):
     if not certificate:
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
     certificate.expiration_date = timezone.now()
+    certificate.save()
     key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
     key.not_valid_after_private_key = timezone.now()
     key.not_valid_after_public_key = timezone.now()
@@ -177,17 +181,19 @@ def revoke_cert(employee, certificate=None, reason=None):
 
 
 @csrf_exempt
-@api_view(['GET',])
+@api_view(['GET', 'POST',])
 @permission_classes((permissions.IsAuthenticated, ))
 def gen_or_renew_cert(request):
     if request.method == 'POST':
-        # POST reason_id
-        employee = Employee.objects.get(user=request.user)
+        if request.data['username']:
+            employee = Employee.objects.get(name=request.data['username'])
+        else:
+            employee = Employee.objects.get(user=request.user)
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
         if certificate:
             # certyfikat istnieje - trzeba stary uniewaznic i stworzyc nowy
             # szukam reason for revoke
-            reason = CancellationReason.objects.filter(desscription="Uaktualnienie certyfikatu").first()
+            reason = CancellationReason.objects.filter(description="Uaktualnienie certyfikatu").first()
             revoke_cert(employee, certificate, reason)
 
         # certyfikat nie istnieje - trzeba go stworzyc
@@ -201,8 +207,8 @@ def gen_or_renew_cert(request):
         not_after = datetime.strptime(new_cert[4].decode('utf-8'),"%Y%m%d%H%M%SZ")
         not_after = current_tz.localize(not_after)
 
-        cert_obj = Certificate.objects.create(employee_id=employee ,cert=new_cert[0], not_valid_before=not_before, not_valid_after=not_after,
-                                expiration_date=not_after)
+        cert_obj = Certificate.objects.create(employee_id=employee, cert=new_cert[0], not_valid_before=not_before,
+                                              not_valid_after=not_after, expiration_date=not_after)
         Key.objects.create(certificate_id=cert_obj, enc_private_key=new_cert[1], public_key=new_cert[2],
                            not_valid_before_private_key=not_before, not_valid_before_public_key=not_before,
                            not_valid_after_private_key=not_after, not_valid_after_public_key=not_after)
@@ -290,3 +296,8 @@ def outbox(request):
     list_of_messages = Message.objects.filter(sender_id=employee, copy=True)
     serializer = MessageSerializer(list_of_messages, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@csrf_exempt
+@api_view(['GET',])
+def datetime_now(request):
+    return Response({"datetime": timezone.now()}, status=status.HTTP_200_OK)
