@@ -185,9 +185,9 @@ def revoke_cert(employee, certificate=None, reason=None):
 @permission_classes((permissions.IsAuthenticated, ))
 def gen_or_renew_cert(request):
     if request.method == 'POST':
-        if request.data['username']:
+        try:
             employee = Employee.objects.get(name=request.data['username'])
-        else:
+        except:
             employee = Employee.objects.get(user=request.user)
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
         if certificate:

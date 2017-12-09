@@ -42,7 +42,7 @@ class Certificate(models.Model):
         return self.employee_id.user.username
 
 class CancellationReason(models.Model):
-    descrption = models.TextField(unique=True)
+    description = models.TextField(unique=True)
 
     def __str__(self):
         return self.descrption

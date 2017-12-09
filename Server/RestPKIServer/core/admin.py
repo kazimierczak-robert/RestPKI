@@ -15,7 +15,7 @@ class CertificateAdmin(admin.ModelAdmin):
 @admin.register(CancellationReason)
 class CancellationReasonAdmin(admin.ModelAdmin):
     model = CancellationReason
-    list_display = ('id','descrption')
+    list_display = ('id','description')
 
 @admin.register(Key)
 class KeyAdmin(admin.ModelAdmin):
