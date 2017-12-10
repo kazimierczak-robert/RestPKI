@@ -224,18 +224,12 @@ def gen_or_renew_cert(request):
                            not_valid_after_private_key=not_after, not_valid_after_public_key=not_after)
         serializer = CertificateSerializer(cert_obj)
 
-        data = {
-            "certificate": serializer.data,
-        }
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         employee = Employee.objects.get(user=request.user)
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
         serializer = CertificateSerializer(certificate)
-        data = {
-            "certificate": serializer.data,
-        }
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CertificateViewSet(mixins.RetrieveModelMixin,
