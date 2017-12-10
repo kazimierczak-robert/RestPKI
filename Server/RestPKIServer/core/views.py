@@ -79,6 +79,11 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     serializer_class = EmployeeSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
+    def list(self, request):
+        queryset = Employee.objects.filter(isWorking=True)
+        serializer = EmployeeSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     @list_route()
     def me(self, request):
         me = Employee.objects.get(user=request.user)
