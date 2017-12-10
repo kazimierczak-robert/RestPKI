@@ -179,6 +179,8 @@ def create_self_signed_cert(name, surname):
 def revoke_cert(employee, certificate=None, reason=None):
     if not certificate:
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
+    if certificate is None:
+        return
     certificate.expiration_date = timezone.now()
     certificate.save()
     key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
