@@ -93,16 +93,19 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     def update(self, request, pk=None, partial=False):  # pk = ID
         if not request.user.is_staff:
             return Response({"error":"you are not staff"}, status=status.HTTP_401_UNAUTHORIZED)
-        instance = self.get_object()  # get Employee from request
-        serializer = self.serializer_class(instance, data=request.data, partial=partial)
-        if serializer.is_valid():
-            serializer.save(last_edition_date=timezone.now(), last_edited_by=Employee.objects.get(user=request.user))
-            return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-        return Response({
-            'status': 'Bad request',
-            'message': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+        employee = Employee.objects.filter(name=request.data['name']).first()
+        employee.last_edited_by = Employee.objects.get(user=request.user)
+        employee.last_edition_date = timezone.now()
+        employee.company_email = request.data['name']
+        employee.name = request.data['name']
+        employee.surname = request.data['surname']
+        employee.pesel = request.data['pesel']
+        employee.address = request.data['address']
+        employee.birth_day = request.data['birth_day']
+        job = Job.objects.filter(id=request.data['job_id']).first()
+        employee.job_id = job
+        employee.save()
+        return Response(request.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
