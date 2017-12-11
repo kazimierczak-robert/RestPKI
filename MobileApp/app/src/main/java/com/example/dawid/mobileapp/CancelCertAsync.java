@@ -27,13 +27,12 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by Dawid on 28.10.2017.
  */
 
-public class LoginAsync extends AsyncTask<String, String, String> {
+public class CancelCertAsync extends AsyncTask<Integer, String, String> {
 
     private Activity activity;
-    private ProgressBar progressBar;
-    private EditText email, password;
 
-    public LoginAsync(Activity activity)
+
+    public CancelCertAsync(Activity activity)
     {
         this.activity = activity;
     }
@@ -41,16 +40,12 @@ public class LoginAsync extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar = (ProgressBar) activity.findViewById(R.id.progressBarLogin);
-        progressBar.setVisibility(View.VISIBLE);
-        email = (EditText) activity.findViewById(R.id.emailLogin);
-        password = (EditText) activity.findViewById(R.id.passwordLogin);
     }
 
 
     @Override
-    protected String doInBackground(String... params) {
-        return CheckData();
+    protected String doInBackground(Integer... params) {
+        return CheckData(params[0]);
 
     }
 
@@ -59,43 +54,39 @@ public class LoginAsync extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        progressBar.setVisibility(View.INVISIBLE);
 
     }
 
-    private String CheckData() {
+    private String CheckData(Integer IDReason) {
         String returnMessage = "";
-        String log = email.getText().toString();
-        String pass = password.getText().toString();
 
-        if (log.isEmpty() || pass.isEmpty()) {
-            returnMessage += "Wszystkie pola muszą być uzupełnione";
-            Snackbar.make(activity.getCurrentFocus(), returnMessage, Snackbar.LENGTH_LONG).show();
-            return returnMessage;
-        } else {
-            String token = "";
-            String wynik = signin();
-            if (wynik != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(wynik);
-                    token = jsonObj.getString("token");
-                    GlobalValue.setTokenGlobal(token);
+
+        String token = "";
+        String wynik = cancelCert(IDReason);
+        if (wynik != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(wynik);
+                token = jsonObj.getString("status");
+                if(token.equals("ok")) {
                     SaveCeriticate();
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            Snackbar.make(activity.getCurrentFocus(), "Zły login lub złe hasło", Snackbar.LENGTH_LONG).show();
+
+            Snackbar.make(activity.getCurrentFocus(), "Bład unieważnienia certyfikatu", Snackbar.LENGTH_LONG).show();
             return returnMessage;
         }
+        return returnMessage;
     }
 
-        public String signin(){ // logowanie
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/login/";
+    public String cancelCert(Integer IDReason){ // uniewaznienie certyfikatu
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/certificate/" + GlobalValue.getIDCertificateGlobal()+"/revoke/";
         URL url;
         String response = "";
         try {
@@ -104,13 +95,13 @@ public class LoginAsync extends AsyncTask<String, String, String> {
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
 
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("username", email.getText().toString())
-                    .appendQueryParameter("password", password.getText().toString());
+                    .appendQueryParameter("reason_id", IDReason.toString() );
 
             String query = builder.build().getEncodedQuery();
 
@@ -188,7 +179,6 @@ public class LoginAsync extends AsyncTask<String, String, String> {
                 GlobalValue.setPublicCertificateGlobal(certificate);
                 IDemployee = objectjso.getInt("employee_id");
                 GlobalValue.setIDEmployeeGlobal(IDemployee);
-                GlobalValue.setIDCertificateGlobal(objectjso.getInt("id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

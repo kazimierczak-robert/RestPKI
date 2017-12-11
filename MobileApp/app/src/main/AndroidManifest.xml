@@ -69,6 +69,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dawid.mobileapp.MenuActivity" />
         </activity>
+        <activity
+            android:name=".CancelCertActivity"
+            android:label="@string/title_activity_cancel_cert"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".IsSureActivity"
+            android:label="@string/title_activity_is_sure"
+            android:parentActivityName=".CancelCertActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dawid.mobileapp.CancelCertActivity" />
+        </activity>
     </application>
 
 </manifest>

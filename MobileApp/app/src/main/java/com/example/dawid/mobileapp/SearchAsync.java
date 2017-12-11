@@ -66,25 +66,22 @@ public class SearchAsync extends AsyncTask<String, String, String>{
         String wynik = laczenie();
         if (wynik != null) {
             JSONObject jsonObj = null;
+            int counter =0;
             try {
-
-
                 JSONArray docs = new JSONArray(wynik);
 
                 for(int i = 0; i < docs.length(); i++)
                 {
                     JSONObject objectJS = docs.getJSONObject(i);
-                    int ID = objectJS.getInt("id");
-                    if(ID == GlobalValue.getIDEmployeeGlobal())
-                        continue;;
+                    int UserID = objectJS.getInt("id");
+                    if(UserID == GlobalValue.getIDEmployeeGlobal()) {
+                        continue;
+                    }
                     String name = objectJS.getString("name");
                     String surname = objectJS.getString("surname");
-
                     String company_email = objectJS.getString("company_email");
-
-
-                    users.add(i, new Users(ID, name + " " + surname, company_email));
-
+                    users.add(counter, new Users(name + " " + surname, company_email, UserID));
+                    counter++;
                 }
                 GlobalValue.setUsersListGlobal(users);
                 Intent intent = new Intent(activity, SearchActivity.class);

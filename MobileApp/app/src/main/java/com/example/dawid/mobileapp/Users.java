@@ -6,11 +6,11 @@ package com.example.dawid.mobileapp;
 
 public class Users {
     String name, email;
-    Integer ID;
+    Integer UserID;
 
-    public Users(Integer ID, String name, String email)
+    public Users(String name, String email, Integer UserID)
     {
-        this.ID = ID;
+        this.UserID = UserID;
         this.name = name;
 
         this.email = email;
@@ -33,11 +33,11 @@ public class Users {
     }
 
     public Integer getID() {
-        return ID;
+        return UserID;
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    public void setID(Integer UserID) {
+        this.UserID = UserID;
     }
 
 

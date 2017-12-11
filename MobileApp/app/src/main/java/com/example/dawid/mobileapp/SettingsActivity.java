@@ -27,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void cancelCertificate(View view){
-        new SearchAsync(this).execute("");
+        Intent intent = new Intent(this, CancelCertActivity.class);
+        this.startActivity(intent);
     }
 }

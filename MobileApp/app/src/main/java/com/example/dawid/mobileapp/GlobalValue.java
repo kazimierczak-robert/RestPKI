@@ -14,10 +14,9 @@ public class GlobalValue extends Application {
     private static String TokenGlobal;
     private static String PublicCertificateGlobal;
     private static Integer IDEmployeeGlobal;
+    private static Integer IDCertificateGlobal;
     private static final String ipAdres = "192.168.137.1:8000";
-
-
-
+    private static Users UserSend;
     private static ArrayList<Users> UsersListGlobal;
 
 
@@ -62,5 +61,31 @@ public class GlobalValue extends Application {
 
     public static void setUsersListGlobal(ArrayList<Users> usersListGlobal) {
         UsersListGlobal = usersListGlobal;
+    }
+
+    public static Users getUserSend() {
+        return UserSend;
+    }
+
+    public static void setUserSend(Users userSend) {
+        UserSend = userSend;
+    }
+
+    public static Integer getIDCertificateGlobal() {
+        return IDCertificateGlobal;
+    }
+
+    public static void setIDCertificateGlobal(Integer IDCertificateGlobal) {
+        GlobalValue.IDCertificateGlobal = IDCertificateGlobal;
+    }
+    public static void setNulls()
+    {
+        LoginGlobal = "";
+        TokenGlobal = "";
+        IDEmployeeGlobal = 0;
+        PublicCertificateGlobal = "";
+        UsersListGlobal= null;
+        UserSend = null;
+
     }
 }

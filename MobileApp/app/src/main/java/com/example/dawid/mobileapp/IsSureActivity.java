@@ -1,24 +1,33 @@
 package com.example.dawid.mobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.TextView;
 
-public class OutboxActivity extends AppCompatActivity {
-    private TextView UserSend;
+public class IsSureActivity extends AppCompatActivity {
+    private int IDReason;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_outbox);
+        setContentView(R.layout.activity_is_sure);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        UserSend = (TextView) findViewById(R.id.editTextSearchUser);
-        UserSend.setText(GlobalValue.getUserSend().getName() + " <" + GlobalValue.getUserSend().getEmail() + ">");
+        Bundle b = getIntent().getExtras();
+        IDReason = b.getInt("IDReason");
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void exitCancelCert(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        this.startActivity(intent);
+    }
+
+    public void cancelCert(View view) {
+        new CancelCertAsync(this).execute(IDReason);
+    }
 }
