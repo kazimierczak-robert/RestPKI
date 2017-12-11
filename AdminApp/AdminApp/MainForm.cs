@@ -243,11 +243,11 @@ namespace AdminApp
                     request.AddParameter("birth_day", DTPBirthDay.Value.ToString("yyyy-MM-dd"));
                     request.AddParameter("job_id", CBJob.SelectedValue);
 
-                    var response = Program.client.Execute<NewEmployee>(request);
+                    var response = Program.client.Execute<Employee>(request);
 
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        var responseData = response.Data;
+                        //var responseData = response.Data;
 
                         BNewEmployee.Focus();
                         PEmployee.Visible = false;
@@ -266,11 +266,11 @@ namespace AdminApp
                             bool wasVisible = DGVEmployees.Rows[index].Visible;
                             DGVEmployees.Rows[index].Cells[1].Value = TBName.Text;
                             DGVEmployees.Rows[index].Cells[2].Value = TBSurname.Text;
-                            DGVEmployees.Rows[index].Cells[3].Value = responseData.user.company_email;
-                            DGVEmployees.Rows[index].Cells[4].Value = CBJob.SelectedText;
+                            //DGVEmployees.Rows[index].Cells[3].Value = responseData.company_email;
+                            DGVEmployees.Rows[index].Cells[4].Value = ((Job)CBJob.SelectedItem).description;
                             DGVEmployees.Rows[index].Cells[5].Value = TBPesel.Text;
                             DGVEmployees.Rows[index].Cells[6].Value = TBAddress.Text;
-                            DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Text;
+                            DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Value.ToString("yyyy-MM-dd");
 
                             if (checkRBRegex(index) != wasVisible)
                             {
@@ -283,8 +283,6 @@ namespace AdminApp
                                     visibleRows--;
                                 }
                             }
-
-                            MessageBox.Show("Dane logowania:\nLogin: " + responseData.user.company_email + "\nHasło: " + responseData.password, "Sukces!");
                         }
 
                         if (visibleRows < 15)
@@ -297,6 +295,7 @@ namespace AdminApp
                             BNewEmployee.Location = new Point(674, 356);
                             this.Size = new Size(811, 425);
                         }
+                        MessageBox.Show("Edycja pracownika zakończyła się pomyślnie!", "Sukces!");
 
                         ClearControls();
                     }
