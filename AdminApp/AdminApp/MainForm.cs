@@ -14,6 +14,7 @@ namespace AdminApp
     public partial class MainForm : Form
     {
         List<Job> jobs;
+        int visibleRows = 0;
         public MainForm()
         {
             InitializeComponent();
@@ -41,7 +42,11 @@ namespace AdminApp
                         CBJob.DisplayMember = "description";
                         CBJob.DataSource = jobs;
 
-                        var employeeList = responseEmployees.Data;
+                        CBSearch.ValueMember = "id";
+                        CBSearch.DisplayMember = "description";
+                        CBSearch.DataSource = jobs;
+
+                        var employeeList = responseEmployees.Data.Where(x => x.company_email != "admin@admin.pl").ToList();
                         foreach (var employee in employeeList)
                         {
                             var index = DGVEmployees.Rows.Add();
@@ -66,8 +71,8 @@ namespace AdminApp
                     }
                     else
                     {
-                        MessageBox.Show("W bazie nie ma żadnych stanowisk pracy!", "Błąd!");
                         this.Close();
+                        MessageBox.Show("W bazie nie ma żadnych stanowisk pracy!", "Błąd!");
                     }
                 }
                 else
@@ -82,7 +87,8 @@ namespace AdminApp
                 MessageBox.Show("Wystąpił błąd podczas pobierania pracowników!", "Błąd!");
             }
 
-            if (DGVEmployees.Rows.Count<15)
+            visibleRows = DGVEmployees.Rows.Count;
+            if (visibleRows < 15)
             {
                 BNewEmployee.Location = new Point(656, 356);
                 this.Size = new Size(795, 425);
@@ -98,7 +104,7 @@ namespace AdminApp
         {
             TBID.Text = "";
             TBName.Text = "";
-            TBSurame.Text = "";
+            TBSurname.Text = "";
             TBEMail.Text = "";
             TBPesel.Text = "";
             TBAddress.Text = "";
@@ -111,7 +117,7 @@ namespace AdminApp
         {
             PEmployee.Visible = true;
             BCancel.Focus();
-            if (DGVEmployees.Rows.Count < 15)
+            if (visibleRows < 15)
             {
                 this.Size = new Size(980, 425);
                 PEmployee.Location = new Point(766, 12);
@@ -128,7 +134,7 @@ namespace AdminApp
         {
             PEmployee.Visible = false;
             BNewEmployee.Focus();
-            if (DGVEmployees.Rows.Count < 15)
+            if (visibleRows < 15)
             {
                 this.Size = new Size(795, 425);
             }
@@ -139,42 +145,76 @@ namespace AdminApp
             ClearControls();
         }
 
+        private bool checkRBRegex(int DGVIndex)
+        {
+            bool result = false;
+            if(RBName.Checked == true)
+            {
+                result = DGVEmployees.Rows[DGVIndex].Cells[1].Value.ToString().StartsWith(TBSearch.Text);
+            }
+            else if (RBSurname.Checked == true)
+            {
+                result = DGVEmployees.Rows[DGVIndex].Cells[2].Value.ToString().StartsWith(TBSearch.Text);
+            }
+            else if (RBCompanyMail.Checked == true)
+            {
+                result = DGVEmployees.Rows[DGVIndex].Cells[3].Value.ToString().StartsWith(TBSearch.Text);
+            }
+            else if (RBJob.Checked == true)
+            {
+                result = DGVEmployees.Rows[DGVIndex].Cells[4].Value.ToString() == ((Job)CBSearch.SelectedItem).description;
+            }
+            else if (RBPesel.Checked == true)
+            {
+                result = DGVEmployees.Rows[DGVIndex].Cells[5].Value.ToString().StartsWith(TBSearch.Text);
+            }
+            DGVEmployees.Rows[DGVIndex].Visible = result;
+            return result; 
+        }
+
         private void BApply_Click(object sender, EventArgs e)
         {
-            if (TBName.Text != "" && TBSurame.Text != "" && TBPesel.Text != "" && TBAddress.Text != "")
+            if (TBName.Text != "" && TBSurname.Text != "" && TBPesel.Text != "" && TBAddress.Text != "")
             {
                 if (TBID.Text == "") //New
                 {
                     var request = new RestRequest("api/employee/", Method.POST);
                     request.AddHeader("Authorization", "Token " + Program.token);
-                    request.AddBody(new
-                    {
-                        name = TBName.Text,
-                        surname = TBSurame.Text,
-                        pesel = TBPesel.Text,
-                        address = TBAddress.Text,
-                        birth_day = DTPBirthDay.Text,
-                        job_id = CBJob.SelectedValue/*,
-                company_email = */ //TODO
-                    });
+                    request.AddParameter("name", TBName.Text);
+                    request.AddParameter("surname", TBSurname.Text);
+                    request.AddParameter("pesel", TBPesel.Text);
+                    request.AddParameter("address", TBAddress.Text);
+                    request.AddParameter("birth_day", DTPBirthDay.Value.ToString("yyyy-MM-dd"));
+                    request.AddParameter("job_id", CBJob.SelectedValue);
+
                     var response = Program.client.Execute<NewEmployee>(request);
 
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    if (response.StatusCode == System.Net.HttpStatusCode.Created)
                     {
+                        var responseData = response.Data;
+
+                        var index = DGVEmployees.Rows.Add();
+
+                        DGVEmployees.Rows[index].Cells[0].Value = responseData.user.id;
+                        DGVEmployees.Rows[index].Cells[1].Value = TBName.Text;
+                        DGVEmployees.Rows[index].Cells[2].Value = TBSurname.Text;
+                        DGVEmployees.Rows[index].Cells[3].Value = responseData.user.company_email;
+                        DGVEmployees.Rows[index].Cells[4].Value = ((Job)CBJob.SelectedItem).description;
+                        DGVEmployees.Rows[index].Cells[5].Value = TBPesel.Text;
+                        DGVEmployees.Rows[index].Cells[6].Value = TBAddress.Text;
+                        DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Value.ToString("yyyy-MM-dd");
+
+                        if (checkRBRegex(index))
+                        {
+                            visibleRows++;
+                        }
+
+                        MessageBox.Show("Dane logowania:\nLogin: " + responseData.user.company_email + "\nHasło: " + responseData.password, "Sukces!");
+
                         BNewEmployee.Focus();
                         PEmployee.Visible = false;
 
-                        var index = DGVEmployees.Rows.Add();
-                        DGVEmployees.Rows[index].Cells[0].Value = index;//TODO
-                        DGVEmployees.Rows[index].Cells[1].Value = TBName.Text;
-                        DGVEmployees.Rows[index].Cells[2].Value = TBSurame.Text;
-                        DGVEmployees.Rows[index].Cells[3].Value = "jan.nowak@company.pl";//TODO
-                        DGVEmployees.Rows[index].Cells[4].Value = CBJob.SelectedText;
-                        DGVEmployees.Rows[index].Cells[5].Value = TBPesel.Text;
-                        DGVEmployees.Rows[index].Cells[6].Value = TBAddress.Text;
-                        DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Text;
-
-                        if (DGVEmployees.Rows.Count < 15)
+                        if (visibleRows < 15)
                         {
                             BNewEmployee.Location = new Point(656, 356);
                             this.Size = new Size(795, 425);
@@ -194,8 +234,75 @@ namespace AdminApp
                 }
                 else //Exist
                 {
-                    //TODO
-                    ClearControls();
+                    var request = new RestRequest("api/employee/" + TBID.Text + "/", Method.PUT);
+                    request.AddHeader("Authorization", "Token " + Program.token);
+                    request.AddParameter("name", TBName.Text);
+                    request.AddParameter("surname", TBSurname.Text);
+                    request.AddParameter("pesel", TBPesel.Text);
+                    request.AddParameter("address", TBAddress.Text);
+                    request.AddParameter("birth_day", DTPBirthDay.Value.ToString("yyyy-MM-dd"));
+                    request.AddParameter("job_id", CBJob.SelectedValue);
+
+                    var response = Program.client.Execute<Employee>(request);
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        //var responseData = response.Data;
+
+                        BNewEmployee.Focus();
+                        PEmployee.Visible = false;
+
+                        var index = -1;
+                        foreach (DataGridViewRow item in DGVEmployees.Rows)
+                        {
+                            if(item.Cells[0].Value.ToString() == TBID.Text)
+                            {
+                                index = item.Index;
+                                break;
+                            }
+                        }
+                        if (index > -1)
+                        {
+                            bool wasVisible = DGVEmployees.Rows[index].Visible;
+                            DGVEmployees.Rows[index].Cells[1].Value = TBName.Text;
+                            DGVEmployees.Rows[index].Cells[2].Value = TBSurname.Text;
+                            //DGVEmployees.Rows[index].Cells[3].Value = responseData.company_email;
+                            DGVEmployees.Rows[index].Cells[4].Value = ((Job)CBJob.SelectedItem).description;
+                            DGVEmployees.Rows[index].Cells[5].Value = TBPesel.Text;
+                            DGVEmployees.Rows[index].Cells[6].Value = TBAddress.Text;
+                            DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Value.ToString("yyyy-MM-dd");
+
+                            if (checkRBRegex(index) != wasVisible)
+                            {
+                                if (!wasVisible)
+                                {
+                                    visibleRows++;
+                                }
+                                else
+                                {
+                                    visibleRows--;
+                                }
+                            }
+                        }
+
+                        if (visibleRows < 15)
+                        {
+                            BNewEmployee.Location = new Point(656, 356);
+                            this.Size = new Size(795, 425);
+                        }
+                        else
+                        {
+                            BNewEmployee.Location = new Point(674, 356);
+                            this.Size = new Size(811, 425);
+                        }
+                        MessageBox.Show("Edycja pracownika zakończyła się pomyślnie!", "Sukces!");
+
+                        ClearControls();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Wystąpił błąd podczas edycji danych pracownika!", "Błąd!");
+                    }
                 }
             }
             else
@@ -218,19 +325,18 @@ namespace AdminApp
 
         private void DGVEmployees_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == 8)
+            if(e.ColumnIndex == 8 || (e.ColumnIndex < 8 && PEmployee.Visible == true))
             {
                 int row = e.RowIndex;
                 BNewEmployee_Click(null, null);
                 TBID.Text = DGVEmployees.Rows[row].Cells[0].Value.ToString();
                 TBName.Text = DGVEmployees.Rows[row].Cells[1].Value.ToString();
-                TBSurame.Text = DGVEmployees.Rows[row].Cells[2].Value.ToString();
+                TBSurname.Text = DGVEmployees.Rows[row].Cells[2].Value.ToString();
                 TBEMail.Text = DGVEmployees.Rows[row].Cells[3].Value.ToString();
-                CBJob.SelectedValue = DGVEmployees.Rows[row].Cells[4].Value;
+                CBJob.SelectedValue = jobs.Where(x => x.description == DGVEmployees.Rows[row].Cells[4].Value.ToString()).Select(x => x.id).FirstOrDefault();
                 TBPesel.Text = DGVEmployees.Rows[row].Cells[5].Value.ToString();
                 TBAddress.Text = DGVEmployees.Rows[row].Cells[6].Value.ToString();
                 DTPBirthDay.Text = DGVEmployees.Rows[row].Cells[7].Value.ToString();
-                MessageBox.Show("8!", "OK!");
             }
             else if(e.ColumnIndex == 9)
             {
@@ -238,7 +344,82 @@ namespace AdminApp
                 DialogResult dialogResult = MessageBox.Show("Czy na pewno usunąć pracownika o ID:" + DGVEmployees.Rows[row].Cells[0].Value.ToString() + "?\nTej operacji nie można cofnąć!", "Ostrzeżenie", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    MessageBox.Show("Usunięto!", "OK!");
+                    var request = new RestRequest("api/employee/" + DGVEmployees.Rows[row].Cells[0].Value.ToString() + "/", Method.DELETE);
+                    request.AddHeader("Authorization", "Token " + Program.token);
+                    IRestResponse responseEmployees = Program.client.Execute(request);
+                    if (responseEmployees.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        if(checkRBRegex(row))
+                        {
+                            visibleRows--;
+                        }
+                        DGVEmployees.Rows.RemoveAt(row);
+
+                        PEmployee.Visible = false;
+                        if (DGVEmployees.Rows.Count < 15)
+                        {
+                            BNewEmployee.Location = new Point(656, 356);
+                            this.Size = new Size(795, 425);
+                        }
+                        else
+                        {
+                            BNewEmployee.Location = new Point(674, 356);
+                            this.Size = new Size(811, 425);
+                        }
+                        ClearControls();
+
+                        MessageBox.Show("Usunięto!", "OK!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Wystąpił błąd podczas usuwania pracownika!", "Błąd!");
+                    }
+                }
+            }
+        }
+
+        private void SearchEmployee(object sender, EventArgs e)
+        {
+            CBSearch.Visible = RBJob.Checked;
+            TBSearch.Visible = !RBJob.Checked;
+            if(RBJob.Checked)
+            {
+                TBSearch.Text = "";
+            }
+
+            visibleRows = 0;
+            foreach (DataGridViewRow row in DGVEmployees.Rows)
+            {
+                if(checkRBRegex(row.Index))
+                {
+                    visibleRows++;
+                }
+            }
+
+            if (PEmployee.Visible == true)
+            {
+                if (visibleRows < 15)
+                {
+                    this.Size = new Size(980, 425);
+                    PEmployee.Location = new Point(766, 12);
+                }
+                else
+                {
+                    this.Size = new Size(1000, 425);
+                    PEmployee.Location = new Point(786, 12);
+                }
+            }
+            else
+            {
+                if (visibleRows < 15)
+                {
+                    BNewEmployee.Location = new Point(656, 356);
+                    this.Size = new Size(795, 425);
+                }
+                else
+                {
+                    BNewEmployee.Location = new Point(674, 356);
+                    this.Size = new Size(811, 425);
                 }
             }
         }
@@ -258,8 +439,7 @@ namespace AdminApp
 
     class NewEmployee
     {
-        public int id { get; set; }
-        public string company_email { get; set; }
+        public Employee user { get; set; }
         public string password { get; set; }
     }
 

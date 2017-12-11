@@ -13,7 +13,7 @@ namespace AdminApp
     }
     static class Program
     {
-        public static RestClient client = new RestClient("http://195.181.212.93:4567"); //Physical connection with server
+        public static RestClient client = new RestClient("http://195.181.212.93:80"); //Physical connection with server
         public static string token;
 
         /// <summary>

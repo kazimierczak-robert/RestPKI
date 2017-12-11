@@ -58,5 +58,10 @@ namespace ClientApp
                 BLogIn_Click(sender, e);
             }
         }
+
+        private void BClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

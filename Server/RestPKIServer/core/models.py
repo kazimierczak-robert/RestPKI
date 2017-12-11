@@ -42,7 +42,7 @@ class Certificate(models.Model):
         return self.employee_id.user.username
 
 class CancellationReason(models.Model):
-    descrption = models.TextField(unique=True)
+    description = models.TextField(unique=True)
 
     def __str__(self):
         return self.descrption
@@ -66,5 +66,5 @@ class Message(models.Model):
     recipient_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     enc_topic = models.TextField()
     enc_message = models.TextField()
-    send_date = models.DateTimeField(default=timezone.now)
+    send_date = models.DateTimeField()
     copy = models.NullBooleanField(default=None)

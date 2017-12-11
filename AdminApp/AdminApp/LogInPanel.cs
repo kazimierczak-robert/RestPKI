@@ -46,6 +46,7 @@ namespace AdminApp
                 else
                 {
                     MessageBox.Show("Podano nieprawidłowy login lub hasło!", "Błąd!");
+                    TBPassword.Text = "";
                 }
             }
         }

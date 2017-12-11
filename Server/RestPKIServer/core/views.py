@@ -79,6 +79,11 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     serializer_class = EmployeeSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
+    def list(self, request):
+        queryset = Employee.objects.filter(isWorking=True)
+        serializer = EmployeeSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     @list_route()
     def me(self, request):
         me = Employee.objects.get(user=request.user)
@@ -88,16 +93,19 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     def update(self, request, pk=None, partial=False):  # pk = ID
         if not request.user.is_staff:
             return Response({"error":"you are not staff"}, status=status.HTTP_401_UNAUTHORIZED)
-        instance = self.get_object()  # get Employee from request
-        serializer = self.serializer_class(instance, data=request.data, partial=partial)
-        if serializer.is_valid():
-            serializer.save(last_edition_date=timezone.now(), last_edited_by=Employee.objects.get(user=request.user))
-            return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-        return Response({
-            'status': 'Bad request',
-            'message': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+        employee = Employee.objects.filter(name=request.data['name']).first()
+        employee.last_edited_by = Employee.objects.get(user=request.user)
+        employee.last_edition_date = timezone.now()
+        employee.company_email = request.data['name']
+        employee.name = request.data['name']
+        employee.surname = request.data['surname']
+        employee.pesel = request.data['pesel']
+        employee.address = request.data['address']
+        employee.birth_day = request.data['birth_day']
+        job = Job.objects.filter(id=request.data['job_id']).first()
+        employee.job_id = job
+        employee.save()
+        return Response(request.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -105,7 +113,10 @@ class EmployeeViewSet(mixins.CreateModelMixin,
         if serializer.is_valid():
             password = User.objects.make_random_password()
             user = User.objects.create_user(username=serializer.data['name'], password=password)
-            createdby = Employee.objects.get(user=request.user)
+            try:
+                createdby = Employee.objects.get(user=request.user)
+            except:
+                createdby=None
             emp = Employee.objects.create(user=user,
                                     last_edition_date=timezone.now(),
                                     last_edited_by=createdby,
@@ -171,6 +182,8 @@ def create_self_signed_cert(name, surname):
 def revoke_cert(employee, certificate=None, reason=None):
     if not certificate:
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
+    if certificate is None:
+        return
     certificate.expiration_date = timezone.now()
     certificate.save()
     key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
@@ -185,9 +198,9 @@ def revoke_cert(employee, certificate=None, reason=None):
 @permission_classes((permissions.IsAuthenticated, ))
 def gen_or_renew_cert(request):
     if request.method == 'POST':
-        if request.data['username']:
+        try:
             employee = Employee.objects.get(name=request.data['username'])
-        else:
+        except:
             employee = Employee.objects.get(user=request.user)
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
         if certificate:
@@ -214,18 +227,12 @@ def gen_or_renew_cert(request):
                            not_valid_after_private_key=not_after, not_valid_after_public_key=not_after)
         serializer = CertificateSerializer(cert_obj)
 
-        data = {
-            "certificate": serializer.data,
-        }
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         employee = Employee.objects.get(user=request.user)
         certificate = Certificate.objects.filter(employee_id=employee).order_by('-expiration_date').first()
         serializer = CertificateSerializer(certificate)
-        data = {
-            "certificate": serializer.data,
-        }
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CertificateViewSet(mixins.RetrieveModelMixin,
@@ -235,7 +242,7 @@ class CertificateViewSet(mixins.RetrieveModelMixin,
     serializer_class = CertificateSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    @detail_route(methods=['post'], url_path='cert')
+    @detail_route(methods=['post'], url_path='revoke')
     def revoke(self, request, pk=None):
         certificate = self.get_object()
         reason = CancellationReason.objects.filter(id=request.data['reason_id']).first()
