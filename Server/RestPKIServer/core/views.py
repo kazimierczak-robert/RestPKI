@@ -242,7 +242,7 @@ class CertificateViewSet(mixins.RetrieveModelMixin,
     serializer_class = CertificateSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    @detail_route(methods=['post'], url_path='cert')
+    @detail_route(methods=['post'], url_path='revoke')
     def revoke(self, request, pk=None):
         certificate = self.get_object()
         reason = CancellationReason.objects.filter(id=request.data['reason_id']).first()
