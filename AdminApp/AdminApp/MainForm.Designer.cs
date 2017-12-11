@@ -42,7 +42,7 @@
             this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.TBID = new System.Windows.Forms.TextBox();
             this.TBName = new System.Windows.Forms.TextBox();
-            this.TBSurame = new System.Windows.Forms.TextBox();
+            this.TBSurname = new System.Windows.Forms.TextBox();
             this.TBPesel = new System.Windows.Forms.TextBox();
             this.TBAddress = new System.Windows.Forms.TextBox();
             this.DTPBirthDay = new System.Windows.Forms.DateTimePicker();
@@ -59,8 +59,18 @@
             this.LJob = new System.Windows.Forms.Label();
             this.LEMail = new System.Windows.Forms.Label();
             this.TBEMail = new System.Windows.Forms.TextBox();
+            this.TBSearch = new System.Windows.Forms.TextBox();
+            this.LSearch = new System.Windows.Forms.Label();
+            this.RBName = new System.Windows.Forms.RadioButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.RBSurname = new System.Windows.Forms.RadioButton();
+            this.RBCompanyMail = new System.Windows.Forms.RadioButton();
+            this.RBJob = new System.Windows.Forms.RadioButton();
+            this.CBSearch = new System.Windows.Forms.ComboBox();
+            this.RBPesel = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployees)).BeginInit();
             this.PEmployee.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // BNewEmployee
@@ -202,12 +212,12 @@
             this.TBName.Size = new System.Drawing.Size(159, 20);
             this.TBName.TabIndex = 5;
             // 
-            // TBSurame
+            // TBSurname
             // 
-            this.TBSurame.Location = new System.Drawing.Point(23, 85);
-            this.TBSurame.Name = "TBSurame";
-            this.TBSurame.Size = new System.Drawing.Size(159, 20);
-            this.TBSurame.TabIndex = 6;
+            this.TBSurname.Location = new System.Drawing.Point(23, 85);
+            this.TBSurname.Name = "TBSurname";
+            this.TBSurname.Size = new System.Drawing.Size(159, 20);
+            this.TBSurname.TabIndex = 6;
             // 
             // TBPesel
             // 
@@ -317,7 +327,7 @@
             this.PEmployee.Controls.Add(this.BApply);
             this.PEmployee.Controls.Add(this.TBName);
             this.PEmployee.Controls.Add(this.BCancel);
-            this.PEmployee.Controls.Add(this.TBSurame);
+            this.PEmployee.Controls.Add(this.TBSurname);
             this.PEmployee.Controls.Add(this.LBirthDay);
             this.PEmployee.Controls.Add(this.TBPesel);
             this.PEmployee.Controls.Add(this.LAddress);
@@ -334,6 +344,7 @@
             // 
             // CBJob
             // 
+            this.CBJob.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CBJob.FormattingEnabled = true;
             this.CBJob.Location = new System.Drawing.Point(22, 311);
             this.CBJob.MaxDropDownItems = 6;
@@ -367,14 +378,118 @@
             this.TBEMail.Size = new System.Drawing.Size(159, 20);
             this.TBEMail.TabIndex = 18;
             // 
+            // TBSearch
+            // 
+            this.TBSearch.Location = new System.Drawing.Point(474, 357);
+            this.TBSearch.MaxLength = 50;
+            this.TBSearch.Name = "TBSearch";
+            this.TBSearch.Size = new System.Drawing.Size(159, 20);
+            this.TBSearch.TabIndex = 19;
+            this.TBSearch.TextChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // LSearch
+            // 
+            this.LSearch.AutoSize = true;
+            this.LSearch.Location = new System.Drawing.Point(9, 359);
+            this.LSearch.Name = "LSearch";
+            this.LSearch.Size = new System.Drawing.Size(129, 13);
+            this.LSearch.TabIndex = 20;
+            this.LSearch.Text = "Wyszukaj pracownika po:";
+            this.LSearch.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // RBName
+            // 
+            this.RBName.AutoSize = true;
+            this.RBName.Checked = true;
+            this.RBName.Location = new System.Drawing.Point(3, 5);
+            this.RBName.Name = "RBName";
+            this.RBName.Size = new System.Drawing.Size(57, 17);
+            this.RBName.TabIndex = 21;
+            this.RBName.TabStop = true;
+            this.RBName.Text = "imieniu";
+            this.RBName.UseVisualStyleBackColor = true;
+            this.RBName.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.RBPesel);
+            this.panel1.Controls.Add(this.RBJob);
+            this.panel1.Controls.Add(this.RBCompanyMail);
+            this.panel1.Controls.Add(this.RBSurname);
+            this.panel1.Controls.Add(this.RBName);
+            this.panel1.Location = new System.Drawing.Point(140, 353);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(332, 27);
+            this.panel1.TabIndex = 22;
+            // 
+            // RBSurname
+            // 
+            this.RBSurname.AutoSize = true;
+            this.RBSurname.Location = new System.Drawing.Point(61, 5);
+            this.RBSurname.Name = "RBSurname";
+            this.RBSurname.Size = new System.Drawing.Size(69, 17);
+            this.RBSurname.TabIndex = 22;
+            this.RBSurname.Text = "nazwisku";
+            this.RBSurname.UseVisualStyleBackColor = true;
+            this.RBSurname.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // RBCompanyMail
+            // 
+            this.RBCompanyMail.AutoSize = true;
+            this.RBCompanyMail.Location = new System.Drawing.Point(132, 5);
+            this.RBCompanyMail.Name = "RBCompanyMail";
+            this.RBCompanyMail.Size = new System.Drawing.Size(58, 17);
+            this.RBCompanyMail.TabIndex = 23;
+            this.RBCompanyMail.Text = "e-mailu";
+            this.RBCompanyMail.UseVisualStyleBackColor = true;
+            this.RBCompanyMail.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // RBJob
+            // 
+            this.RBJob.AutoSize = true;
+            this.RBJob.Location = new System.Drawing.Point(193, 5);
+            this.RBJob.Name = "RBJob";
+            this.RBJob.Size = new System.Drawing.Size(78, 17);
+            this.RBJob.TabIndex = 24;
+            this.RBJob.Text = "stanowisku";
+            this.RBJob.UseVisualStyleBackColor = true;
+            this.RBJob.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // CBSearch
+            // 
+            this.CBSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CBSearch.FormattingEnabled = true;
+            this.CBSearch.Location = new System.Drawing.Point(474, 357);
+            this.CBSearch.MaxDropDownItems = 6;
+            this.CBSearch.Name = "CBSearch";
+            this.CBSearch.Size = new System.Drawing.Size(159, 21);
+            this.CBSearch.TabIndex = 23;
+            this.CBSearch.Visible = false;
+            this.CBSearch.SelectedIndexChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // RBPesel
+            // 
+            this.RBPesel.AutoSize = true;
+            this.RBPesel.Location = new System.Drawing.Point(273, 5);
+            this.RBPesel.Name = "RBPesel";
+            this.RBPesel.Size = new System.Drawing.Size(56, 17);
+            this.RBPesel.TabIndex = 25;
+            this.RBPesel.Text = "peselu";
+            this.RBPesel.UseVisualStyleBackColor = true;
+            this.RBPesel.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(992, 389);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.LSearch);
             this.Controls.Add(this.PEmployee);
             this.Controls.Add(this.DGVEmployees);
             this.Controls.Add(this.BNewEmployee);
+            this.Controls.Add(this.CBSearch);
+            this.Controls.Add(this.TBSearch);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -383,7 +498,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployees)).EndInit();
             this.PEmployee.ResumeLayout(false);
             this.PEmployee.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -393,7 +511,7 @@
         private System.Windows.Forms.DataGridView DGVEmployees;
         private System.Windows.Forms.TextBox TBID;
         private System.Windows.Forms.TextBox TBName;
-        private System.Windows.Forms.TextBox TBSurame;
+        private System.Windows.Forms.TextBox TBSurname;
         private System.Windows.Forms.TextBox TBPesel;
         private System.Windows.Forms.TextBox TBAddress;
         private System.Windows.Forms.DateTimePicker DTPBirthDay;
@@ -420,6 +538,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeBirthDay;
         private System.Windows.Forms.DataGridViewButtonColumn Edit;
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
+        private System.Windows.Forms.TextBox TBSearch;
+        private System.Windows.Forms.Label LSearch;
+        private System.Windows.Forms.RadioButton RBName;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton RBJob;
+        private System.Windows.Forms.RadioButton RBCompanyMail;
+        private System.Windows.Forms.RadioButton RBSurname;
+        private System.Windows.Forms.ComboBox CBSearch;
+        private System.Windows.Forms.RadioButton RBPesel;
     }
 }
 
