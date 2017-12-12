@@ -28,17 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.DGVMessagesR = new System.Windows.Forms.DataGridView();
+            this.DGVInBox = new System.Windows.Forms.DataGridView();
             this.MessageID1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CompanyEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Topic = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BGetMessagess = new System.Windows.Forms.Button();
-            this.BSendMessages = new System.Windows.Forms.Button();
+            this.BInBox = new System.Windows.Forms.Button();
+            this.BNewMessage = new System.Windows.Forms.Button();
             this.BRevokeTheCertificate = new System.Windows.Forms.Button();
             this.BApplyForTheCertificate = new System.Windows.Forms.Button();
-            this.BInBox = new System.Windows.Forms.Button();
-            this.DGVMessagesS = new System.Windows.Forms.DataGridView();
+            this.BOutBox = new System.Windows.Forms.Button();
+            this.DGVOutBox = new System.Windows.Forms.DataGridView();
             this.MessageID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,51 +50,62 @@
             this.CBRecNames = new System.Windows.Forms.ComboBox();
             this.LRecipient = new System.Windows.Forms.Label();
             this.LSender = new System.Windows.Forms.Label();
-            this.PGetMessage = new System.Windows.Forms.Panel();
+            this.PInBox = new System.Windows.Forms.Panel();
             this.LTopicS = new System.Windows.Forms.Label();
             this.TBTopicS = new System.Windows.Forms.TextBox();
             this.TBSender = new System.Windows.Forms.TextBox();
             this.TBMessageS = new System.Windows.Forms.TextBox();
             this.TBMessageR = new System.Windows.Forms.TextBox();
-            this.PMessageS = new System.Windows.Forms.Panel();
+            this.POutBox = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.TBSenderTopic = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.TBSenderMsg = new System.Windows.Forms.TextBox();
             this.BClose = new System.Windows.Forms.Button();
             this.BHide = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVMessagesR)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVMessagesS)).BeginInit();
+            this.RBReceiver = new System.Windows.Forms.RadioButton();
+            this.RBTopic = new System.Windows.Forms.RadioButton();
+            this.RBSentDate = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TBSearch = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.LLogged = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).BeginInit();
             this.PSendMessage.SuspendLayout();
-            this.PGetMessage.SuspendLayout();
-            this.PMessageS.SuspendLayout();
+            this.PInBox.SuspendLayout();
+            this.POutBox.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // DGVMessagesR
+            // DGVInBox
             // 
-            this.DGVMessagesR.AllowUserToAddRows = false;
-            this.DGVMessagesR.AllowUserToDeleteRows = false;
-            this.DGVMessagesR.AllowUserToResizeColumns = false;
-            this.DGVMessagesR.AllowUserToResizeRows = false;
-            this.DGVMessagesR.BackgroundColor = System.Drawing.Color.White;
-            this.DGVMessagesR.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DGVMessagesR.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVMessagesR.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGVInBox.AllowUserToAddRows = false;
+            this.DGVInBox.AllowUserToDeleteRows = false;
+            this.DGVInBox.AllowUserToResizeColumns = false;
+            this.DGVInBox.AllowUserToResizeRows = false;
+            this.DGVInBox.BackgroundColor = System.Drawing.Color.White;
+            this.DGVInBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DGVInBox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVInBox.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.MessageID1,
             this.CompanyEMail,
             this.Topic,
             this.Date});
-            this.DGVMessagesR.Location = new System.Drawing.Point(35, 176);
-            this.DGVMessagesR.MultiSelect = false;
-            this.DGVMessagesR.Name = "DGVMessagesR";
-            this.DGVMessagesR.ReadOnly = true;
-            this.DGVMessagesR.RowHeadersVisible = false;
-            this.DGVMessagesR.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.DGVMessagesR.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVMessagesR.Size = new System.Drawing.Size(404, 282);
-            this.DGVMessagesR.TabIndex = 9;
-            this.DGVMessagesR.Visible = false;
-            this.DGVMessagesR.SelectionChanged += new System.EventHandler(this.InboxSelectionChanged);
+            this.DGVInBox.Location = new System.Drawing.Point(35, 220);
+            this.DGVInBox.MultiSelect = false;
+            this.DGVInBox.Name = "DGVInBox";
+            this.DGVInBox.ReadOnly = true;
+            this.DGVInBox.RowHeadersVisible = false;
+            this.DGVInBox.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.DGVInBox.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DGVInBox.Size = new System.Drawing.Size(404, 282);
+            this.DGVInBox.TabIndex = 9;
+            this.DGVInBox.Visible = false;
+            this.DGVInBox.SelectionChanged += new System.EventHandler(this.InboxSelectionChanged);
             // 
             // MessageID1
             // 
@@ -124,47 +135,47 @@
             this.Date.ReadOnly = true;
             this.Date.Width = 110;
             // 
-            // BGetMessagess
+            // BInBox
             // 
-            this.BGetMessagess.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BGetMessagess.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BGetMessagess.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.BGetMessagess.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BGetMessagess.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
-            this.BGetMessagess.ForeColor = System.Drawing.Color.Black;
-            this.BGetMessagess.Location = new System.Drawing.Point(308, 130);
-            this.BGetMessagess.Name = "BGetMessagess";
-            this.BGetMessagess.Size = new System.Drawing.Size(131, 40);
-            this.BGetMessagess.TabIndex = 1;
-            this.BGetMessagess.Text = "Skrzynka odbiorcza";
-            this.BGetMessagess.UseVisualStyleBackColor = false;
-            this.BGetMessagess.Click += new System.EventHandler(this.BGetMessagess_Click);
+            this.BInBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BInBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BInBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.BInBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BInBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
+            this.BInBox.ForeColor = System.Drawing.Color.Black;
+            this.BInBox.Location = new System.Drawing.Point(308, 174);
+            this.BInBox.Name = "BInBox";
+            this.BInBox.Size = new System.Drawing.Size(131, 40);
+            this.BInBox.TabIndex = 1;
+            this.BInBox.Text = "Skrzynka odbiorcza";
+            this.BInBox.UseVisualStyleBackColor = false;
+            this.BInBox.Click += new System.EventHandler(this.BInBox_Click);
             // 
-            // BSendMessages
+            // BNewMessage
             // 
-            this.BSendMessages.BackColor = System.Drawing.Color.LightSkyBlue;
-            this.BSendMessages.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BSendMessages.FlatAppearance.BorderColor = System.Drawing.Color.CornflowerBlue;
-            this.BSendMessages.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BSendMessages.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
-            this.BSendMessages.ForeColor = System.Drawing.Color.Black;
-            this.BSendMessages.Location = new System.Drawing.Point(34, 130);
-            this.BSendMessages.Name = "BSendMessages";
-            this.BSendMessages.Size = new System.Drawing.Size(131, 40);
-            this.BSendMessages.TabIndex = 2;
-            this.BSendMessages.Text = "Nowa wiadomość";
-            this.BSendMessages.UseVisualStyleBackColor = false;
-            this.BSendMessages.Click += new System.EventHandler(this.BSendMessages_Click);
+            this.BNewMessage.BackColor = System.Drawing.Color.LightSkyBlue;
+            this.BNewMessage.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BNewMessage.FlatAppearance.BorderColor = System.Drawing.Color.CornflowerBlue;
+            this.BNewMessage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BNewMessage.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
+            this.BNewMessage.ForeColor = System.Drawing.Color.Gray;
+            this.BNewMessage.Location = new System.Drawing.Point(34, 174);
+            this.BNewMessage.Name = "BNewMessage";
+            this.BNewMessage.Size = new System.Drawing.Size(131, 40);
+            this.BNewMessage.TabIndex = 2;
+            this.BNewMessage.Text = "Nowa wiadomość";
+            this.BNewMessage.UseVisualStyleBackColor = false;
+            this.BNewMessage.Click += new System.EventHandler(this.BNewMessage_Click);
             // 
             // BRevokeTheCertificate
             // 
-            this.BRevokeTheCertificate.BackColor = System.Drawing.Color.Salmon;
+            this.BRevokeTheCertificate.BackColor = System.Drawing.Color.LightSalmon;
             this.BRevokeTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.BRevokeTheCertificate.FlatAppearance.BorderColor = System.Drawing.Color.Tomato;
             this.BRevokeTheCertificate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BRevokeTheCertificate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
-            this.BRevokeTheCertificate.ForeColor = System.Drawing.Color.Black;
-            this.BRevokeTheCertificate.Location = new System.Drawing.Point(582, 130);
+            this.BRevokeTheCertificate.ForeColor = System.Drawing.Color.Gray;
+            this.BRevokeTheCertificate.Location = new System.Drawing.Point(582, 174);
             this.BRevokeTheCertificate.Name = "BRevokeTheCertificate";
             this.BRevokeTheCertificate.Size = new System.Drawing.Size(131, 40);
             this.BRevokeTheCertificate.TabIndex = 4;
@@ -176,11 +187,11 @@
             // 
             this.BApplyForTheCertificate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.BApplyForTheCertificate.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BApplyForTheCertificate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.BApplyForTheCertificate.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.BApplyForTheCertificate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BApplyForTheCertificate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.BApplyForTheCertificate.ForeColor = System.Drawing.Color.Black;
-            this.BApplyForTheCertificate.Location = new System.Drawing.Point(445, 130);
+            this.BApplyForTheCertificate.ForeColor = System.Drawing.Color.Gray;
+            this.BApplyForTheCertificate.Location = new System.Drawing.Point(445, 174);
             this.BApplyForTheCertificate.Name = "BApplyForTheCertificate";
             this.BApplyForTheCertificate.Size = new System.Drawing.Size(131, 40);
             this.BApplyForTheCertificate.TabIndex = 3;
@@ -188,47 +199,47 @@
             this.BApplyForTheCertificate.UseVisualStyleBackColor = false;
             this.BApplyForTheCertificate.Click += new System.EventHandler(this.BApplyForTheCertificate_Click);
             // 
-            // BInBox
+            // BOutBox
             // 
-            this.BInBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.BInBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.BInBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.BInBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BInBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
-            this.BInBox.ForeColor = System.Drawing.Color.Black;
-            this.BInBox.Location = new System.Drawing.Point(171, 130);
-            this.BInBox.Name = "BInBox";
-            this.BInBox.Size = new System.Drawing.Size(131, 40);
-            this.BInBox.TabIndex = 11;
-            this.BInBox.Text = "Skrzynka nadawcza";
-            this.BInBox.UseVisualStyleBackColor = false;
-            this.BInBox.Click += new System.EventHandler(this.BInBox_Click);
+            this.BOutBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.BOutBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BOutBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.BOutBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BOutBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
+            this.BOutBox.ForeColor = System.Drawing.Color.Gray;
+            this.BOutBox.Location = new System.Drawing.Point(171, 174);
+            this.BOutBox.Name = "BOutBox";
+            this.BOutBox.Size = new System.Drawing.Size(131, 40);
+            this.BOutBox.TabIndex = 11;
+            this.BOutBox.Text = "Skrzynka nadawcza";
+            this.BOutBox.UseVisualStyleBackColor = false;
+            this.BOutBox.Click += new System.EventHandler(this.BOutBox_Click);
             // 
-            // DGVMessagesS
+            // DGVOutBox
             // 
-            this.DGVMessagesS.AllowUserToAddRows = false;
-            this.DGVMessagesS.AllowUserToDeleteRows = false;
-            this.DGVMessagesS.AllowUserToResizeColumns = false;
-            this.DGVMessagesS.AllowUserToResizeRows = false;
-            this.DGVMessagesS.BackgroundColor = System.Drawing.Color.White;
-            this.DGVMessagesS.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DGVMessagesS.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVMessagesS.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.DGVOutBox.AllowUserToAddRows = false;
+            this.DGVOutBox.AllowUserToDeleteRows = false;
+            this.DGVOutBox.AllowUserToResizeColumns = false;
+            this.DGVOutBox.AllowUserToResizeRows = false;
+            this.DGVOutBox.BackgroundColor = System.Drawing.Color.White;
+            this.DGVOutBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DGVOutBox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVOutBox.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.MessageID,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
             this.Date1});
-            this.DGVMessagesS.Location = new System.Drawing.Point(35, 176);
-            this.DGVMessagesS.MultiSelect = false;
-            this.DGVMessagesS.Name = "DGVMessagesS";
-            this.DGVMessagesS.ReadOnly = true;
-            this.DGVMessagesS.RowHeadersVisible = false;
-            this.DGVMessagesS.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.DGVMessagesS.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DGVMessagesS.Size = new System.Drawing.Size(404, 282);
-            this.DGVMessagesS.TabIndex = 12;
-            this.DGVMessagesS.Visible = false;
-            this.DGVMessagesS.SelectionChanged += new System.EventHandler(this.OutboxSelectionChanged);
+            this.DGVOutBox.Location = new System.Drawing.Point(35, 220);
+            this.DGVOutBox.MultiSelect = false;
+            this.DGVOutBox.Name = "DGVOutBox";
+            this.DGVOutBox.ReadOnly = true;
+            this.DGVOutBox.RowHeadersVisible = false;
+            this.DGVOutBox.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.DGVOutBox.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DGVOutBox.Size = new System.Drawing.Size(404, 282);
+            this.DGVOutBox.TabIndex = 12;
+            this.DGVOutBox.Visible = false;
+            this.DGVOutBox.SelectionChanged += new System.EventHandler(this.OutboxSelectionChanged);
             // 
             // MessageID
             // 
@@ -334,17 +345,17 @@
             this.LSender.Text = "Nadawca:";
             this.LSender.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // PGetMessage
+            // PInBox
             // 
-            this.PGetMessage.BackColor = System.Drawing.Color.Transparent;
-            this.PGetMessage.Controls.Add(this.LTopicS);
-            this.PGetMessage.Controls.Add(this.TBTopicS);
-            this.PGetMessage.Controls.Add(this.LSender);
-            this.PGetMessage.Controls.Add(this.TBSender);
-            this.PGetMessage.Location = new System.Drawing.Point(34, 44);
-            this.PGetMessage.Name = "PGetMessage";
-            this.PGetMessage.Size = new System.Drawing.Size(679, 80);
-            this.PGetMessage.TabIndex = 6;
+            this.PInBox.BackColor = System.Drawing.Color.Transparent;
+            this.PInBox.Controls.Add(this.LTopicS);
+            this.PInBox.Controls.Add(this.TBTopicS);
+            this.PInBox.Controls.Add(this.LSender);
+            this.PInBox.Controls.Add(this.TBSender);
+            this.PInBox.Location = new System.Drawing.Point(34, 44);
+            this.PInBox.Name = "PInBox";
+            this.PInBox.Size = new System.Drawing.Size(679, 80);
+            this.PInBox.TabIndex = 6;
             // 
             // LTopicS
             // 
@@ -377,7 +388,7 @@
             // 
             // TBMessageS
             // 
-            this.TBMessageS.Location = new System.Drawing.Point(35, 176);
+            this.TBMessageS.Location = new System.Drawing.Point(35, 220);
             this.TBMessageS.Multiline = true;
             this.TBMessageS.Name = "TBMessageS";
             this.TBMessageS.Size = new System.Drawing.Size(678, 282);
@@ -387,7 +398,7 @@
             // 
             this.TBMessageR.BackColor = System.Drawing.Color.White;
             this.TBMessageR.Enabled = false;
-            this.TBMessageR.Location = new System.Drawing.Point(445, 176);
+            this.TBMessageR.Location = new System.Drawing.Point(445, 220);
             this.TBMessageR.Multiline = true;
             this.TBMessageR.Name = "TBMessageR";
             this.TBMessageR.ReadOnly = true;
@@ -396,18 +407,18 @@
             this.TBMessageR.Visible = false;
             this.TBMessageR.WordWrap = false;
             // 
-            // PMessageS
+            // POutBox
             // 
-            this.PMessageS.BackColor = System.Drawing.Color.Transparent;
-            this.PMessageS.Controls.Add(this.label1);
-            this.PMessageS.Controls.Add(this.TBSenderTopic);
-            this.PMessageS.Controls.Add(this.label2);
-            this.PMessageS.Controls.Add(this.TBSenderMsg);
-            this.PMessageS.Location = new System.Drawing.Point(34, 44);
-            this.PMessageS.Name = "PMessageS";
-            this.PMessageS.Size = new System.Drawing.Size(679, 80);
-            this.PMessageS.TabIndex = 7;
-            this.PMessageS.Visible = false;
+            this.POutBox.BackColor = System.Drawing.Color.Transparent;
+            this.POutBox.Controls.Add(this.label1);
+            this.POutBox.Controls.Add(this.TBSenderTopic);
+            this.POutBox.Controls.Add(this.label2);
+            this.POutBox.Controls.Add(this.TBSenderMsg);
+            this.POutBox.Location = new System.Drawing.Point(34, 44);
+            this.POutBox.Name = "POutBox";
+            this.POutBox.Size = new System.Drawing.Size(679, 80);
+            this.POutBox.TabIndex = 7;
+            this.POutBox.Visible = false;
             // 
             // label1
             // 
@@ -483,6 +494,108 @@
             this.BHide.UseVisualStyleBackColor = false;
             this.BHide.Click += new System.EventHandler(this.BHide_Click);
             // 
+            // RBReceiver
+            // 
+            this.RBReceiver.AutoSize = true;
+            this.RBReceiver.BackColor = System.Drawing.Color.Transparent;
+            this.RBReceiver.Checked = true;
+            this.RBReceiver.Location = new System.Drawing.Point(9, 4);
+            this.RBReceiver.Name = "RBReceiver";
+            this.RBReceiver.Size = new System.Drawing.Size(119, 17);
+            this.RBReceiver.TabIndex = 28;
+            this.RBReceiver.TabStop = true;
+            this.RBReceiver.Text = "Nadawca/Odbiorca";
+            this.RBReceiver.UseVisualStyleBackColor = false;
+            this.RBReceiver.CheckedChanged += new System.EventHandler(this.RBCheckedChanged);
+            // 
+            // RBTopic
+            // 
+            this.RBTopic.AutoSize = true;
+            this.RBTopic.BackColor = System.Drawing.Color.Transparent;
+            this.RBTopic.Location = new System.Drawing.Point(131, 4);
+            this.RBTopic.Name = "RBTopic";
+            this.RBTopic.Size = new System.Drawing.Size(55, 17);
+            this.RBTopic.TabIndex = 29;
+            this.RBTopic.Text = "Temat";
+            this.RBTopic.UseVisualStyleBackColor = false;
+            this.RBTopic.CheckedChanged += new System.EventHandler(this.RBCheckedChanged);
+            // 
+            // RBSentDate
+            // 
+            this.RBSentDate.AutoSize = true;
+            this.RBSentDate.BackColor = System.Drawing.Color.Transparent;
+            this.RBSentDate.Location = new System.Drawing.Point(201, 4);
+            this.RBSentDate.Name = "RBSentDate";
+            this.RBSentDate.Size = new System.Drawing.Size(93, 17);
+            this.RBSentDate.TabIndex = 30;
+            this.RBSentDate.Text = "Data wysłania";
+            this.RBSentDate.UseVisualStyleBackColor = false;
+            this.RBSentDate.CheckedChanged += new System.EventHandler(this.RBCheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label3.Location = new System.Drawing.Point(5, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(106, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Wyszukaj, używając:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // TBSearch
+            // 
+            this.TBSearch.BackColor = System.Drawing.Color.White;
+            this.TBSearch.Location = new System.Drawing.Point(419, 11);
+            this.TBSearch.Name = "TBSearch";
+            this.TBSearch.Size = new System.Drawing.Size(268, 20);
+            this.TBSearch.TabIndex = 5;
+            this.TBSearch.TextChanged += new System.EventHandler(this.SearchInDGV);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.RBReceiver);
+            this.panel1.Controls.Add(this.RBTopic);
+            this.panel1.Controls.Add(this.RBSentDate);
+            this.panel1.Location = new System.Drawing.Point(117, 8);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(296, 26);
+            this.panel1.TabIndex = 31;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(419, 11);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(268, 20);
+            this.dateTimePicker1.TabIndex = 32;
+            this.dateTimePicker1.Visible = false;
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.SearchInDGV);
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.TBSearch);
+            this.panel2.Controls.Add(this.panel1);
+            this.panel2.Controls.Add(this.dateTimePicker1);
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Location = new System.Drawing.Point(26, 119);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(700, 38);
+            this.panel2.TabIndex = 33;
+            // 
+            // LLogged
+            // 
+            this.LLogged.AutoSize = true;
+            this.LLogged.BackColor = System.Drawing.Color.Transparent;
+            this.LLogged.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.LLogged.Location = new System.Drawing.Point(31, 24);
+            this.LLogged.Name = "LLogged";
+            this.LLogged.Size = new System.Drawing.Size(127, 13);
+            this.LLogged.TabIndex = 34;
+            this.LLogged.Text = "Zalogowany użytkownik: ";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -490,19 +603,21 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.BackgroundImage = global::ClientApp.Properties.Resources.background3;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(749, 494);
+            this.ClientSize = new System.Drawing.Size(749, 541);
+            this.Controls.Add(this.LLogged);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.BHide);
             this.Controls.Add(this.BClose);
-            this.Controls.Add(this.DGVMessagesS);
-            this.Controls.Add(this.PMessageS);
-            this.Controls.Add(this.BInBox);
+            this.Controls.Add(this.DGVOutBox);
+            this.Controls.Add(this.POutBox);
+            this.Controls.Add(this.BOutBox);
             this.Controls.Add(this.TBMessageR);
-            this.Controls.Add(this.DGVMessagesR);
+            this.Controls.Add(this.DGVInBox);
             this.Controls.Add(this.PSendMessage);
             this.Controls.Add(this.TBMessageS);
-            this.Controls.Add(this.PGetMessage);
-            this.Controls.Add(this.BGetMessagess);
-            this.Controls.Add(this.BSendMessages);
+            this.Controls.Add(this.PInBox);
+            this.Controls.Add(this.BInBox);
+            this.Controls.Add(this.BNewMessage);
             this.Controls.Add(this.BRevokeTheCertificate);
             this.Controls.Add(this.BApplyForTheCertificate);
             this.DoubleBuffered = true;
@@ -512,14 +627,18 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Klient PKI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogOut);
-            ((System.ComponentModel.ISupportInitialize)(this.DGVMessagesR)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVMessagesS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).EndInit();
             this.PSendMessage.ResumeLayout(false);
             this.PSendMessage.PerformLayout();
-            this.PGetMessage.ResumeLayout(false);
-            this.PGetMessage.PerformLayout();
-            this.PMessageS.ResumeLayout(false);
-            this.PMessageS.PerformLayout();
+            this.PInBox.ResumeLayout(false);
+            this.PInBox.PerformLayout();
+            this.POutBox.ResumeLayout(false);
+            this.POutBox.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -529,13 +648,13 @@
 
         private System.Windows.Forms.Button BApplyForTheCertificate;
         private System.Windows.Forms.Button BRevokeTheCertificate;
-        private System.Windows.Forms.Button BSendMessages;
-        private System.Windows.Forms.Button BGetMessagess;
+        private System.Windows.Forms.Button BNewMessage;
+        private System.Windows.Forms.Button BInBox;
         private System.Windows.Forms.Panel PSendMessage;
         private System.Windows.Forms.TextBox TBTopic;
         private System.Windows.Forms.ComboBox CBRecNames;
         private System.Windows.Forms.Label LSender;
-        private System.Windows.Forms.Panel PGetMessage;
+        private System.Windows.Forms.Panel PInBox;
         private System.Windows.Forms.Label LTopicS;
         private System.Windows.Forms.TextBox TBTopicS;
         private System.Windows.Forms.TextBox TBSender;
@@ -543,15 +662,15 @@
         private System.Windows.Forms.TextBox TBMessageS;
         private System.Windows.Forms.Button BSend;
         private System.Windows.Forms.Label LTopicR;
-        private System.Windows.Forms.DataGridView DGVMessagesR;
+        private System.Windows.Forms.DataGridView DGVInBox;
         private System.Windows.Forms.TextBox TBMessageR;
-        private System.Windows.Forms.Button BInBox;
-        private System.Windows.Forms.Panel PMessageS;
+        private System.Windows.Forms.Button BOutBox;
+        private System.Windows.Forms.Panel POutBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox TBSenderTopic;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TBSenderMsg;
-        private System.Windows.Forms.DataGridView DGVMessagesS;
+        private System.Windows.Forms.DataGridView DGVOutBox;
         private System.Windows.Forms.DataGridViewTextBoxColumn MessageID1;
         private System.Windows.Forms.DataGridViewTextBoxColumn CompanyEMail;
         private System.Windows.Forms.DataGridViewTextBoxColumn Topic;
@@ -562,6 +681,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Date1;
         private System.Windows.Forms.Button BClose;
         private System.Windows.Forms.Button BHide;
+        private System.Windows.Forms.RadioButton RBReceiver;
+        private System.Windows.Forms.RadioButton RBTopic;
+        private System.Windows.Forms.RadioButton RBSentDate;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TBSearch;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label LLogged;
     }
 }
 
