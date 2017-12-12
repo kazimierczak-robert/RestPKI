@@ -42,10 +42,6 @@ namespace AdminApp
                         CBJob.DisplayMember = "description";
                         CBJob.DataSource = jobs;
 
-                        CBSearch.ValueMember = "id";
-                        CBSearch.DisplayMember = "description";
-                        CBSearch.DataSource = jobs;
-
                         var employeeList = responseEmployees.Data.Where(x => x.company_email != "admin@admin.pl").ToList();
                         foreach (var employee in employeeList)
                         {
@@ -68,6 +64,10 @@ namespace AdminApp
                             DGVEmployees.Rows[index].Cells[6].Value = employee.address;
                             DGVEmployees.Rows[index].Cells[7].Value = employee.birth_day;
                         }
+
+                        CBSearch.ValueMember = "id";
+                        CBSearch.DisplayMember = "description";
+                        CBSearch.DataSource = jobs;
                     }
                     else
                     {
@@ -110,7 +110,7 @@ namespace AdminApp
             TBAddress.Text = "";
             TBEMail.Text = "";
             DTPBirthDay.Value = DateTime.Today;
-            CBJob.SelectedItem = CBJob.Items[0];
+            //CBJob.SelectedItem = CBJob.Items[0];
         }
 
         private void BNewEmployee_Click(object sender, EventArgs e)
@@ -150,15 +150,15 @@ namespace AdminApp
             bool result = false;
             if(RBName.Checked == true)
             {
-                result = DGVEmployees.Rows[DGVIndex].Cells[1].Value.ToString().StartsWith(TBSearch.Text);
+                result = DGVEmployees.Rows[DGVIndex].Cells[1].Value.ToString().ToLower().StartsWith(TBSearch.Text.ToLower());
             }
             else if (RBSurname.Checked == true)
             {
-                result = DGVEmployees.Rows[DGVIndex].Cells[2].Value.ToString().StartsWith(TBSearch.Text);
+                result = DGVEmployees.Rows[DGVIndex].Cells[2].Value.ToString().ToLower().StartsWith(TBSearch.Text.ToLower());
             }
             else if (RBCompanyMail.Checked == true)
             {
-                result = DGVEmployees.Rows[DGVIndex].Cells[3].Value.ToString().StartsWith(TBSearch.Text);
+                result = DGVEmployees.Rows[DGVIndex].Cells[3].Value.ToString().ToLower().StartsWith(TBSearch.Text.ToLower());
             }
             else if (RBJob.Checked == true)
             {
@@ -166,7 +166,7 @@ namespace AdminApp
             }
             else if (RBPesel.Checked == true)
             {
-                result = DGVEmployees.Rows[DGVIndex].Cells[5].Value.ToString().StartsWith(TBSearch.Text);
+                result = DGVEmployees.Rows[DGVIndex].Cells[5].Value.ToString().ToLower().StartsWith(TBSearch.Text.ToLower());
             }
             DGVEmployees.Rows[DGVIndex].Visible = result;
             return result; 
@@ -380,12 +380,12 @@ namespace AdminApp
 
         private void SearchEmployee(object sender, EventArgs e)
         {
+            if((sender is RadioButton) && sender != RBJob)
+            {
+                TBSearch.Focus();
+            }
             CBSearch.Visible = RBJob.Checked;
             TBSearch.Visible = !RBJob.Checked;
-            if(RBJob.Checked)
-            {
-                TBSearch.Text = "";
-            }
 
             visibleRows = 0;
             foreach (DataGridViewRow row in DGVEmployees.Rows)
@@ -393,6 +393,38 @@ namespace AdminApp
                 if(checkRBRegex(row.Index))
                 {
                     visibleRows++;
+                }
+            }
+
+            if (DGVEmployees.SelectedRows.Count > 0 && DGVEmployees.SelectedRows[0].Visible == false)
+            {
+                DGVEmployees.SelectedRows[0].Selected = false;
+            }
+            if (DGVEmployees.SelectedRows.Count == 0)
+            { 
+                foreach (DataGridViewRow row in DGVEmployees.Rows)
+                {
+                    if (row.Visible == true)
+                    {
+                        row.Selected = true;
+                        if (PEmployee.Visible == true)
+                        {
+                            DGVEmployees_CellClick(null, new DataGridViewCellEventArgs(8, row.Index));
+                        }
+                        if (!RBJob.Checked)
+                        {
+                            TBSearch.Focus();
+                        }
+                        else
+                        {
+                            CBJob.Focus();
+                        }
+                        break;
+                    }
+                }
+                if (DGVEmployees.SelectedRows.Count == 0)
+                {
+                    ClearControls();
                 }
             }
 
