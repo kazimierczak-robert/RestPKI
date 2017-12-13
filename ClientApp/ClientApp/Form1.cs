@@ -36,7 +36,7 @@ namespace ClientApp
          1 - BInBox
          2 - BOutBox
         */
-        byte focusedButton = 1; 
+        byte focusedButton = 1;
 
         private void GetMyInfo()//Get Info about logged employee
         {
@@ -142,7 +142,7 @@ namespace ClientApp
             {
                 CBRecNames.ValueMember = "id"; //EmployeeID
                 CBRecNames.DisplayMember = "company_email";
-                CBRecNames.DataSource = response.Data.Where(x=>x.id != infoAboutMe.id).ToList(); //Prevent displaying myself
+                CBRecNames.DataSource = response.Data.Where(x => x.id != infoAboutMe.id).ToList(); //Prevent displaying myself
                 CBRecNames.AutoCompleteMode = AutoCompleteMode.Append;
                 CBRecNames.AutoCompleteSource = AutoCompleteSource.ListItems;
                 //CBRecNames.DropDownHeight = DropDownWidth(CBRecNames);
@@ -262,6 +262,40 @@ namespace ClientApp
             TBMessageS.Visible = false;
             DGVInBox.Visible = true;
 
+            int newestMsgID;
+            if (inbox.Count != 0)
+            {
+                //Check if something new in inbox
+                newestMsgID = inbox.Keys.Max();
+            }
+            else
+            {
+                newestMsgID = 0;
+            }
+
+            var request = new RestRequest("api/refresh_inbox/", Method.POST);
+            request.AddHeader("Authorization", "Token " + Program.token);
+            request.AddParameter("id", newestMsgID);
+
+            IRestResponse<List<Message>> response = Program.client.Execute<List<Message>>(request);
+            //var response = Program.client.Execute(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                foreach (Message item in response.Data)
+                {
+                    DataGridViewRow dgvRow = new DataGridViewRow();
+                    dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = item.id });
+                    dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = employeeMail[item.sender_id] });
+                    dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = item.enc_topic });
+                    dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = (DateTime.Parse(item.send_date)).ToString("dd-MM-yy HH:mm:ss") });
+                    inbox.Add(item.id, item.enc_message);
+                    DGVInBox.Rows.Add(dgvRow);
+                }
+            }
+            else
+            {
+                //User won't see more messages in session
+            }
             SearchInDGV(null, null);
 
             //TBMessageR.Text = "";
@@ -343,7 +377,7 @@ namespace ClientApp
                 TBMessageR.Text = "";
                 TBSenderMsg.Text = "";
                 TBSenderTopic.Text = "";
-                
+
                 return; //if 0 Messages
             }
             if (DGVOutBox.SelectedRows[0].Visible == true)
@@ -469,7 +503,7 @@ namespace ClientApp
 
             if (focusedButton == 0)
             {
-                
+
             }
             else if (focusedButton == 1)
             {
@@ -522,7 +556,7 @@ namespace ClientApp
                         break;
                     }
                 }
-                }
+            }
             if (focusedButton == 1)
             {
                 InboxSelectionChanged(null, null);
@@ -564,7 +598,7 @@ namespace ClientApp
             {
                 this.DialogResult = DialogResult.No; //LogOut
                 this.Close();
-            }            
+            }
         }
         private void PanelChangePassword_Paint(object sender, PaintEventArgs e)
         {
@@ -597,7 +631,7 @@ namespace ClientApp
 
     class Message
     {
-        public int id {get;set;}
+        public int id { get; set; }
         public int sender_id { get; set; }
         public int recipient_id { get; set; }
         public string enc_topic { get; set; }
