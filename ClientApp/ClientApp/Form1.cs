@@ -410,9 +410,9 @@ namespace ClientApp
 
         private void BSend_Click(object sender, EventArgs e)
         {
-            if (TBTopic.Text == "" || TBMessageS.Text == "")
+            if (TBTopic.Text == "" || TBMessageS.Text == "" || CBRecNames.Text =="")
             {
-                MessageBox.Show("Temat wiadomości i jej treść nie mogą być puste!", "Błąd!!");
+                MessageBox.Show("Odbiorca, temat wiadomości i jej treść nie mogą być puste!", "Błąd!!");
             }
             else
             {
