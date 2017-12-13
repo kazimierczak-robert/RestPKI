@@ -396,16 +396,19 @@ namespace ClientApp
                     //zaszyfruj temat
                     //zaszyfruj wiadomosc
                     //copy na True
+                    string timeNow = DateTime.Now.ToString();
+
                     var request = new RestRequest("api/message/", Method.POST);
                     request.AddHeader("Authorization", "Token " + Program.token);
                     request.AddParameter("sender_id", infoAboutMe.id);
                     request.AddParameter("recipient_id", recipientID);
                     request.AddParameter("enc_topic", TBTopic.Text);
                     request.AddParameter("enc_message", TBMessageS.Text);
-                    request.AddParameter("send_date", DateTime.Now.ToString());
+                    request.AddParameter("send_date", timeNow);
                     request.AddParameter("copy", true);
 
-                    var response = Program.client.Execute(request);
+                    IRestResponse<Message> response = Program.client.Execute<Message>(request);
+                    //var response = Program.client.Execute(request);
                     if (response.StatusCode != System.Net.HttpStatusCode.Created)
                     {
                         MessageBox.Show("Błąd wewnętrzny aplikacji, skontaktuj się z administratorem", "Błąd!");
@@ -426,12 +429,20 @@ namespace ClientApp
                     request1.AddParameter("recipient_id", recipientID);
                     request1.AddParameter("enc_topic", TBTopic.Text);
                     request1.AddParameter("enc_message", TBMessageS.Text);
-                    request1.AddParameter("send_date", DateTime.Now.ToString());
+                    request1.AddParameter("send_date", timeNow);
                     request1.AddParameter("copy", false);
 
                     var response1 = Program.client.Execute(request1);
                     if (response1.StatusCode == System.Net.HttpStatusCode.Created)
                     {
+                        DataGridViewRow dgvRow = new DataGridViewRow();
+                        dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = response.Data.id });
+                        dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = employeeMail[recipientID] });
+                        dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = TBTopic.Text });
+                        dgvRow.Cells.Add(new DataGridViewTextBoxCell { Value = (DateTime.Parse(timeNow)).ToString("dd-MM-yy HH:mm:ss") });
+                        outbox.Add(response.Data.id, response.Data.enc_message);
+                        DGVOutBox.Rows.Add(dgvRow);
+
                         MessageBox.Show("Wiadomość wysłano", "Sukces!");
                         TBTopic.Text = "";
                         TBMessageS.Text = "";
