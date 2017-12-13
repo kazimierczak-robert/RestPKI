@@ -38,7 +38,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(26, 84);
+            this.label2.Location = new System.Drawing.Point(20, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 21;
@@ -47,7 +47,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 58);
+            this.label1.Location = new System.Drawing.Point(23, 25);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(36, 13);
             this.label1.TabIndex = 20;
@@ -55,7 +55,7 @@
             // 
             // TBLogin
             // 
-            this.TBLogin.Location = new System.Drawing.Point(65, 55);
+            this.TBLogin.Location = new System.Drawing.Point(59, 22);
             this.TBLogin.Name = "TBLogin";
             this.TBLogin.Size = new System.Drawing.Size(154, 20);
             this.TBLogin.TabIndex = 22;
@@ -63,11 +63,12 @@
             // 
             // TBPassword
             // 
-            this.TBPassword.Location = new System.Drawing.Point(65, 81);
+            this.TBPassword.Location = new System.Drawing.Point(59, 48);
             this.TBPassword.Name = "TBPassword";
             this.TBPassword.PasswordChar = '*';
             this.TBPassword.Size = new System.Drawing.Size(154, 20);
             this.TBPassword.TabIndex = 23;
+            this.TBPassword.UseSystemPasswordChar = true;
             this.TBPassword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.EnterClicked);
             // 
             // BLogIn
@@ -75,7 +76,7 @@
             this.BLogIn.BackColor = System.Drawing.Color.SkyBlue;
             this.BLogIn.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
             this.BLogIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BLogIn.Location = new System.Drawing.Point(65, 107);
+            this.BLogIn.Location = new System.Drawing.Point(59, 74);
             this.BLogIn.Name = "BLogIn";
             this.BLogIn.Size = new System.Drawing.Size(154, 24);
             this.BLogIn.TabIndex = 24;
@@ -87,7 +88,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(253, 179);
+            this.ClientSize = new System.Drawing.Size(236, 120);
             this.Controls.Add(this.BLogIn);
             this.Controls.Add(this.TBPassword);
             this.Controls.Add(this.TBLogin);
