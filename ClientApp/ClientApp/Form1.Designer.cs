@@ -72,6 +72,7 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.panel2 = new System.Windows.Forms.Panel();
             this.LLogged = new System.Windows.Forms.Label();
+            this.BChangePassword = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).BeginInit();
             this.PSendMessage.SuspendLayout();
@@ -143,9 +144,9 @@
             this.BInBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BInBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BInBox.ForeColor = System.Drawing.Color.Black;
-            this.BInBox.Location = new System.Drawing.Point(308, 174);
+            this.BInBox.Location = new System.Drawing.Point(264, 174);
             this.BInBox.Name = "BInBox";
-            this.BInBox.Size = new System.Drawing.Size(131, 40);
+            this.BInBox.Size = new System.Drawing.Size(103, 40);
             this.BInBox.TabIndex = 1;
             this.BInBox.Text = "Skrzynka odbiorcza";
             this.BInBox.UseVisualStyleBackColor = false;
@@ -161,7 +162,7 @@
             this.BNewMessage.ForeColor = System.Drawing.Color.Gray;
             this.BNewMessage.Location = new System.Drawing.Point(34, 174);
             this.BNewMessage.Name = "BNewMessage";
-            this.BNewMessage.Size = new System.Drawing.Size(131, 40);
+            this.BNewMessage.Size = new System.Drawing.Size(103, 40);
             this.BNewMessage.TabIndex = 2;
             this.BNewMessage.Text = "Nowa wiadomość";
             this.BNewMessage.UseVisualStyleBackColor = false;
@@ -175,9 +176,9 @@
             this.BRevokeTheCertificate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BRevokeTheCertificate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BRevokeTheCertificate.ForeColor = System.Drawing.Color.Gray;
-            this.BRevokeTheCertificate.Location = new System.Drawing.Point(582, 174);
+            this.BRevokeTheCertificate.Location = new System.Drawing.Point(495, 174);
             this.BRevokeTheCertificate.Name = "BRevokeTheCertificate";
-            this.BRevokeTheCertificate.Size = new System.Drawing.Size(131, 40);
+            this.BRevokeTheCertificate.Size = new System.Drawing.Size(103, 40);
             this.BRevokeTheCertificate.TabIndex = 4;
             this.BRevokeTheCertificate.Text = "Unieważnij certyfikat";
             this.BRevokeTheCertificate.UseVisualStyleBackColor = false;
@@ -191,9 +192,9 @@
             this.BApplyForTheCertificate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BApplyForTheCertificate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.BApplyForTheCertificate.ForeColor = System.Drawing.Color.Gray;
-            this.BApplyForTheCertificate.Location = new System.Drawing.Point(445, 174);
+            this.BApplyForTheCertificate.Location = new System.Drawing.Point(379, 174);
             this.BApplyForTheCertificate.Name = "BApplyForTheCertificate";
-            this.BApplyForTheCertificate.Size = new System.Drawing.Size(131, 40);
+            this.BApplyForTheCertificate.Size = new System.Drawing.Size(103, 40);
             this.BApplyForTheCertificate.TabIndex = 3;
             this.BApplyForTheCertificate.Text = "Złóż wniosek \r\no wydanie certyfikatu";
             this.BApplyForTheCertificate.UseVisualStyleBackColor = false;
@@ -207,9 +208,9 @@
             this.BOutBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BOutBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BOutBox.ForeColor = System.Drawing.Color.Gray;
-            this.BOutBox.Location = new System.Drawing.Point(171, 174);
+            this.BOutBox.Location = new System.Drawing.Point(148, 174);
             this.BOutBox.Name = "BOutBox";
-            this.BOutBox.Size = new System.Drawing.Size(131, 40);
+            this.BOutBox.Size = new System.Drawing.Size(103, 40);
             this.BOutBox.TabIndex = 11;
             this.BOutBox.Text = "Skrzynka nadawcza";
             this.BOutBox.UseVisualStyleBackColor = false;
@@ -596,6 +597,22 @@
             this.LLogged.TabIndex = 34;
             this.LLogged.Text = "Zalogowany użytkownik: ";
             // 
+            // BChangePassword
+            // 
+            this.BChangePassword.BackColor = System.Drawing.Color.NavajoWhite;
+            this.BChangePassword.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BChangePassword.FlatAppearance.BorderColor = System.Drawing.Color.Orange;
+            this.BChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BChangePassword.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
+            this.BChangePassword.ForeColor = System.Drawing.Color.Gray;
+            this.BChangePassword.Location = new System.Drawing.Point(610, 174);
+            this.BChangePassword.Name = "BChangePassword";
+            this.BChangePassword.Size = new System.Drawing.Size(103, 40);
+            this.BChangePassword.TabIndex = 35;
+            this.BChangePassword.Text = "Zmień hasło";
+            this.BChangePassword.UseVisualStyleBackColor = false;
+            this.BChangePassword.Click += new System.EventHandler(this.BChangePassword_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -604,9 +621,11 @@
             this.BackgroundImage = global::ClientApp.Properties.Resources.background3;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(749, 541);
+            this.Controls.Add(this.BChangePassword);
             this.Controls.Add(this.LLogged);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.BHide);
+            this.Controls.Add(this.BInBox);
             this.Controls.Add(this.BClose);
             this.Controls.Add(this.DGVOutBox);
             this.Controls.Add(this.POutBox);
@@ -616,7 +635,6 @@
             this.Controls.Add(this.PSendMessage);
             this.Controls.Add(this.TBMessageS);
             this.Controls.Add(this.PInBox);
-            this.Controls.Add(this.BInBox);
             this.Controls.Add(this.BNewMessage);
             this.Controls.Add(this.BRevokeTheCertificate);
             this.Controls.Add(this.BApplyForTheCertificate);
@@ -627,6 +645,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Klient PKI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogOut);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelChangePassword_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).EndInit();
             this.PSendMessage.ResumeLayout(false);
@@ -690,6 +709,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label LLogged;
+        private System.Windows.Forms.Button BChangePassword;
     }
 }
 

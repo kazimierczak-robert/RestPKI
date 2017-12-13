@@ -61,6 +61,12 @@
     <Compile Include="LogInPanel.Designer.cs">
       <DependentUpon>LogInPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="PanelChangePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PanelChangePassword.Designer.cs">
+      <DependentUpon>PanelChangePassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -68,6 +74,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LogInPanel.resx">
       <DependentUpon>LogInPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PanelChangePassword.resx">
+      <DependentUpon>PanelChangePassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

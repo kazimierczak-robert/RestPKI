@@ -78,6 +78,7 @@ namespace ClientApp
             this.TBPassword.PasswordChar = '*';
             this.TBPassword.Size = new System.Drawing.Size(203, 20);
             this.TBPassword.TabIndex = 23;
+            this.TBPassword.UseSystemPasswordChar = true;
             this.TBPassword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.EnterClicked);
             // 
             // BLogIn
@@ -132,6 +133,7 @@ namespace ClientApp
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Klient PKI";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelChangePassword_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
 
