@@ -63,5 +63,11 @@ namespace ClientApp
         {
             this.Close();
         }
+
+        private void PanelChangePassword_Paint(object sender, PaintEventArgs e)
+        {
+            //e.Graphics.DrawRectangle(new Pen(Color.DarkGray, 3), this.DisplayRectangle);
+            ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.DimGray, ButtonBorderStyle.Solid);
+        }
     }
 }
