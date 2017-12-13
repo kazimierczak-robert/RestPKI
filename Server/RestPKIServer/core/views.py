@@ -295,6 +295,7 @@ def inbox(request):
     serializer = MessageSerializer(list_of_messages, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @csrf_exempt
 @api_view(['GET',])
 @permission_classes((permissions.IsAuthenticated, ))
@@ -304,7 +305,26 @@ def outbox(request):
     serializer = MessageSerializer(list_of_messages, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @csrf_exempt
 @api_view(['GET',])
 def datetime_now(request):
     return Response({"datetime": timezone.now()}, status=status.HTTP_200_OK)
+
+
+@csrf_exempt
+@api_view(['POST',])
+def change_password(request):
+    if request.method == 'POST':
+        username = request.data['username']
+        old_password = request.data['oldpass']
+        new_password = request.data['newpass']
+        user = authenticate(username=username, password=old_password)
+        if user != request.user:
+            return Response({"status": "fail"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        user.set_password(new_password)
+        user.save()
+        return Response({"status": "ok"}, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
