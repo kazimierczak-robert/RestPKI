@@ -307,6 +307,17 @@ def outbox(request):
 
 
 @csrf_exempt
+@api_view(['POST',])
+@permission_classes((permissions.IsAuthenticated, ))
+def refresh_inbox(request):
+    employee = Employee.objects.get(user=request.user)
+    from_id = request.data['id']
+    list_of_messages = Message.objects.filter(recipient_id=employee, copy=False, id__gt=from_id)
+    serializer = MessageSerializer(list_of_messages, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@csrf_exempt
 @api_view(['GET',])
 def datetime_now(request):
     return Response({"datetime": timezone.now()}, status=status.HTTP_200_OK)
@@ -314,6 +325,7 @@ def datetime_now(request):
 
 @csrf_exempt
 @api_view(['POST',])
+@permission_classes((permissions.IsAuthenticated, ))
 def change_password(request):
     if request.method == 'POST':
         username = request.data['username']
