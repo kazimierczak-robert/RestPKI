@@ -69,7 +69,7 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
                 JSONObject jsonObj = new JSONObject(wynik);
                 token = jsonObj.getString("status");
                 if(token.equals("ok")) {
-                    SaveCeriticate();
+                  //  SaveCeriticate();
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
@@ -104,10 +104,10 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("sender_id", GlobalValue.getIDEmployeeGlobal().toString())
                     .appendQueryParameter("recipient_id", GlobalValue.getUserSend().getID().toString())
-                    .appendQueryParameter("send_date", IDReason.toString())
+                  /*  .appendQueryParameter("send_date", IDReason.toString())
                     .appendQueryParameter("enc_topic", IDReason.toString())
                     .appendQueryParameter("enc_message", IDReason.toString())
-                    .appendQueryParameter("copy", IDReason.toString());
+                    .appendQueryParameter("copy", IDReason.toString())*/;
 
             String query = builder.build().getEncodedQuery();
 

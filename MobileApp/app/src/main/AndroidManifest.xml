@@ -82,6 +82,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.dawid.mobileapp.CancelCertActivity" />
         </activity>
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:label="@string/title_activity_change_password"
+            android:parentActivityName=".SettingsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.dawid.mobileapp.SettingsActivity" />
+        </activity>
     </application>
 
 </manifest>

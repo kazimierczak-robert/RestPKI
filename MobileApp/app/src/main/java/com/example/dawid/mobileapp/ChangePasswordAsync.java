@@ -27,12 +27,12 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by Dawid on 28.10.2017.
  */
 
-public class CancelCertAsync extends AsyncTask<Integer, String, String> {
+public class ChangePasswordAsync extends AsyncTask<String, String, String> {
 
     private Activity activity;
+    private EditText actualPassword, newPassword, repeatPassword;
 
-
-    public CancelCertAsync(Activity activity)
+    public ChangePasswordAsync(Activity activity)
     {
         this.activity = activity;
     }
@@ -40,12 +40,15 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        actualPassword = (EditText) activity.findViewById(R.id.editTextActualPassword);
+        newPassword = (EditText) activity.findViewById(R.id.editTextNewPassword);
+        repeatPassword = (EditText) activity.findViewById(R.id.editTextRepeatNewPassword);
     }
 
 
     @Override
-    protected String doInBackground(Integer... params) {
-        return CheckData(params[0]);
+    protected String doInBackground(String... params) {
+        return CheckData();
 
     }
 
@@ -57,18 +60,30 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
 
     }
 
-    private String CheckData(Integer IDReason) {
+    private String CheckData() {
         String returnMessage = "";
+        String acPassword = actualPassword.getText().toString();
+        String nePassword = newPassword.getText().toString();
+        String rePassword = repeatPassword.getText().toString();
 
-
+        if(acPassword.isEmpty() || nePassword.isEmpty() || rePassword.isEmpty())
+        {
+            Snackbar.make(activity.getCurrentFocus(), "Wszystkie pola muszą być uzupełnione", Snackbar.LENGTH_LONG).show();
+            return returnMessage;
+        }
+        if(!nePassword.equals(rePassword))
+        {
+            Snackbar.make(activity.getCurrentFocus(), "Hasła nie są takie same", Snackbar.LENGTH_LONG).show();
+            return returnMessage;
+        }
         String token = "";
-        String wynik = cancelCert(IDReason);
+        String wynik = changePassword(acPassword, nePassword);
         if (wynik != null) {
             try {
                 JSONObject jsonObj = new JSONObject(wynik);
                 token = jsonObj.getString("status");
                 if(token.equals("ok")) {
-                    SaveCeriticate();
+
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
@@ -85,8 +100,8 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
         return returnMessage;
     }
 
-    public String cancelCert(Integer IDReason){ // uniewaznienie certyfikatu
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/certificate/" + GlobalValue.getIDCertificateGlobal()+"/revoke/";
+    public String changePassword(String acPassword, String nePassword){ // zmiana hasla
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/changepass/";
         URL url;
         String response = "";
         try {
@@ -101,7 +116,9 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
 
 
             Uri.Builder builder = new Uri.Builder()
-                    .appendQueryParameter("reason_id", IDReason.toString() );
+                    .appendQueryParameter("username", GlobalValue.getLoginGlobal() )
+                    .appendQueryParameter("oldpass", acPassword)
+                    .appendQueryParameter("newpass", nePassword);
 
             String query = builder.build().getEncodedQuery();
 
@@ -133,56 +150,6 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
         return response;
     }
 
-    public String getCerttificate()
-    {
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/cert/";
-        URL url;
-        String response = "";
-        try {
-            url = new URL(requestURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
-            conn.connect();
 
-            int responseCode=conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
-                }
-            }
-            else {
-                response="";
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response;
-    }
-
-    public void SaveCeriticate()
-    {
-        String wynik = getCerttificate();
-        String certificate;
-        Integer IDemployee;
-        if (wynik != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(wynik);
-
-                certificate = jsonObj.getString("cert");
-                GlobalValue.setPublicCertificateGlobal(certificate);
-                IDemployee = jsonObj.getInt("employee_id");
-                GlobalValue.setIDEmployeeGlobal(IDemployee);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
 

@@ -32,4 +32,14 @@
         android:onClick="cancelCertificate"
         android:text="Unieważnij certyfikat" />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="31dp"
+        android:text="Zmień hasło"
+        android:onClick="changePasswordView"/>
+
 </RelativeLayout>

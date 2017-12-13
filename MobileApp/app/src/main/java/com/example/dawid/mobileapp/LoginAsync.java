@@ -81,6 +81,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
                     token = jsonObj.getString("token");
                     GlobalValue.setTokenGlobal(token);
                     SaveCeriticate();
+                    GlobalValue.setLoginGlobal(log);
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
@@ -182,13 +183,17 @@ public class LoginAsync extends AsyncTask<String, String, String> {
         Integer IDemployee;
         if (wynik != null) {
             try {
+                Log.d("logowanie json", wynik);
                 JSONObject jsonObj = new JSONObject(wynik);
-                JSONObject objectjso = jsonObj.getJSONObject("certificate");
-                certificate = objectjso.getString("cert");
+
+                certificate = jsonObj.getString("cert");
                 GlobalValue.setPublicCertificateGlobal(certificate);
-                IDemployee = objectjso.getInt("employee_id");
+                testCzasu.testy();
+                IDemployee = jsonObj.getInt("employee_id");
                 GlobalValue.setIDEmployeeGlobal(IDemployee);
-                GlobalValue.setIDCertificateGlobal(objectjso.getInt("id"));
+                Log.d("logowanie id pracownika", GlobalValue.getIDEmployeeGlobal().toString());
+                GlobalValue.setIDCertificateGlobal(jsonObj.getInt("id"));
+                Log.d("logowanie", GlobalValue.getIDCertificateGlobal().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
