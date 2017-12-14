@@ -26,7 +26,7 @@ public class MenuActivity extends AppCompatActivity {
     public void Outbox(View view)
     {
 
-         new OutboxAsync(this).execute("");
+        new SearchAsync(this).execute("");
     }
 
     public void Inbox(View view)

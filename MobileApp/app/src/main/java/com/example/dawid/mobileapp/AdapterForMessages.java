@@ -29,7 +29,6 @@ public class AdapterForMessages extends RecyclerView.Adapter {
             mUser= (TextView) pItem.findViewById(R.id.message_user);
             mDate = (TextView) pItem.findViewById(R.id.message_date);
             mTopic = (TextView) pItem.findViewById(R.id.message_topic);
-            Log.d("testy","ile " + mMessages.size());
         }
     }
 
@@ -61,7 +60,6 @@ public class AdapterForMessages extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int i) {
-        Log.d("testy","ileee " + mMessages.size());
         Message message = mMessages.get(i);
         ((MyViewHolder) viewHolder).mUser.setText(message.getUser());
         ((MyViewHolder) viewHolder).mDate.setText(message.getDate());
@@ -70,7 +68,6 @@ public class AdapterForMessages extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        Log.d("testy","iless " + mMessages.size());
         return mMessages.size();
     }
 }

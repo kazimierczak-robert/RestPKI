@@ -64,12 +64,11 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
                 try {
                     JSONObject jsonObj = new JSONObject(wynik);
                     token = jsonObj.getString("detail");
-                    GlobalValue.setTokenGlobal(token);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-
+        GlobalValue.setNulls();
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
         return returnMessage;

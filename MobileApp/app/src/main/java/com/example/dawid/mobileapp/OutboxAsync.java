@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 
 public class OutboxAsync extends AsyncTask<String, String, String>{
     private Activity activity;
+    private EditText UserToSend, Topic, Content;
     public OutboxAsync(Activity activity)
     {
 
@@ -23,7 +24,9 @@ public class OutboxAsync extends AsyncTask<String, String, String>{
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
+        UserToSend = (EditText) activity.findViewById(R.id.editTextInboxSearchUser);
+        Topic = (EditText) activity.findViewById(R.id.editTextInboxTopic);
+        Content = (EditText) activity.findViewById(R.id.editTextInboxMessageContent);
     }
 
 
@@ -43,6 +46,15 @@ public class OutboxAsync extends AsyncTask<String, String, String>{
     private String CheckData()
     {
         String returnMessage = "";
+        String user = UserToSend.getText().toString();
+        String topic = Topic.getText().toString();
+        String content = Content.getText().toString();
+
+        if(user.isEmpty() || topic.isEmpty() || content.isEmpty())
+        {
+            Snackbar.make(activity.getCurrentFocus(), "Wszystkie pola muszą być uzupełnione", Snackbar.LENGTH_LONG).show();
+            return returnMessage;
+        }
 
         Intent intent = new Intent(activity, OutboxActivity.class);
         activity.startActivity(intent);

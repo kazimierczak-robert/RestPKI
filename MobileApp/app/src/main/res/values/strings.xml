@@ -5,4 +5,7 @@
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_message">Wiadomość</string>
     <string name="title_activity_search">Napisz do</string>
+    <string name="title_activity_cancel_cert">Unieważnij certyfikat</string>
+    <string name="title_activity_is_sure">Potwierdź unieważnienie</string>
+    <string name="title_activity_change_password">Zmień basło</string>
 </resources>

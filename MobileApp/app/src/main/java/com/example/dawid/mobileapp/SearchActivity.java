@@ -1,7 +1,9 @@
 package com.example.dawid.mobileapp;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-
+    private Activity contextActivity;
     RecyclerView recyclerView;
     RecyclerviewAdapter myRecAdapter;
     List<Users> list;
@@ -130,7 +132,13 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                     public void onClick(View v) {
 
                         String name = htxt.getText().toString();
-                        Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
+                        Users userToSend;
+                        for(Users u : GlobalValue.getUsersListGlobal()){
+                            if(name == u.getName())
+                                GlobalValue.setUserSend(u);
+                        }
+                        Intent intent = new Intent(context, OutboxActivity.class);
+                        context.startActivity(intent);
 
                     }
                 });

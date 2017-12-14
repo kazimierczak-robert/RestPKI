@@ -7,32 +7,27 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-
-
-
-public class SettingsActivity extends AppCompatActivity {
-
+public class IsSureActivity extends AppCompatActivity {
+    private int IDReason;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_is_sure);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        Bundle b = getIntent().getExtras();
+        IDReason = b.getInt("IDReason");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void cancelCertificate(View view){
-        Intent intent = new Intent(this, CancelCertActivity.class);
+    public void exitCancelCert(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
         this.startActivity(intent);
     }
 
-    public void changePasswordView(View view) {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
-        this.startActivity(intent);
+    public void cancelCert(View view) {
+        new CancelCertAsync(this).execute(IDReason);
     }
 }

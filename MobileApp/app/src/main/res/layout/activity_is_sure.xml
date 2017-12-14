@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dawid.mobileapp.SettingsActivity">
+    tools:context="com.example.dawid.mobileapp.IsSureActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout5">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -20,26 +21,36 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_settings" />
+    <include layout="@layout/content_is_sure" />
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/appBarLayout5"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="90dp"
-        android:onClick="cancelCertificate"
-        android:text="Unieważnij certyfikat" />
+        android:layout_marginTop="64dp"
+        android:textSize="16sp"
+        android:text="Czy na pewno chcesz unieważnic certyfikat" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonExitCancelCert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
-        android:text="Zmień hasło"
-        android:onClick="changePasswordView"/>
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="52dp"
+        android:text="Nie"
+        android:onClick="exitCancelCert"/>
+
+    <Button
+        android:id="@+id/buttonCancelCert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignTop="@+id/buttonExitCancelCert"
+        android:text="Tak"
+        android:onClick="cancelCert"/>
+
 
 </RelativeLayout>

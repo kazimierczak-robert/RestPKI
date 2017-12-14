@@ -18,6 +18,7 @@ namespace ClientApp
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        public static Form1 form1;
         [STAThread]
         static void Main()
         {
@@ -27,7 +28,6 @@ namespace ClientApp
 
             DialogResult dialogResult = DialogResult.No;
             LogInPanel logInPanel;
-            Form1 form1;
 
             while (dialogResult != DialogResult.Cancel)
             {
