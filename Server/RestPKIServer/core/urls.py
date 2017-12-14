@@ -5,7 +5,7 @@ from rest_framework import routers
 from .views import UserViewSet, JobViewSet, EmployeeViewSet, CertificateViewSet, \
     CancellationReasonViewSet,KeyViewSet, CRLViewSet, MessageViewSet
 from .views import token_login, token_logout, gen_or_renew_cert, inbox, outbox, datetime_now, change_password, \
-    refresh_inbox
+    refresh_inbox, get_employee_keys
 
 router = routers.DefaultRouter()
 
@@ -30,4 +30,5 @@ urlpatterns += [
     url(r'^outbox/$', outbox, name='outbox'),
     url(r'^now/$', datetime_now, name='datetime_now'),
     url(r'^changepass/$', change_password, name='changepass'),
+    url(r'^get_employee_keys/$', get_employee_keys, name='get_employee_keys'),
 ]
