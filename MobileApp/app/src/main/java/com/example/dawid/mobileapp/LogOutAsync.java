@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -69,6 +70,8 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
                 }
             }
         GlobalValue.setNulls();
+        MessageListsGlobal.MessageOutboxList.clear();
+        MessageListsGlobal.MessageInboxList.clear();
         Intent intent = new Intent(activity, LoginActivity.class);
         activity.startActivity(intent);
         return returnMessage;

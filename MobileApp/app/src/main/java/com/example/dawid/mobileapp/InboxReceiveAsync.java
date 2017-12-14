@@ -26,9 +26,9 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by Dawid on 28.10.2017.
  */
 
-public class InboxAsync extends AsyncTask<String, String, String>{
+public class InboxReceiveAsync extends AsyncTask<String, String, String>{
     private Activity activity;
-    public InboxAsync(Activity activity)
+    public InboxReceiveAsync(Activity activity)
     {
 
         this.activity = activity;
@@ -74,7 +74,7 @@ public class InboxAsync extends AsyncTask<String, String, String>{
                     String encTopic = objectJS.getString("enc_topic");
                     String encMessage = objectJS.getString("enc_message");
                     String sendDate = objectJS.getString("send_date");
-                    MessageListsGlobal.MessageOutboxList.add(new Message(MessageID, encTopic, encTopic, encMessage, TimeMethothds.getDateToMessage(sendDate)));
+                    MessageListsGlobal.MessageInboxList.add(new Message(MessageID, encTopic, encTopic, encMessage, TimeMethothds.getDateToMessage(sendDate)));
 
                 }
             } catch (JSONException e) {
@@ -88,7 +88,7 @@ public class InboxAsync extends AsyncTask<String, String, String>{
 
     public String getInboxMessage()
     {
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/inbox/";
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/outbox/";
         URL url;
         String response = "";
         try {

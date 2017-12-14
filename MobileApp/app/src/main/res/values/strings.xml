@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Aplikacja mobilna</string>
-    <string name="title_activity_inbox">Skrzynka odbiorcza</string>
+    <string name="title_activity_inbox">Wiadomości wysłane</string>
     <string name="title_activity_outbox">Skrzynka nadawcza</string>
     <string name="title_activity_settings">Ustawienia</string>
     <string name="title_activity_message">Wiadomość</string>
@@ -8,4 +8,5 @@
     <string name="title_activity_cancel_cert">Unieważnij certyfikat</string>
     <string name="title_activity_is_sure">Potwierdź unieważnienie</string>
     <string name="title_activity_change_password">Zmień basło</string>
+    <string name="title_activity_inbox_receive">Wiadomości odebrane</string>
 </resources>

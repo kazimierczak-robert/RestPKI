@@ -9,34 +9,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
-import java.util.ArrayList;
-
-public class InboxActivity extends AppCompatActivity {
-
-
+public class InboxReceiveActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inbox);
+        setContentView(R.layout.activity_inbox_receive);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewMessages);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerViewMessagesReceive);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-       // ArrayList<Message> messages = new ArrayList<>();
-
-        recyclerView.setAdapter(new AdapterForMessages(this, MessageListsGlobal.MessageInboxList, recyclerView));
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        recyclerView.setAdapter(new AdapterForMessages(this, MessageListsGlobal.MessageOutboxList, recyclerView));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
     }
-
 
 }

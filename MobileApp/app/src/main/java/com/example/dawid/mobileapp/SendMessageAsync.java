@@ -76,6 +76,7 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
 
         String token = "";
         String wynik = sendCopy(topic, content);
+        String wynik1 = sendNotCopy(topic, content);
         if (wynik != null) {
             try {
                 JSONObject jsonObj = new JSONObject(wynik);
@@ -119,6 +120,59 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
                     .appendQueryParameter("enc_topic", topic)
                     .appendQueryParameter("enc_message", content)
                     .appendQueryParameter("copy", "1");
+
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
+            int responseCode=conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_CREATED) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    public String sendNotCopy(String topic, String content){ // uniewaznienie certyfikatu
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/message/";
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("sender_id", GlobalValue.getIDEmployeeGlobal().toString())
+                    .appendQueryParameter("recipient_id", GlobalValue.getUserSend().getID().toString())
+                    .appendQueryParameter("send_date", TimeMethothds.getDateNowToString())
+                    .appendQueryParameter("enc_topic", topic)
+                    .appendQueryParameter("enc_message", content)
+                    .appendQueryParameter("copy", "0");
 
             String query = builder.build().getEncodedQuery();
 

@@ -5,6 +5,7 @@ package com.example.dawid.mobileapp;
  */
 
 public class Message {
+    private Integer ID;
     private String User;
     private String Date;
     private String Topic;
@@ -14,12 +15,20 @@ public class Message {
 
     }
 
-    public Message(String User, String Date, String Topic, String Content){
+    public Message(Integer ID, String User, String Topic, String Content, String Date){
+        this.ID = ID;
         this.User = User;
         this.Date = Date;
         this.Topic = Topic;
 
         this.Content = Content;
+    }
+    public Integer getID() {
+        return ID;
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
     public String getUser() {

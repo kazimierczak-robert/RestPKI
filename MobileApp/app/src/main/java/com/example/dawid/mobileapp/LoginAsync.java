@@ -20,6 +20,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -52,6 +53,8 @@ public class LoginAsync extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... params) {
+        new InboxAsync(activity).execute("");
+        new InboxReceiveAsync(activity).execute("");
         return CheckData();
 
     }
@@ -84,6 +87,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
                     GlobalValue.setTokenGlobal(token);
                     SaveCeriticate();
                     GlobalValue.setLoginGlobal(log);
+
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
@@ -191,6 +195,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
                DateExpiration =jsonObj.getString("expiration_date");
                 Date ExpirationDate = TimeMethothds.getDateFromString(DateExpiration);
                 GlobalValue.setExpirationCertificateDate(ExpirationDate);
+                String nic = TimeMethothds.getDateToMessage("2017-12-14T17:39:05.400000+01:00");
               /*  Date now = new Date();
                 Log.d("logowanie", "data");
                 if(now.after(ExpirationDate)){

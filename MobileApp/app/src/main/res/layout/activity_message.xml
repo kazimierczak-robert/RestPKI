@@ -73,14 +73,6 @@
         android:textSize="17sp"
         android:text="TextView" />
 
-    <Button
-        android:id="@+id/buttonReceiveMessageReply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewReceiveMessageContent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
-        android:text="Odpowiedz" />
 
 
 </RelativeLayout>
