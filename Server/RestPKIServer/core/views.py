@@ -340,3 +340,20 @@ def change_password(request):
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
     else:
         return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['POST',])
+@permission_classes((permissions.IsAuthenticated, ))
+def get_employee_keys(request):
+    if request.method == 'POST':
+        id = request.data['id']
+        emp = Employee.objects.get(id=id)
+        certs = Certificate.objects.filter(employee_id=emp)
+        keys = []
+        for cert in certs:
+            key = Key.objects.filter(certificate_id=cert).first()
+            keys.append({"id":key.id, "cert_id":cert.id, "not_valid_before_private_key":key.not_valid_before_private_key,
+                         "not_valid_after_private_key":key.not_valid_after_private_key, "privatekey":key.enc_private_key})
+        return Response(keys, status=status.HTTP_200_OK)
+    else:
+        return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
