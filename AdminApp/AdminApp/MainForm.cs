@@ -110,7 +110,6 @@ namespace AdminApp
             TBAddress.Text = "";
             TBEMail.Text = "";
             DTPBirthDay.Value = DateTime.Today;
-            //CBJob.SelectedItem = CBJob.Items[0];
         }
 
         private void BNewEmployee_Click(object sender, EventArgs e)
@@ -188,13 +187,11 @@ namespace AdminApp
                     request.AddParameter("job_id", CBJob.SelectedValue);
 
                     var response = Program.client.Execute<NewEmployee>(request);
-
                     if (response.StatusCode == System.Net.HttpStatusCode.Created)
                     {
                         var responseData = response.Data;
 
                         var index = DGVEmployees.Rows.Add();
-
                         DGVEmployees.Rows[index].Cells[0].Value = responseData.user.id;
                         DGVEmployees.Rows[index].Cells[1].Value = TBName.Text;
                         DGVEmployees.Rows[index].Cells[2].Value = TBSurname.Text;
@@ -224,7 +221,6 @@ namespace AdminApp
                             BNewEmployee.Location = new Point(674, 356);
                             this.Size = new Size(811, 425);
                         }
-
                         ClearControls();
                     }
                     else
@@ -244,13 +240,9 @@ namespace AdminApp
                     request.AddParameter("job_id", CBJob.SelectedValue);
 
                     var response = Program.client.Execute<Employee>(request);
-
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        //var responseData = response.Data;
-
-                        BNewEmployee.Focus();
-                        PEmployee.Visible = false;
+                        var responseData = response.Data;
 
                         var index = -1;
                         foreach (DataGridViewRow item in DGVEmployees.Rows)
@@ -285,6 +277,8 @@ namespace AdminApp
                             }
                         }
 
+                        MessageBox.Show("Edycja pracownika zakończyła się pomyślnie!", "Sukces!");
+
                         if (visibleRows < 15)
                         {
                             BNewEmployee.Location = new Point(656, 356);
@@ -295,8 +289,9 @@ namespace AdminApp
                             BNewEmployee.Location = new Point(674, 356);
                             this.Size = new Size(811, 425);
                         }
-                        MessageBox.Show("Edycja pracownika zakończyła się pomyślnie!", "Sukces!");
 
+                        BNewEmployee.Focus();
+                        PEmployee.Visible = false;
                         ClearControls();
                     }
                     else
@@ -355,6 +350,8 @@ namespace AdminApp
                         }
                         DGVEmployees.Rows.RemoveAt(row);
 
+                        MessageBox.Show("Usunięto pracownika pomyślnie!", "OK!");
+
                         PEmployee.Visible = false;
                         if (DGVEmployees.Rows.Count < 15)
                         {
@@ -367,8 +364,6 @@ namespace AdminApp
                             this.Size = new Size(811, 425);
                         }
                         ClearControls();
-
-                        MessageBox.Show("Usunięto!", "OK!");
                     }
                     else
                     {
@@ -453,6 +448,37 @@ namespace AdminApp
                     BNewEmployee.Location = new Point(674, 356);
                     this.Size = new Size(811, 425);
                 }
+            }
+        }
+
+        private void DGVEmployees_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            if (e.ColumnIndex == 8)
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+                var w = Properties.Resources.EditIcon.Width;
+                var h = Properties.Resources.EditIcon.Height;
+                var x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
+                var y = e.CellBounds.Top + (e.CellBounds.Height - h) / 2;
+
+                e.Graphics.DrawImage(Properties.Resources.EditIcon, new Rectangle(x, y, w, h));
+                e.Handled = true;
+            }
+            else if (e.ColumnIndex == 9)
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+
+                var w = Properties.Resources.DeleteIcon.Width;
+                var h = Properties.Resources.DeleteIcon.Height;
+                var x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
+                var y = e.CellBounds.Top + (e.CellBounds.Height - h) / 2;
+
+                e.Graphics.DrawImage(Properties.Resources.DeleteIcon, new Rectangle(x, y, w, h));
+                e.Handled = true;
             }
         }
     }

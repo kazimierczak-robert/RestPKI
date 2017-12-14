@@ -30,16 +30,6 @@
         {
             this.BNewEmployee = new System.Windows.Forms.Button();
             this.DGVEmployees = new System.Windows.Forms.DataGridView();
-            this.EmployeeID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeeSurname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeeEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeeJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeePESEL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeeAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EmployeeBirthDay = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Edit = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             this.TBID = new System.Windows.Forms.TextBox();
             this.TBName = new System.Windows.Forms.TextBox();
             this.TBSurname = new System.Windows.Forms.TextBox();
@@ -63,11 +53,21 @@
             this.LSearch = new System.Windows.Forms.Label();
             this.RBName = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.RBSurname = new System.Windows.Forms.RadioButton();
-            this.RBCompanyMail = new System.Windows.Forms.RadioButton();
-            this.RBJob = new System.Windows.Forms.RadioButton();
-            this.CBSearch = new System.Windows.Forms.ComboBox();
             this.RBPesel = new System.Windows.Forms.RadioButton();
+            this.RBJob = new System.Windows.Forms.RadioButton();
+            this.RBCompanyMail = new System.Windows.Forms.RadioButton();
+            this.RBSurname = new System.Windows.Forms.RadioButton();
+            this.CBSearch = new System.Windows.Forms.ComboBox();
+            this.EmployeeID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeSurname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeJob = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeePESEL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmployeeBirthDay = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Edit = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DGVEmployees)).BeginInit();
             this.PEmployee.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -117,85 +117,7 @@
             this.DGVEmployees.Size = new System.Drawing.Size(773, 331);
             this.DGVEmployees.TabIndex = 3;
             this.DGVEmployees.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVEmployees_CellClick);
-            // 
-            // EmployeeID
-            // 
-            this.EmployeeID.HeaderText = "ID";
-            this.EmployeeID.Name = "EmployeeID";
-            this.EmployeeID.ReadOnly = true;
-            this.EmployeeID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeID.Width = 30;
-            // 
-            // EmployeeName
-            // 
-            this.EmployeeName.HeaderText = "Imię";
-            this.EmployeeName.Name = "EmployeeName";
-            this.EmployeeName.ReadOnly = true;
-            this.EmployeeName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeName.Width = 70;
-            // 
-            // EmployeeSurname
-            // 
-            this.EmployeeSurname.HeaderText = "Nazwisko";
-            this.EmployeeSurname.Name = "EmployeeSurname";
-            this.EmployeeSurname.ReadOnly = true;
-            this.EmployeeSurname.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeSurname.Width = 103;
-            // 
-            // EmployeeEMail
-            // 
-            this.EmployeeEMail.HeaderText = "E-Mail";
-            this.EmployeeEMail.Name = "EmployeeEMail";
-            this.EmployeeEMail.ReadOnly = true;
-            this.EmployeeEMail.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // EmployeeJob
-            // 
-            this.EmployeeJob.HeaderText = "Stanowisko";
-            this.EmployeeJob.Name = "EmployeeJob";
-            this.EmployeeJob.ReadOnly = true;
-            this.EmployeeJob.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeJob.Width = 80;
-            // 
-            // EmployeePESEL
-            // 
-            this.EmployeePESEL.HeaderText = "PESEL";
-            this.EmployeePESEL.Name = "EmployeePESEL";
-            this.EmployeePESEL.ReadOnly = true;
-            this.EmployeePESEL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeePESEL.Width = 80;
-            // 
-            // EmployeeAddress
-            // 
-            this.EmployeeAddress.HeaderText = "Adres";
-            this.EmployeeAddress.Name = "EmployeeAddress";
-            this.EmployeeAddress.ReadOnly = true;
-            this.EmployeeAddress.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeAddress.Width = 140;
-            // 
-            // EmployeeBirthDay
-            // 
-            this.EmployeeBirthDay.HeaderText = "Data urodzenia";
-            this.EmployeeBirthDay.Name = "EmployeeBirthDay";
-            this.EmployeeBirthDay.ReadOnly = true;
-            this.EmployeeBirthDay.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.EmployeeBirthDay.Width = 90;
-            // 
-            // Edit
-            // 
-            this.Edit.HeaderText = "";
-            this.Edit.Name = "Edit";
-            this.Edit.ReadOnly = true;
-            this.Edit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Edit.Width = 30;
-            // 
-            // Delete
-            // 
-            this.Delete.HeaderText = "";
-            this.Delete.Name = "Delete";
-            this.Delete.ReadOnly = true;
-            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Delete.Width = 30;
+            this.DGVEmployees.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.DGVEmployees_CellPainting);
             // 
             // TBID
             // 
@@ -422,16 +344,27 @@
             this.panel1.Size = new System.Drawing.Size(332, 27);
             this.panel1.TabIndex = 22;
             // 
-            // RBSurname
+            // RBPesel
             // 
-            this.RBSurname.AutoSize = true;
-            this.RBSurname.Location = new System.Drawing.Point(61, 5);
-            this.RBSurname.Name = "RBSurname";
-            this.RBSurname.Size = new System.Drawing.Size(69, 17);
-            this.RBSurname.TabIndex = 22;
-            this.RBSurname.Text = "nazwisku";
-            this.RBSurname.UseVisualStyleBackColor = true;
-            this.RBSurname.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            this.RBPesel.AutoSize = true;
+            this.RBPesel.Location = new System.Drawing.Point(273, 5);
+            this.RBPesel.Name = "RBPesel";
+            this.RBPesel.Size = new System.Drawing.Size(56, 17);
+            this.RBPesel.TabIndex = 25;
+            this.RBPesel.Text = "peselu";
+            this.RBPesel.UseVisualStyleBackColor = true;
+            this.RBPesel.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            // 
+            // RBJob
+            // 
+            this.RBJob.AutoSize = true;
+            this.RBJob.Location = new System.Drawing.Point(193, 5);
+            this.RBJob.Name = "RBJob";
+            this.RBJob.Size = new System.Drawing.Size(78, 17);
+            this.RBJob.TabIndex = 24;
+            this.RBJob.Text = "stanowisku";
+            this.RBJob.UseVisualStyleBackColor = true;
+            this.RBJob.CheckedChanged += new System.EventHandler(this.SearchEmployee);
             // 
             // RBCompanyMail
             // 
@@ -444,16 +377,16 @@
             this.RBCompanyMail.UseVisualStyleBackColor = true;
             this.RBCompanyMail.CheckedChanged += new System.EventHandler(this.SearchEmployee);
             // 
-            // RBJob
+            // RBSurname
             // 
-            this.RBJob.AutoSize = true;
-            this.RBJob.Location = new System.Drawing.Point(193, 5);
-            this.RBJob.Name = "RBJob";
-            this.RBJob.Size = new System.Drawing.Size(78, 17);
-            this.RBJob.TabIndex = 24;
-            this.RBJob.Text = "stanowisku";
-            this.RBJob.UseVisualStyleBackColor = true;
-            this.RBJob.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            this.RBSurname.AutoSize = true;
+            this.RBSurname.Location = new System.Drawing.Point(61, 5);
+            this.RBSurname.Name = "RBSurname";
+            this.RBSurname.Size = new System.Drawing.Size(69, 17);
+            this.RBSurname.TabIndex = 22;
+            this.RBSurname.Text = "nazwisku";
+            this.RBSurname.UseVisualStyleBackColor = true;
+            this.RBSurname.CheckedChanged += new System.EventHandler(this.SearchEmployee);
             // 
             // CBSearch
             // 
@@ -467,16 +400,85 @@
             this.CBSearch.Visible = false;
             this.CBSearch.SelectedIndexChanged += new System.EventHandler(this.SearchEmployee);
             // 
-            // RBPesel
+            // EmployeeID
             // 
-            this.RBPesel.AutoSize = true;
-            this.RBPesel.Location = new System.Drawing.Point(273, 5);
-            this.RBPesel.Name = "RBPesel";
-            this.RBPesel.Size = new System.Drawing.Size(56, 17);
-            this.RBPesel.TabIndex = 25;
-            this.RBPesel.Text = "peselu";
-            this.RBPesel.UseVisualStyleBackColor = true;
-            this.RBPesel.CheckedChanged += new System.EventHandler(this.SearchEmployee);
+            this.EmployeeID.HeaderText = "ID";
+            this.EmployeeID.Name = "EmployeeID";
+            this.EmployeeID.ReadOnly = true;
+            this.EmployeeID.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeID.Width = 30;
+            // 
+            // EmployeeName
+            // 
+            this.EmployeeName.HeaderText = "Imię";
+            this.EmployeeName.Name = "EmployeeName";
+            this.EmployeeName.ReadOnly = true;
+            this.EmployeeName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeName.Width = 70;
+            // 
+            // EmployeeSurname
+            // 
+            this.EmployeeSurname.HeaderText = "Nazwisko";
+            this.EmployeeSurname.Name = "EmployeeSurname";
+            this.EmployeeSurname.ReadOnly = true;
+            this.EmployeeSurname.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeSurname.Width = 101;
+            // 
+            // EmployeeEMail
+            // 
+            this.EmployeeEMail.HeaderText = "E-Mail";
+            this.EmployeeEMail.Name = "EmployeeEMail";
+            this.EmployeeEMail.ReadOnly = true;
+            this.EmployeeEMail.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeEMail.Width = 105;
+            // 
+            // EmployeeJob
+            // 
+            this.EmployeeJob.HeaderText = "Stanowisko";
+            this.EmployeeJob.Name = "EmployeeJob";
+            this.EmployeeJob.ReadOnly = true;
+            this.EmployeeJob.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeJob.Width = 80;
+            // 
+            // EmployeePESEL
+            // 
+            this.EmployeePESEL.HeaderText = "PESEL";
+            this.EmployeePESEL.Name = "EmployeePESEL";
+            this.EmployeePESEL.ReadOnly = true;
+            this.EmployeePESEL.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeePESEL.Width = 80;
+            // 
+            // EmployeeAddress
+            // 
+            this.EmployeeAddress.HeaderText = "Adres";
+            this.EmployeeAddress.Name = "EmployeeAddress";
+            this.EmployeeAddress.ReadOnly = true;
+            this.EmployeeAddress.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeAddress.Width = 145;
+            // 
+            // EmployeeBirthDay
+            // 
+            this.EmployeeBirthDay.HeaderText = "Data urodzenia";
+            this.EmployeeBirthDay.Name = "EmployeeBirthDay";
+            this.EmployeeBirthDay.ReadOnly = true;
+            this.EmployeeBirthDay.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.EmployeeBirthDay.Width = 90;
+            // 
+            // Edit
+            // 
+            this.Edit.HeaderText = "";
+            this.Edit.Name = "Edit";
+            this.Edit.ReadOnly = true;
+            this.Edit.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Edit.Width = 26;
+            // 
+            // Delete
+            // 
+            this.Delete.HeaderText = "";
+            this.Delete.Name = "Delete";
+            this.Delete.ReadOnly = true;
+            this.Delete.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Delete.Width = 26;
             // 
             // MainForm
             // 
@@ -528,6 +530,15 @@
         private System.Windows.Forms.TextBox TBEMail;
         private System.Windows.Forms.ComboBox CBJob;
         private System.Windows.Forms.Label LJob;
+        private System.Windows.Forms.TextBox TBSearch;
+        private System.Windows.Forms.Label LSearch;
+        private System.Windows.Forms.RadioButton RBName;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton RBJob;
+        private System.Windows.Forms.RadioButton RBCompanyMail;
+        private System.Windows.Forms.RadioButton RBSurname;
+        private System.Windows.Forms.ComboBox CBSearch;
+        private System.Windows.Forms.RadioButton RBPesel;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeID;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeName;
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeSurname;
@@ -538,15 +549,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn EmployeeBirthDay;
         private System.Windows.Forms.DataGridViewButtonColumn Edit;
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
-        private System.Windows.Forms.TextBox TBSearch;
-        private System.Windows.Forms.Label LSearch;
-        private System.Windows.Forms.RadioButton RBName;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RadioButton RBJob;
-        private System.Windows.Forms.RadioButton RBCompanyMail;
-        private System.Windows.Forms.RadioButton RBSurname;
-        private System.Windows.Forms.ComboBox CBSearch;
-        private System.Windows.Forms.RadioButton RBPesel;
     }
 }
 
