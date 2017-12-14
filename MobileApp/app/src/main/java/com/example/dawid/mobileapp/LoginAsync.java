@@ -20,6 +20,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -181,19 +183,24 @@ public class LoginAsync extends AsyncTask<String, String, String> {
         String wynik = getCerttificate();
         String certificate;
         Integer IDemployee;
+        String DateExpiration;
         if (wynik != null) {
             try {
-                Log.d("logowanie json", wynik);
                 JSONObject jsonObj = new JSONObject(wynik);
-
+                Log.d("logowanie", wynik);
+               DateExpiration =jsonObj.getString("expiration_date");
+                Date ExpirationDate = TimeMethothds.getDateFromString(DateExpiration);
+                GlobalValue.setExpirationCertificateDate(ExpirationDate);
+              /*  Date now = new Date();
+                Log.d("logowanie", "data");
+                if(now.after(ExpirationDate)){
+                    // TODO: zapytanie POST o nowy certyfikat
+                }*/
                 certificate = jsonObj.getString("cert");
                 GlobalValue.setPublicCertificateGlobal(certificate);
-                testCzasu.testy();
                 IDemployee = jsonObj.getInt("employee_id");
                 GlobalValue.setIDEmployeeGlobal(IDemployee);
-                Log.d("logowanie id pracownika", GlobalValue.getIDEmployeeGlobal().toString());
                 GlobalValue.setIDCertificateGlobal(jsonObj.getInt("id"));
-                Log.d("logowanie", GlobalValue.getIDCertificateGlobal().toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

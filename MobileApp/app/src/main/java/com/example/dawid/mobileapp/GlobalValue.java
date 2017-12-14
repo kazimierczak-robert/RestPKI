@@ -4,6 +4,7 @@ import android.app.Application;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Dawid on 03.12.2017.
@@ -18,7 +19,7 @@ public class GlobalValue extends Application {
     private static final String ipAdres = "192.168.137.1:8000";
     private static Users UserSend;
     private static ArrayList<Users> UsersListGlobal;
-
+    private static Date ExpirationCertificateDate;
 
     public static String getLoginGlobal() {
         return LoginGlobal;
@@ -78,6 +79,14 @@ public class GlobalValue extends Application {
     public static void setIDCertificateGlobal(Integer IDCertificateGlobal) {
         GlobalValue.IDCertificateGlobal = IDCertificateGlobal;
     }
+
+    public static Date getExpirationCertificateDate() {
+        return ExpirationCertificateDate;
+    }
+
+    public static void setExpirationCertificateDate(Date expirationCertificateDate) {
+        ExpirationCertificateDate = expirationCertificateDate;
+    }
     public static void setNulls()
     {
         LoginGlobal = "";
@@ -86,6 +95,5 @@ public class GlobalValue extends Application {
         PublicCertificateGlobal = "";
         UsersListGlobal= null;
         UserSend = null;
-
     }
 }

@@ -78,14 +78,18 @@ public class ChangePasswordAsync extends AsyncTask<String, String, String> {
         }
         String token = "";
         String wynik = changePassword(acPassword, nePassword);
+        Log.d("zmaian", wynik);
         if (wynik != null) {
             try {
                 JSONObject jsonObj = new JSONObject(wynik);
                 token = jsonObj.getString("status");
                 if(token.equals("ok")) {
-
-                    Intent intent = new Intent(activity, MenuActivity.class);
-                    activity.startActivity(intent);
+                    new LogOutAsync(activity).execute();
+                    return returnMessage;
+                }
+                else if(token.equals("fail"))
+                {
+                    Snackbar.make(activity.getCurrentFocus(), "Podano nieprawidłowe aktualne hasło", Snackbar.LENGTH_LONG).show();
                     return returnMessage;
                 }
 
@@ -94,7 +98,7 @@ public class ChangePasswordAsync extends AsyncTask<String, String, String> {
             }
 
 
-            Snackbar.make(activity.getCurrentFocus(), "Bład unieważnienia certyfikatu", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(activity.getCurrentFocus(), "Hasło nie zostało zmienione. Proszę skontaktować się z administratorem", Snackbar.LENGTH_LONG).show();
             return returnMessage;
         }
         return returnMessage;

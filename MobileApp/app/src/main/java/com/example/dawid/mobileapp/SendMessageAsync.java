@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -31,7 +32,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class SendMessageAsync extends AsyncTask<String, String, String> {
 
     private Activity activity;
-
+    private EditText UserToSend, Topic, Content;
 
     public SendMessageAsync(Activity activity)
     {
@@ -41,6 +42,9 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        UserToSend = (EditText) activity.findViewById(R.id.editTextInboxSearchUser);
+        Topic = (EditText) activity.findViewById(R.id.editTextInboxTopic);
+        Content = (EditText) activity.findViewById(R.id.editTextInboxMessageContent);
     }
 
 
@@ -60,18 +64,25 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
 
     private String CheckData(String IDReason) {
         String returnMessage = "";
+        String user = UserToSend.getText().toString();
+        String topic = Topic.getText().toString();
+        String content = Content.getText().toString();
 
+        if(user.isEmpty() || topic.isEmpty() || content.isEmpty())
+        {
+            Snackbar.make(activity.getCurrentFocus(), "Wszystkie pola muszą być uzupełnione", Snackbar.LENGTH_LONG).show();
+            return returnMessage;
+        }
 
         String token = "";
-        String wynik = send();
+        String wynik = sendCopy(topic, content);
         if (wynik != null) {
             try {
                 JSONObject jsonObj = new JSONObject(wynik);
-                token = jsonObj.getString("status");
-                if(token.equals("ok")) {
-                  //  SaveCeriticate();
-                    Intent intent = new Intent(activity, MenuActivity.class);
-                    activity.startActivity(intent);
+                token = jsonObj.getString("recipient_id");
+                if(token.equals(GlobalValue.getUserSend().getID().toString())) {
+
+                    Snackbar.make(activity.getCurrentFocus(), "Wiadomość została wysłana", Snackbar.LENGTH_LONG).show();
                     return returnMessage;
                 }
 
@@ -80,14 +91,14 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
             }
 
 
-            Snackbar.make(activity.getCurrentFocus(), "Bład unieważnienia certyfikatu", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(activity.getCurrentFocus(), "Bład wysłania wiadomości", Snackbar.LENGTH_LONG).show();
             return returnMessage;
         }
         return returnMessage;
     }
 
-    public String send(){ // uniewaznienie certyfikatu
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/certificate/" + GlobalValue.getIDCertificateGlobal()+"/revoke/";
+    public String sendCopy(String topic, String content){ // uniewaznienie certyfikatu
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/message/";
         URL url;
         String response = "";
         try {
@@ -104,10 +115,10 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("sender_id", GlobalValue.getIDEmployeeGlobal().toString())
                     .appendQueryParameter("recipient_id", GlobalValue.getUserSend().getID().toString())
-                  /*  .appendQueryParameter("send_date", IDReason.toString())
-                    .appendQueryParameter("enc_topic", IDReason.toString())
-                    .appendQueryParameter("enc_message", IDReason.toString())
-                    .appendQueryParameter("copy", IDReason.toString())*/;
+                   .appendQueryParameter("send_date", TimeMethothds.getDateNowToString())
+                    .appendQueryParameter("enc_topic", topic)
+                    .appendQueryParameter("enc_message", content)
+                    .appendQueryParameter("copy", "1");
 
             String query = builder.build().getEncodedQuery();
 
@@ -121,7 +132,7 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
             os.close();
             int responseCode=conn.getResponseCode();
 
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
+            if (responseCode == HttpsURLConnection.HTTP_CREATED) {
                 String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 while ((line=br.readLine()) != null) {

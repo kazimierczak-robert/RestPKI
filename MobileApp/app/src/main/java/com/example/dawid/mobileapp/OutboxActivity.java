@@ -16,9 +16,12 @@ public class OutboxActivity extends AppCompatActivity {
         setContentView(R.layout.activity_outbox);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        UserSend = (TextView) findViewById(R.id.editTextSearchUser);
+        UserSend = (TextView) findViewById(R.id.editTextInboxSearchUser);
         UserSend.setText(GlobalValue.getUserSend().getName() + " <" + GlobalValue.getUserSend().getEmail() + ">");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void SendMessage(View view) {
+        new SendMessageAsync(this).execute("");
+    }
 }
