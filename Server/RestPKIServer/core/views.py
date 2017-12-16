@@ -261,7 +261,10 @@ class CertificateViewSet(mixins.RetrieveModelMixin,
         certificate = self.get_object()
         key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
         serializer = KeySerializer(key)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"id":serializer.data['id'], "cert_id":certificate.id,
+                         "not_valid_before_private_key":serializer.data['not_valid_before_private_key'],
+                         "not_valid_after_private_key":serializer.data['not_valid_after_private_key'],
+                         "privatekey":serializer.data['enc_private_key']}, status=status.HTTP_200_OK)
 
 
 class CancellationReasonViewSet(viewsets.ModelViewSet):
@@ -365,3 +368,13 @@ def get_employee_keys(request):
         return Response(keys, status=status.HTTP_200_OK)
     else:
         return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET',])
+@permission_classes((permissions.IsAuthenticated, ))
+def not_working_emp(request):
+    emp = Employee.objects.filter(isWorking=False)
+    mails = []
+    for i in emp:
+        mails.append({i.id: i.name})
+    return Response(mails, status=status.HTTP_200_OK)
