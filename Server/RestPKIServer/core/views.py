@@ -93,7 +93,8 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     def update(self, request, pk=None, partial=False):  # pk = ID
         if not request.user.is_staff:
             return Response({"error":"you are not staff"}, status=status.HTTP_401_UNAUTHORIZED)
-        employee = Employee.objects.filter(name=request.data['name']).first()
+        employee = self.get_object()
+        employee.name = request.data['name']
         employee.last_edited_by = Employee.objects.get(user=request.user)
         employee.last_edition_date = timezone.now()
         employee.company_email = request.data['name']
