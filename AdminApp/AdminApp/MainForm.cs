@@ -396,6 +396,7 @@ namespace AdminApp
 
         private void DGVEmployees_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
             if(e.ColumnIndex == 8 || (e.ColumnIndex < 8 && PEmployee.Visible == true))
             {
                 int row = e.RowIndex;
