@@ -67,5 +67,5 @@ class Message(models.Model):
     recipient_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     enc_topic = models.TextField()
     enc_message = models.TextField()
-    send_date = models.DateTimeField()
+    send_date = models.DateTimeField(default=timezone.now)
     copy = models.NullBooleanField(default=None)

@@ -296,6 +296,14 @@ class MessageViewSet(mixins.CreateModelMixin,
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print(serializer.data)
+            msg = Message.objects.create(**serializer.validated_data)
+            msg = self.serializer_class(instance=msg)
+            return Response(msg.data, status=status.HTTP_201_CREATED)
+
 
 @csrf_exempt
 @api_view(['GET',])
