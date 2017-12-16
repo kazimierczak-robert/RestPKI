@@ -42,4 +42,4 @@ class JobAdmin(admin.ModelAdmin):
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     model = Message
-    list_display = ('id','sender_id','recipient_id','enc_topic','enc_message','send_date')
+    list_display = ('id','certificate_id','sender_id','recipient_id','enc_topic','enc_message','send_date')

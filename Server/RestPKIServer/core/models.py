@@ -62,6 +62,7 @@ class CRL(models.Model):
     cancellation_date = models.DateTimeField(default=timezone.now)
 
 class Message(models.Model):
+    certificate_id = models.ForeignKey(Certificate, on_delete=models.SET_NULL, null=True)
     sender_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     recipient_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     enc_topic = models.TextField()
