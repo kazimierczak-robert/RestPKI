@@ -45,7 +45,7 @@ class CancellationReason(models.Model):
     description = models.TextField(unique=True)
 
     def __str__(self):
-        return self.descrption
+        return self.description
 
 class Key(models.Model):
     certificate_id = models.ForeignKey(Certificate, on_delete=models.CASCADE)
