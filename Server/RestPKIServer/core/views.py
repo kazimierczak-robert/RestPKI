@@ -255,6 +255,13 @@ class CertificateViewSet(mixins.RetrieveModelMixin,
         CRL.objects.create(certificate_id=certificate, reason_id=reason)
         return Response({"status":"ok"}, status=status.HTTP_200_OK)
 
+    @detail_route(methods=['get'], url_path='get_key')
+    def get_key(self, request, pk=None):
+        certificate = self.get_object()
+        key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
+        serializer = KeySerializer(key)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class CancellationReasonViewSet(viewsets.ModelViewSet):
     queryset = CancellationReason.objects.all()
