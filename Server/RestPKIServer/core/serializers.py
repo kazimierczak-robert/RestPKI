@@ -54,4 +54,4 @@ class CRLSerializer(serializers.ModelSerializer):
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ('id', 'sender_id', 'recipient_id','enc_topic', 'enc_message', 'send_date','copy',)
+        fields = ('id', 'certificate_id', 'sender_id', 'recipient_id','enc_topic', 'enc_message', 'send_date','copy',)

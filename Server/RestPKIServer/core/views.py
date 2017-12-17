@@ -93,7 +93,8 @@ class EmployeeViewSet(mixins.CreateModelMixin,
     def update(self, request, pk=None, partial=False):  # pk = ID
         if not request.user.is_staff:
             return Response({"error":"you are not staff"}, status=status.HTTP_401_UNAUTHORIZED)
-        employee = Employee.objects.filter(name=request.data['name']).first()
+        employee = self.get_object()
+        employee.name = request.data['name']
         employee.last_edited_by = Employee.objects.get(user=request.user)
         employee.last_edition_date = timezone.now()
         employee.company_email = request.data['name']
@@ -207,7 +208,10 @@ def gen_or_renew_cert(request):
             # certyfikat istnieje - trzeba stary uniewaznic i stworzyc nowy
             # szukam reason for revoke
             reason = CancellationReason.objects.filter(description="Uaktualnienie certyfikatu").first()
-            revoke_cert(employee, certificate, reason)
+            # jesli juz jest uniewazniony
+            crl = CRL.objects.filter(certificate_id=certificate).first()
+            if not crl:
+                revoke_cert(employee, certificate, reason)
 
         # certyfikat nie istnieje - trzeba go stworzyc
         current_tz = timezone.get_current_timezone()
@@ -249,11 +253,25 @@ class CertificateViewSet(mixins.RetrieveModelMixin,
         if not reason:
             reason = CancellationReason.objects.all().first()  # xD
         certificate.expiration_date = timezone.now()
+        certificate.save()
         key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
         key.not_valid_after_private_key = timezone.now()
         key.not_valid_after_public_key = timezone.now()
-        CRL.objects.create(certificate_id=certificate, reason_id=reason)
+        try:
+            CRL.objects.create(certificate_id=certificate, reason_id=reason)
+        except:
+            return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"status":"ok"}, status=status.HTTP_200_OK)
+
+    @detail_route(methods=['get'], url_path='get_key')
+    def get_key(self, request, pk=None):
+        certificate = self.get_object()
+        key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
+        serializer = KeySerializer(key)
+        return Response({"id":serializer.data['id'], "cert_id":certificate.id,
+                         "not_valid_before_private_key":serializer.data['not_valid_before_private_key'],
+                         "not_valid_after_private_key":serializer.data['not_valid_after_private_key'],
+                         "privatekey":serializer.data['enc_private_key']}, status=status.HTTP_200_OK)
 
 
 class CancellationReasonViewSet(viewsets.ModelViewSet):
@@ -280,10 +298,19 @@ class CRLViewSet(mixins.CreateModelMixin,
 class MessageViewSet(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,
                    mixins.ListModelMixin,
+                    mixins.DestroyModelMixin,
                   viewsets. GenericViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = (permissions.IsAuthenticated,)
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            print(serializer.data)
+            msg = Message.objects.create(**serializer.validated_data)
+            msg = self.serializer_class(instance=msg)
+            return Response(msg.data, status=status.HTTP_201_CREATED)
 
 
 @csrf_exempt
@@ -357,3 +384,13 @@ def get_employee_keys(request):
         return Response(keys, status=status.HTTP_200_OK)
     else:
         return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+@api_view(['GET',])
+@permission_classes((permissions.IsAuthenticated, ))
+def not_working_emp(request):
+    emp = Employee.objects.filter(isWorking=False)
+    mails = []
+    for i in emp:
+        mails.append({i.id: i.name})
+    return Response(mails, status=status.HTTP_200_OK)

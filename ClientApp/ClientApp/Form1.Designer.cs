@@ -33,6 +33,7 @@
             this.CompanyEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Topic = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Del1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.BInBox = new System.Windows.Forms.Button();
             this.BNewMessage = new System.Windows.Forms.Button();
             this.BRevokeTheCertificate = new System.Windows.Forms.Button();
@@ -43,6 +44,7 @@
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Date1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Del = new System.Windows.Forms.DataGridViewButtonColumn();
             this.PSendMessage = new System.Windows.Forms.Panel();
             this.LTopicR = new System.Windows.Forms.Label();
             this.TBTopic = new System.Windows.Forms.TextBox();
@@ -95,8 +97,9 @@
             this.MessageID1,
             this.CompanyEMail,
             this.Topic,
-            this.Date});
-            this.DGVInBox.Location = new System.Drawing.Point(35, 220);
+            this.Date,
+            this.Del1});
+            this.DGVInBox.Location = new System.Drawing.Point(35, 233);
             this.DGVInBox.MultiSelect = false;
             this.DGVInBox.Name = "DGVInBox";
             this.DGVInBox.ReadOnly = true;
@@ -106,6 +109,8 @@
             this.DGVInBox.Size = new System.Drawing.Size(404, 282);
             this.DGVInBox.TabIndex = 9;
             this.DGVInBox.Visible = false;
+            this.DGVInBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVInBox_CellClick);
+            this.DGVInBox.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.DGVInBox_CellPainting);
             this.DGVInBox.SelectionChanged += new System.EventHandler(this.InboxSelectionChanged);
             // 
             // MessageID1
@@ -120,14 +125,14 @@
             this.CompanyEMail.HeaderText = "Nadawca";
             this.CompanyEMail.Name = "CompanyEMail";
             this.CompanyEMail.ReadOnly = true;
-            this.CompanyEMail.Width = 124;
+            this.CompanyEMail.Width = 113;
             // 
             // Topic
             // 
             this.Topic.HeaderText = "Temat";
             this.Topic.Name = "Topic";
             this.Topic.ReadOnly = true;
-            this.Topic.Width = 150;
+            this.Topic.Width = 135;
             // 
             // Date
             // 
@@ -135,6 +140,14 @@
             this.Date.Name = "Date";
             this.Date.ReadOnly = true;
             this.Date.Width = 110;
+            // 
+            // Del1
+            // 
+            this.Del1.HeaderText = "";
+            this.Del1.Name = "Del1";
+            this.Del1.ReadOnly = true;
+            this.Del1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Del1.Width = 26;
             // 
             // BInBox
             // 
@@ -144,9 +157,9 @@
             this.BInBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BInBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BInBox.ForeColor = System.Drawing.Color.Black;
-            this.BInBox.Location = new System.Drawing.Point(264, 174);
+            this.BInBox.Location = new System.Drawing.Point(264, 164);
             this.BInBox.Name = "BInBox";
-            this.BInBox.Size = new System.Drawing.Size(103, 40);
+            this.BInBox.Size = new System.Drawing.Size(103, 58);
             this.BInBox.TabIndex = 1;
             this.BInBox.Text = "Skrzynka odbiorcza";
             this.BInBox.UseVisualStyleBackColor = false;
@@ -160,9 +173,9 @@
             this.BNewMessage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BNewMessage.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BNewMessage.ForeColor = System.Drawing.Color.Gray;
-            this.BNewMessage.Location = new System.Drawing.Point(34, 174);
+            this.BNewMessage.Location = new System.Drawing.Point(34, 164);
             this.BNewMessage.Name = "BNewMessage";
-            this.BNewMessage.Size = new System.Drawing.Size(103, 40);
+            this.BNewMessage.Size = new System.Drawing.Size(103, 58);
             this.BNewMessage.TabIndex = 2;
             this.BNewMessage.Text = "Nowa wiadomość";
             this.BNewMessage.UseVisualStyleBackColor = false;
@@ -176,9 +189,9 @@
             this.BRevokeTheCertificate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BRevokeTheCertificate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BRevokeTheCertificate.ForeColor = System.Drawing.Color.Gray;
-            this.BRevokeTheCertificate.Location = new System.Drawing.Point(495, 174);
+            this.BRevokeTheCertificate.Location = new System.Drawing.Point(495, 164);
             this.BRevokeTheCertificate.Name = "BRevokeTheCertificate";
-            this.BRevokeTheCertificate.Size = new System.Drawing.Size(103, 40);
+            this.BRevokeTheCertificate.Size = new System.Drawing.Size(103, 58);
             this.BRevokeTheCertificate.TabIndex = 4;
             this.BRevokeTheCertificate.Text = "Unieważnij certyfikat";
             this.BRevokeTheCertificate.UseVisualStyleBackColor = false;
@@ -192,9 +205,9 @@
             this.BApplyForTheCertificate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BApplyForTheCertificate.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.BApplyForTheCertificate.ForeColor = System.Drawing.Color.Gray;
-            this.BApplyForTheCertificate.Location = new System.Drawing.Point(379, 174);
+            this.BApplyForTheCertificate.Location = new System.Drawing.Point(379, 164);
             this.BApplyForTheCertificate.Name = "BApplyForTheCertificate";
-            this.BApplyForTheCertificate.Size = new System.Drawing.Size(103, 40);
+            this.BApplyForTheCertificate.Size = new System.Drawing.Size(103, 58);
             this.BApplyForTheCertificate.TabIndex = 3;
             this.BApplyForTheCertificate.Text = "Złóż wniosek \r\no wydanie certyfikatu";
             this.BApplyForTheCertificate.UseVisualStyleBackColor = false;
@@ -208,9 +221,9 @@
             this.BOutBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BOutBox.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BOutBox.ForeColor = System.Drawing.Color.Gray;
-            this.BOutBox.Location = new System.Drawing.Point(148, 174);
+            this.BOutBox.Location = new System.Drawing.Point(148, 164);
             this.BOutBox.Name = "BOutBox";
-            this.BOutBox.Size = new System.Drawing.Size(103, 40);
+            this.BOutBox.Size = new System.Drawing.Size(103, 58);
             this.BOutBox.TabIndex = 11;
             this.BOutBox.Text = "Skrzynka nadawcza";
             this.BOutBox.UseVisualStyleBackColor = false;
@@ -229,8 +242,9 @@
             this.MessageID,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
-            this.Date1});
-            this.DGVOutBox.Location = new System.Drawing.Point(35, 220);
+            this.Date1,
+            this.Del});
+            this.DGVOutBox.Location = new System.Drawing.Point(34, 233);
             this.DGVOutBox.MultiSelect = false;
             this.DGVOutBox.Name = "DGVOutBox";
             this.DGVOutBox.ReadOnly = true;
@@ -240,6 +254,8 @@
             this.DGVOutBox.Size = new System.Drawing.Size(404, 282);
             this.DGVOutBox.TabIndex = 12;
             this.DGVOutBox.Visible = false;
+            this.DGVOutBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVOutBox_CellClick);
+            this.DGVOutBox.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.DGVInBox_CellPainting);
             this.DGVOutBox.SelectionChanged += new System.EventHandler(this.OutboxSelectionChanged);
             // 
             // MessageID
@@ -254,14 +270,14 @@
             this.dataGridViewTextBoxColumn2.HeaderText = "Odbiorca";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 124;
+            this.dataGridViewTextBoxColumn2.Width = 113;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.HeaderText = "Temat";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 150;
+            this.dataGridViewTextBoxColumn3.Width = 135;
             // 
             // Date1
             // 
@@ -269,6 +285,14 @@
             this.Date1.Name = "Date1";
             this.Date1.ReadOnly = true;
             this.Date1.Width = 110;
+            // 
+            // Del
+            // 
+            this.Del.HeaderText = "";
+            this.Del.Name = "Del";
+            this.Del.ReadOnly = true;
+            this.Del.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Del.Width = 26;
             // 
             // PSendMessage
             // 
@@ -389,24 +413,24 @@
             // 
             // TBMessageS
             // 
-            this.TBMessageS.Location = new System.Drawing.Point(35, 220);
+            this.TBMessageS.Location = new System.Drawing.Point(35, 233);
             this.TBMessageS.Multiline = true;
             this.TBMessageS.Name = "TBMessageS";
+            this.TBMessageS.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TBMessageS.Size = new System.Drawing.Size(678, 282);
             this.TBMessageS.TabIndex = 7;
             // 
             // TBMessageR
             // 
             this.TBMessageR.BackColor = System.Drawing.Color.White;
-            this.TBMessageR.Enabled = false;
-            this.TBMessageR.Location = new System.Drawing.Point(445, 220);
+            this.TBMessageR.Location = new System.Drawing.Point(444, 233);
             this.TBMessageR.Multiline = true;
             this.TBMessageR.Name = "TBMessageR";
             this.TBMessageR.ReadOnly = true;
+            this.TBMessageR.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TBMessageR.Size = new System.Drawing.Size(268, 282);
             this.TBMessageR.TabIndex = 10;
             this.TBMessageR.Visible = false;
-            this.TBMessageR.WordWrap = false;
             // 
             // POutBox
             // 
@@ -605,9 +629,9 @@
             this.BChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BChangePassword.Font = new System.Drawing.Font("Lucida Sans Unicode", 8.25F);
             this.BChangePassword.ForeColor = System.Drawing.Color.Gray;
-            this.BChangePassword.Location = new System.Drawing.Point(610, 174);
+            this.BChangePassword.Location = new System.Drawing.Point(610, 164);
             this.BChangePassword.Name = "BChangePassword";
-            this.BChangePassword.Size = new System.Drawing.Size(103, 40);
+            this.BChangePassword.Size = new System.Drawing.Size(103, 58);
             this.BChangePassword.TabIndex = 35;
             this.BChangePassword.Text = "Zmień hasło";
             this.BChangePassword.UseVisualStyleBackColor = false;
@@ -620,7 +644,7 @@
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.BackgroundImage = global::ClientApp.Properties.Resources.background3;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(749, 541);
+            this.ClientSize = new System.Drawing.Size(749, 547);
             this.Controls.Add(this.BChangePassword);
             this.Controls.Add(this.LLogged);
             this.Controls.Add(this.panel2);
@@ -645,7 +669,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Klient PKI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogOut);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelChangePassword_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).EndInit();
             this.PSendMessage.ResumeLayout(false);
@@ -690,14 +714,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox TBSenderMsg;
         private System.Windows.Forms.DataGridView DGVOutBox;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MessageID1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn CompanyEMail;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Topic;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MessageID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Date1;
         private System.Windows.Forms.Button BClose;
         private System.Windows.Forms.Button BHide;
         private System.Windows.Forms.RadioButton RBReceiver;
@@ -710,6 +726,16 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label LLogged;
         private System.Windows.Forms.Button BChangePassword;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MessageID1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CompanyEMail;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Topic;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
+        private System.Windows.Forms.DataGridViewButtonColumn Del1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MessageID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Date1;
+        private System.Windows.Forms.DataGridViewButtonColumn Del;
     }
 }
 

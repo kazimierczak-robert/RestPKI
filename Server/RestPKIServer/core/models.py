@@ -45,7 +45,7 @@ class CancellationReason(models.Model):
     description = models.TextField(unique=True)
 
     def __str__(self):
-        return self.descrption
+        return self.description
 
 class Key(models.Model):
     certificate_id = models.ForeignKey(Certificate, on_delete=models.CASCADE)
@@ -62,9 +62,10 @@ class CRL(models.Model):
     cancellation_date = models.DateTimeField(default=timezone.now)
 
 class Message(models.Model):
+    certificate_id = models.ForeignKey(Certificate, on_delete=models.SET_NULL, null=True)
     sender_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     recipient_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='+')
     enc_topic = models.TextField()
     enc_message = models.TextField()
-    send_date = models.DateTimeField()
+    send_date = models.DateTimeField(default=timezone.now)
     copy = models.NullBooleanField(default=None)

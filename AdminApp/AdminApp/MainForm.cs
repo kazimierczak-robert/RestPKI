@@ -1,12 +1,9 @@
 ﻿using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AdminApp
@@ -15,6 +12,7 @@ namespace AdminApp
     {
         List<Job> jobs;
         int visibleRows = 0;
+        Dictionary<string, string> notWorkingEmployees;
         public MainForm()
         {
             InitializeComponent();
@@ -47,7 +45,7 @@ namespace AdminApp
                         {
                             var index = DGVEmployees.Rows.Add();
                             DGVEmployees.Rows[index].Cells[0].Value = employee.id;
-                            DGVEmployees.Rows[index].Cells[1].Value = employee.name;
+                            DGVEmployees.Rows[index].Cells[1].Value = employee.name.ToUpper()[0] + employee.name.Split('.')[0].Substring(1).ToLower();
                             DGVEmployees.Rows[index].Cells[2].Value = employee.surname;
                             DGVEmployees.Rows[index].Cells[3].Value = employee.company_email;
 
@@ -68,6 +66,25 @@ namespace AdminApp
                         CBSearch.ValueMember = "id";
                         CBSearch.DisplayMember = "description";
                         CBSearch.DataSource = jobs;
+
+                        request = new RestRequest("api/not_working_emp/", Method.GET);
+                        request.AddHeader("Authorization", "Token " + Program.token);
+                        var responseNotWorking = Program.client.Execute<SimpleJson.JsonArray>(request);
+
+                        if (responseNotWorking.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            notWorkingEmployees = new Dictionary<string, string>();
+                            foreach (Dictionary<string, object> item in responseNotWorking.Data)
+                            {
+                                notWorkingEmployees.Add(item.FirstOrDefault().Key.ToString(), item.FirstOrDefault().Value.ToString());
+                            }
+                        }
+                        else
+                        {
+                            this.Close();
+                            MessageBox.Show("Wystąpił błąd podczas pobierania pracowników!", "Błąd!");
+                        }
+
                     }
                     else
                     {
@@ -144,7 +161,7 @@ namespace AdminApp
             ClearControls();
         }
 
-        private bool checkRBRegex(int DGVIndex)
+        private bool CheckRBRegex(int DGVIndex)
         {
             bool result = false;
             if(RBName.Checked == true)
@@ -170,7 +187,30 @@ namespace AdminApp
             DGVEmployees.Rows[DGVIndex].Visible = result;
             return result; 
         }
-
+        private bool CheckMailAvailability(string mail, string employeeiD)
+        {
+            foreach (DataGridViewRow row in DGVEmployees.Rows)
+            {
+                if (row.Cells[0].Value.ToString() != employeeiD)
+                {
+                    if (row.Cells[3].Value.ToString().Split('@')[0] == mail)
+                    {
+                        return false;
+                    }
+                }
+            }
+            foreach (var item in notWorkingEmployees)
+            {
+                if (item.Key.ToString() != employeeiD)
+                {
+                    if (item.Value.ToString().Split('@')[0] == mail)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
         private void BApply_Click(object sender, EventArgs e)
         {
             if (TBName.Text != "" && TBSurname.Text != "" && TBPesel.Text != "" && TBAddress.Text != "")
@@ -179,7 +219,20 @@ namespace AdminApp
                 {
                     var request = new RestRequest("api/employee/", Method.POST);
                     request.AddHeader("Authorization", "Token " + Program.token);
-                    request.AddParameter("name", TBName.Text);
+
+                    var mailTemp = TBName.Text.ToLower()[0] + TBName.Text.Substring(1).ToLower() + "." + TBSurname.Text.ToLower()[0] + TBSurname.Text.Substring(1).ToLower();
+                    var mail = mailTemp;
+                    if (!CheckMailAvailability(mail, "-1"))
+                    {
+                        int number = 1;
+                        do
+                        {
+                            mail = mailTemp + "." + number.ToString();
+                            number++;
+                        } while (!CheckMailAvailability(mail, "-1"));
+                    }
+                    mail += "@praca.pl";
+                    request.AddParameter("name",  mail);
                     request.AddParameter("surname", TBSurname.Text);
                     request.AddParameter("pesel", TBPesel.Text);
                     request.AddParameter("address", TBAddress.Text);
@@ -201,7 +254,7 @@ namespace AdminApp
                         DGVEmployees.Rows[index].Cells[6].Value = TBAddress.Text;
                         DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Value.ToString("yyyy-MM-dd");
 
-                        if (checkRBRegex(index))
+                        if (CheckRBRegex(index))
                         {
                             visibleRows++;
                         }
@@ -232,7 +285,39 @@ namespace AdminApp
                 {
                     var request = new RestRequest("api/employee/" + TBID.Text + "/", Method.PUT);
                     request.AddHeader("Authorization", "Token " + Program.token);
-                    request.AddParameter("name", TBName.Text);
+                    string mail = "";
+
+                    int indexRow = -1;
+                    foreach (DataGridViewRow item in DGVEmployees.Rows)
+                    {
+                        if (item.Cells[0].Value.ToString() == TBID.Text)
+                        {
+                            indexRow = item.Index;
+                            break;
+                        }
+                    }
+
+                    if (DGVEmployees.Rows[indexRow].Cells[1].Value.ToString() == TBName.Text && DGVEmployees.Rows[indexRow].Cells[2].Value.ToString() == TBSurname.Text)
+                    {
+                        mail = TBEMail.Text;
+                    }
+                    else
+                    {
+                        var mailTemp = TBName.Text.ToLower()[0] + TBName.Text.Substring(1).ToLower() + "." + TBSurname.Text.ToLower()[0] + TBSurname.Text.Substring(1).ToLower();
+                        mail = mailTemp;
+                        if (!CheckMailAvailability(mail, TBID.Text))
+                        {
+                            int number = 1;
+                            do
+                            {
+                                mail = mailTemp + "." + number.ToString();
+                                number++;
+                            } while (!CheckMailAvailability(mail, TBID.Text));
+                        }
+                        mail += "@praca.pl";
+                    }
+
+                    request.AddParameter("name", mail);
                     request.AddParameter("surname", TBSurname.Text);
                     request.AddParameter("pesel", TBPesel.Text);
                     request.AddParameter("address", TBAddress.Text);
@@ -244,27 +329,18 @@ namespace AdminApp
                     {
                         var responseData = response.Data;
 
-                        var index = -1;
-                        foreach (DataGridViewRow item in DGVEmployees.Rows)
+                        if (indexRow > -1)
                         {
-                            if(item.Cells[0].Value.ToString() == TBID.Text)
-                            {
-                                index = item.Index;
-                                break;
-                            }
-                        }
-                        if (index > -1)
-                        {
-                            bool wasVisible = DGVEmployees.Rows[index].Visible;
-                            DGVEmployees.Rows[index].Cells[1].Value = TBName.Text;
-                            DGVEmployees.Rows[index].Cells[2].Value = TBSurname.Text;
-                            //DGVEmployees.Rows[index].Cells[3].Value = responseData.company_email;
-                            DGVEmployees.Rows[index].Cells[4].Value = ((Job)CBJob.SelectedItem).description;
-                            DGVEmployees.Rows[index].Cells[5].Value = TBPesel.Text;
-                            DGVEmployees.Rows[index].Cells[6].Value = TBAddress.Text;
-                            DGVEmployees.Rows[index].Cells[7].Value = DTPBirthDay.Value.ToString("yyyy-MM-dd");
+                            bool wasVisible = DGVEmployees.Rows[indexRow].Visible;
+                            DGVEmployees.Rows[indexRow].Cells[1].Value = TBName.Text;
+                            DGVEmployees.Rows[indexRow].Cells[2].Value = TBSurname.Text;
+                            DGVEmployees.Rows[indexRow].Cells[3].Value = mail;
+                            DGVEmployees.Rows[indexRow].Cells[4].Value = ((Job)CBJob.SelectedItem).description;
+                            DGVEmployees.Rows[indexRow].Cells[5].Value = TBPesel.Text;
+                            DGVEmployees.Rows[indexRow].Cells[6].Value = TBAddress.Text;
+                            DGVEmployees.Rows[indexRow].Cells[7].Value = DTPBirthDay.Value.ToString("yyyy-MM-dd");
 
-                            if (checkRBRegex(index) != wasVisible)
+                            if (CheckRBRegex(indexRow) != wasVisible)
                             {
                                 if (!wasVisible)
                                 {
@@ -320,6 +396,7 @@ namespace AdminApp
 
         private void DGVEmployees_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0) return;
             if(e.ColumnIndex == 8 || (e.ColumnIndex < 8 && PEmployee.Visible == true))
             {
                 int row = e.RowIndex;
@@ -344,11 +421,14 @@ namespace AdminApp
                     IRestResponse responseEmployees = Program.client.Execute(request);
                     if (responseEmployees.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        if(checkRBRegex(row))
+                        if(CheckRBRegex(row))
                         {
                             visibleRows--;
                         }
+                        notWorkingEmployees.Add(DGVEmployees.Rows[row].Cells[0].Value.ToString(), DGVEmployees.Rows[row].Cells[3].Value.ToString());
                         DGVEmployees.Rows.RemoveAt(row);
+
+                        
 
                         MessageBox.Show("Usunięto pracownika pomyślnie!", "OK!");
 
@@ -385,7 +465,7 @@ namespace AdminApp
             visibleRows = 0;
             foreach (DataGridViewRow row in DGVEmployees.Rows)
             {
-                if(checkRBRegex(row.Index))
+                if(CheckRBRegex(row.Index))
                 {
                     visibleRows++;
                 }
@@ -505,5 +585,10 @@ namespace AdminApp
     {
         public int id { get; set; }
         public string description { get; set; }
+    }
+    class NotWorkingEmployee
+    {
+        public int id { get; set; }
+        public string company_email { get; set; }
     }
 }
