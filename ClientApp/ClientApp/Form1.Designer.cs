@@ -29,12 +29,22 @@
         private void InitializeComponent()
         {
             this.DGVInBox = new System.Windows.Forms.DataGridView();
+            this.MessageID1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CompanyEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Topic = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Del1 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.BInBox = new System.Windows.Forms.Button();
             this.BNewMessage = new System.Windows.Forms.Button();
             this.BRevokeTheCertificate = new System.Windows.Forms.Button();
             this.BApplyForTheCertificate = new System.Windows.Forms.Button();
             this.BOutBox = new System.Windows.Forms.Button();
             this.DGVOutBox = new System.Windows.Forms.DataGridView();
+            this.MessageID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Date1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Del = new System.Windows.Forms.DataGridViewButtonColumn();
             this.PSendMessage = new System.Windows.Forms.Panel();
             this.LTopicR = new System.Windows.Forms.Label();
             this.TBTopic = new System.Windows.Forms.TextBox();
@@ -65,14 +75,6 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.LLogged = new System.Windows.Forms.Label();
             this.BChangePassword = new System.Windows.Forms.Button();
-            this.MessageID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Date1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MessageID1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CompanyEMail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Topic = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).BeginInit();
             this.PSendMessage.SuspendLayout();
@@ -95,7 +97,8 @@
             this.MessageID1,
             this.CompanyEMail,
             this.Topic,
-            this.Date});
+            this.Date,
+            this.Del1});
             this.DGVInBox.Location = new System.Drawing.Point(35, 233);
             this.DGVInBox.MultiSelect = false;
             this.DGVInBox.Name = "DGVInBox";
@@ -106,7 +109,45 @@
             this.DGVInBox.Size = new System.Drawing.Size(404, 282);
             this.DGVInBox.TabIndex = 9;
             this.DGVInBox.Visible = false;
+            this.DGVInBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVInBox_CellClick);
+            this.DGVInBox.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.DGVInBox_CellPainting);
             this.DGVInBox.SelectionChanged += new System.EventHandler(this.InboxSelectionChanged);
+            // 
+            // MessageID1
+            // 
+            this.MessageID1.HeaderText = "MessageID";
+            this.MessageID1.Name = "MessageID1";
+            this.MessageID1.ReadOnly = true;
+            this.MessageID1.Visible = false;
+            // 
+            // CompanyEMail
+            // 
+            this.CompanyEMail.HeaderText = "Nadawca";
+            this.CompanyEMail.Name = "CompanyEMail";
+            this.CompanyEMail.ReadOnly = true;
+            this.CompanyEMail.Width = 113;
+            // 
+            // Topic
+            // 
+            this.Topic.HeaderText = "Temat";
+            this.Topic.Name = "Topic";
+            this.Topic.ReadOnly = true;
+            this.Topic.Width = 135;
+            // 
+            // Date
+            // 
+            this.Date.HeaderText = "Data wysłania";
+            this.Date.Name = "Date";
+            this.Date.ReadOnly = true;
+            this.Date.Width = 110;
+            // 
+            // Del1
+            // 
+            this.Del1.HeaderText = "";
+            this.Del1.Name = "Del1";
+            this.Del1.ReadOnly = true;
+            this.Del1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Del1.Width = 26;
             // 
             // BInBox
             // 
@@ -201,8 +242,9 @@
             this.MessageID,
             this.dataGridViewTextBoxColumn2,
             this.dataGridViewTextBoxColumn3,
-            this.Date1});
-            this.DGVOutBox.Location = new System.Drawing.Point(35, 233);
+            this.Date1,
+            this.Del});
+            this.DGVOutBox.Location = new System.Drawing.Point(34, 233);
             this.DGVOutBox.MultiSelect = false;
             this.DGVOutBox.Name = "DGVOutBox";
             this.DGVOutBox.ReadOnly = true;
@@ -212,7 +254,45 @@
             this.DGVOutBox.Size = new System.Drawing.Size(404, 282);
             this.DGVOutBox.TabIndex = 12;
             this.DGVOutBox.Visible = false;
+            this.DGVOutBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVOutBox_CellClick);
+            this.DGVOutBox.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.DGVInBox_CellPainting);
             this.DGVOutBox.SelectionChanged += new System.EventHandler(this.OutboxSelectionChanged);
+            // 
+            // MessageID
+            // 
+            this.MessageID.HeaderText = "MessageID";
+            this.MessageID.Name = "MessageID";
+            this.MessageID.ReadOnly = true;
+            this.MessageID.Visible = false;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Odbiorca";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 113;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "Temat";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 135;
+            // 
+            // Date1
+            // 
+            this.Date1.HeaderText = "Data wysłania";
+            this.Date1.Name = "Date1";
+            this.Date1.ReadOnly = true;
+            this.Date1.Width = 110;
+            // 
+            // Del
+            // 
+            this.Del.HeaderText = "";
+            this.Del.Name = "Del";
+            this.Del.ReadOnly = true;
+            this.Del.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Del.Width = 26;
             // 
             // PSendMessage
             // 
@@ -336,21 +416,21 @@
             this.TBMessageS.Location = new System.Drawing.Point(35, 233);
             this.TBMessageS.Multiline = true;
             this.TBMessageS.Name = "TBMessageS";
+            this.TBMessageS.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TBMessageS.Size = new System.Drawing.Size(678, 282);
             this.TBMessageS.TabIndex = 7;
             // 
             // TBMessageR
             // 
             this.TBMessageR.BackColor = System.Drawing.Color.White;
-            this.TBMessageR.Enabled = false;
-            this.TBMessageR.Location = new System.Drawing.Point(445, 233);
+            this.TBMessageR.Location = new System.Drawing.Point(444, 233);
             this.TBMessageR.Multiline = true;
             this.TBMessageR.Name = "TBMessageR";
             this.TBMessageR.ReadOnly = true;
+            this.TBMessageR.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.TBMessageR.Size = new System.Drawing.Size(268, 282);
             this.TBMessageR.TabIndex = 10;
             this.TBMessageR.Visible = false;
-            this.TBMessageR.WordWrap = false;
             // 
             // POutBox
             // 
@@ -557,62 +637,6 @@
             this.BChangePassword.UseVisualStyleBackColor = false;
             this.BChangePassword.Click += new System.EventHandler(this.BChangePassword_Click);
             // 
-            // MessageID
-            // 
-            this.MessageID.HeaderText = "MessageID";
-            this.MessageID.Name = "MessageID";
-            this.MessageID.ReadOnly = true;
-            this.MessageID.Visible = false;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Odbiorca";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 124;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Temat";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 150;
-            // 
-            // Date1
-            // 
-            this.Date1.HeaderText = "Data wysłania";
-            this.Date1.Name = "Date1";
-            this.Date1.ReadOnly = true;
-            this.Date1.Width = 110;
-            // 
-            // MessageID1
-            // 
-            this.MessageID1.HeaderText = "MessageID";
-            this.MessageID1.Name = "MessageID1";
-            this.MessageID1.ReadOnly = true;
-            this.MessageID1.Visible = false;
-            // 
-            // CompanyEMail
-            // 
-            this.CompanyEMail.HeaderText = "Nadawca";
-            this.CompanyEMail.Name = "CompanyEMail";
-            this.CompanyEMail.ReadOnly = true;
-            this.CompanyEMail.Width = 124;
-            // 
-            // Topic
-            // 
-            this.Topic.HeaderText = "Temat";
-            this.Topic.Name = "Topic";
-            this.Topic.ReadOnly = true;
-            this.Topic.Width = 150;
-            // 
-            // Date
-            // 
-            this.Date.HeaderText = "Data wysłania";
-            this.Date.Name = "Date";
-            this.Date.ReadOnly = true;
-            this.Date.Width = 110;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -645,7 +669,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Klient PKI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LogOut);
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.PanelChangePassword_Paint);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.DGVInBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DGVOutBox)).EndInit();
             this.PSendMessage.ResumeLayout(false);
@@ -706,10 +730,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CompanyEMail;
         private System.Windows.Forms.DataGridViewTextBoxColumn Topic;
         private System.Windows.Forms.DataGridViewTextBoxColumn Date;
+        private System.Windows.Forms.DataGridViewButtonColumn Del1;
         private System.Windows.Forms.DataGridViewTextBoxColumn MessageID;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Date1;
+        private System.Windows.Forms.DataGridViewButtonColumn Del;
     }
 }
 

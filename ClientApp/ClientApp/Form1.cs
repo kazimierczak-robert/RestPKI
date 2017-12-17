@@ -205,14 +205,21 @@ namespace ClientApp
             IRestResponse<Certificate> response = Program.client.Execute<Certificate>(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                DateTime timeNow = DateTime.Now;
-                if (timeNow > DateTime.Parse(response.Data.expiration_date)) //If certificate has expired
+                if (response.Data.cert != "")
                 {
-                    return null;
+                    DateTime timeNow = DateTime.Now;
+                    if (timeNow > DateTime.Parse(response.Data.expiration_date)) //If certificate has expired
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return response.Data;
+                    }
                 }
                 else
                 {
-                    return response.Data;
+                    return null;
                 }
             }
             else
@@ -305,6 +312,24 @@ namespace ClientApp
             BApplyForTheCertificate.ForeColor = Color.Gray;
             BRevokeTheCertificate.ForeColor = Color.Black;
             BChangePassword.ForeColor = Color.Gray;
+
+            Certificate myCert = GetEmployeeCertificate(infoAboutMe.id);
+            if (myCert != null)
+            {
+                if (myCert.cert != "") //If I have certificate
+                {
+                    CertificateRevocation form = new CertificateRevocation(myCert.id);
+                    DialogResult result = form.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("Brak ważnego certyfikatu", "Uwaga");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Brak ważnego certyfikatu", "Uwaga");
+            }
         }
 
         private void BNewMessage_Click(object sender, EventArgs e)
@@ -803,10 +828,78 @@ namespace ClientApp
                 this.Close();
             }
         }
-        private void PanelChangePassword_Paint(object sender, PaintEventArgs e)
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //e.Graphics.DrawRectangle(new Pen(Color.DarkGray, 3), this.DisplayRectangle);
             ControlPaint.DrawBorder(e.Graphics, this.ClientRectangle, Color.DimGray, ButtonBorderStyle.Solid);
+        }
+
+        private void DGVInBox_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 4 && e.RowIndex >= 0)
+            {
+                int row = e.RowIndex;
+                string msgID = DGVInBox.Rows[row].Cells[0].Value.ToString();
+                var req = "api/message/" + msgID + "/"; 
+                var request = new RestRequest(req, Method.DELETE);
+                request.AddHeader("Authorization", "Token " + Program.token);
+                //Get employes
+                var response = Program.client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    //delete from table
+                    DGVInBox.Rows.RemoveAt(row);
+                    inbox.Remove(Int32.Parse(msgID));
+                }
+                else
+                {
+                    MessageBox.Show("Błąd wewnętrzny aplikacji, skontaktuj się z administratorem", "Błąd!");
+                }
+            }
+        }
+
+        private void DGVInBox_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex<0)
+            {
+                return;
+            }
+            if (e.ColumnIndex == 4)
+            {
+                e.Paint(e.CellBounds, DataGridViewPaintParts.All);
+                var w = Properties.Resources.delete.Width;
+                var h = Properties.Resources.delete.Height;
+                var x = e.CellBounds.Left + (e.CellBounds.Width - w) / 2;
+                var y = e.CellBounds.Top + (e.CellBounds.Height - h) / 2;
+                e.Graphics.DrawImage(Properties.Resources.delete, new Rectangle(x, y, w, h));
+                e.Handled = true;
+            }
+        }
+
+        private void DGVOutBox_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 4 && e.RowIndex >=0)
+            {
+                int row = e.RowIndex;
+                string msgID = DGVOutBox.Rows[row].Cells[0].Value.ToString();
+                var req = "api/message/" + msgID;
+                var request = new RestRequest(req, Method.DELETE);
+                request.AddHeader("Authorization", "Token " + Program.token);
+                //Get employes
+                var response = Program.client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    //delete from table
+                    DGVOutBox.Rows.RemoveAt(row);
+                    //delete from table
+                    DGVOutBox.Rows.RemoveAt(row);
+                    inbox.Remove(Int32.Parse(msgID));
+                }
+                else
+                {
+                    MessageBox.Show("Błąd wewnętrzny aplikacji, skontaktuj się z administratorem", "Błąd!");
+                }
+            }
         }
     }
 
