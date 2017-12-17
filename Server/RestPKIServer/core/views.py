@@ -208,7 +208,10 @@ def gen_or_renew_cert(request):
             # certyfikat istnieje - trzeba stary uniewaznic i stworzyc nowy
             # szukam reason for revoke
             reason = CancellationReason.objects.filter(description="Uaktualnienie certyfikatu").first()
-            revoke_cert(employee, certificate, reason)
+            # jesli juz jest uniewazniony
+            crl = CRL.objects.filter(certificate_id=certificate).first()
+            if not crl:
+                revoke_cert(employee, certificate, reason)
 
         # certyfikat nie istnieje - trzeba go stworzyc
         current_tz = timezone.get_current_timezone()
