@@ -250,10 +250,14 @@ class CertificateViewSet(mixins.RetrieveModelMixin,
         if not reason:
             reason = CancellationReason.objects.all().first()  # xD
         certificate.expiration_date = timezone.now()
+        certificate.save()
         key = Key.objects.filter(certificate_id=certificate).order_by('-not_valid_after_private_key').first()
         key.not_valid_after_private_key = timezone.now()
         key.not_valid_after_public_key = timezone.now()
-        CRL.objects.create(certificate_id=certificate, reason_id=reason)
+        try:
+            CRL.objects.create(certificate_id=certificate, reason_id=reason)
+        except:
+            return Response({"status": "fail"}, status=status.HTTP_400_BAD_REQUEST)
         return Response({"status":"ok"}, status=status.HTTP_200_OK)
 
     @detail_route(methods=['get'], url_path='get_key')
@@ -291,6 +295,7 @@ class CRLViewSet(mixins.CreateModelMixin,
 class MessageViewSet(mixins.CreateModelMixin,
                    mixins.RetrieveModelMixin,
                    mixins.ListModelMixin,
+                    mixins.DestroyModelMixin,
                   viewsets. GenericViewSet):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
