@@ -646,7 +646,7 @@ namespace ClientApp
 
                                 var request1 = new RestRequest("api/message/", Method.POST);
                                 request1.AddHeader("Authorization", "Token " + Program.token);
-                                request.AddParameter("certificate_id", recipientCert.id);
+                                request1.AddParameter("certificate_id", recipientCert.id);
                                 request1.AddParameter("sender_id", infoAboutMe.id);
                                 request1.AddParameter("recipient_id", recipientID);
                                 request1.AddParameter("enc_topic", encTopic);
