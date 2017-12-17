@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,9 +30,9 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by Dawid on 28.10.2017.
  */
 
-public class LogOutAsync extends AsyncTask<String, String, String>{
+public class GetEmployeeAsync extends AsyncTask<String, String, String>{
     private Activity activity;
-    public LogOutAsync(Activity activity)
+    public GetEmployeeAsync(Activity activity)
     {
 
         this.activity = activity;
@@ -60,27 +62,44 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
     private String CheckData() {
         String returnMessage = "";
         String token = "";
-            String wynik = laczenie();
-            if (wynik != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(wynik);
+        ArrayList<Users> users = new ArrayList<>();
+        String wynik = laczenie();
+        if (wynik != null) {
+            JSONObject jsonObj = null;
+            int counter =0;
+            try {
+                JSONArray docs = new JSONArray(wynik);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for(int i = 0; i < docs.length(); i++)
+                {
+                    JSONObject objectJS = docs.getJSONObject(i);
+                    int UserID = objectJS.getInt("id");
+                    if(UserID == GlobalValue.getIDEmployeeGlobal()) {
+                        continue;
+                    }
+                    String name = objectJS.getString("name");
+                    String surname = objectJS.getString("surname");
+                    String company_email = objectJS.getString("company_email");
+                    users.add(counter, new Users(name + " " + surname, company_email, UserID));
+                    counter++;
                 }
+                GlobalValue.setUsersListGlobal(users);
+
+                return returnMessage;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        GlobalValue.setNulls();
-        MessageListsGlobal.MessageOutboxList.clear();
-        MessageListsGlobal.MessageInboxList.clear();
-        Intent intent = new Intent(activity, LoginActivity.class);
-        activity.startActivity(intent);
+        }
+
+      
         return returnMessage;
 
 
     }
 
     public String laczenie(){
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/logout/";
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/employee/";
         URL url;
         String response = "";
         try {

@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.microedition.khronos.opengles.GL;
+
 public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private Activity contextActivity;
     RecyclerView recyclerView;
@@ -133,9 +135,24 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
                         String name = htxt.getText().toString();
                         Users userToSend;
+                      /*  ArrayList<Users> usersList = GlobalValue.getUsersListGlobal();
+                        for(int i = 0; i < usersList.size(); i++){
+                            String userName = usersList.get(i).getName();
+                            if(name.equals(userName))
+                            {
+                                userToSend = usersList.get(i);
+                                Log.d("users ", i + " " + userToSend.getName());
+                                Log.d("users1", usersList.get(i).getCert());
+                                Log.d("users2", userToSend.getCert());
+                                GlobalValue.setUserSend(userToSend);
+                            }
+                        }*/
                         for(Users u : GlobalValue.getUsersListGlobal()){
-                            if(name == u.getName())
-                                GlobalValue.setUserSend(u);
+                            if(name.equals(u.getName())) {
+                                userToSend = u;
+                                GlobalValue.setUserSend(userToSend);
+
+                            }
                         }
                         Intent intent = new Intent(context, OutboxActivity.class);
                         context.startActivity(intent);

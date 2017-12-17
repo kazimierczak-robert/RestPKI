@@ -1,11 +1,7 @@
 package com.example.dawid.mobileapp;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,25 +10,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Date;
 
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * Created by Dawid on 28.10.2017.
+ * Created by Dawid on 17.12.2017.
  */
 
-public class LogOutAsync extends AsyncTask<String, String, String>{
-    private Activity activity;
-    public LogOutAsync(Activity activity)
-    {
+public class RequestToCertificate extends AsyncTask<String, String, String> {
 
+    private Activity activity;
+    public RequestToCertificate(Activity activity)
+    {
         this.activity = activity;
     }
 
@@ -45,7 +38,7 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
 
     @Override
     protected String doInBackground(String... params) {
-        return CheckData();
+        return SaveCeriticate();
 
     }
 
@@ -54,33 +47,14 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-    }
-
-
-    private String CheckData() {
-        String returnMessage = "";
-        String token = "";
-            String wynik = laczenie();
-            if (wynik != null) {
-                try {
-                    JSONObject jsonObj = new JSONObject(wynik);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        GlobalValue.setNulls();
-        MessageListsGlobal.MessageOutboxList.clear();
-        MessageListsGlobal.MessageInboxList.clear();
-        Intent intent = new Intent(activity, LoginActivity.class);
-        activity.startActivity(intent);
-        return returnMessage;
 
 
     }
 
-    public String laczenie(){
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/logout/";
+
+    public String getCerttificate()
+    {
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/cert/";
         URL url;
         String response = "";
         try {
@@ -109,5 +83,31 @@ public class LogOutAsync extends AsyncTask<String, String, String>{
             e.printStackTrace();
         }
         return response;
+    }
+
+    public String SaveCeriticate()
+    {
+        String wynik = getCerttificate();
+        String certificate;
+        Integer IDemployee;
+        String DateExpiration;
+        if (wynik != null) {
+            try {
+                JSONObject jsonObj = new JSONObject(wynik);
+                DateExpiration =jsonObj.getString("expiration_date");
+                Date ExpirationDate = TimeMethothds.getDateFromString(DateExpiration);
+                GlobalValue.setExpirationCertificateDate(ExpirationDate);
+                certificate = jsonObj.getString("cert");
+                GlobalValue.setPublicCertificateGlobal(certificate);
+                IDemployee = jsonObj.getInt("employee_id");
+                GlobalValue.setIDEmployeeGlobal(IDemployee);
+                GlobalValue.setIDCertificateGlobal(jsonObj.getInt("id"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }  catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "a";
     }
 }

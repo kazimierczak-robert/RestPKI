@@ -16,9 +16,15 @@ public class GlobalValue extends Application {
     private static String PublicCertificateGlobal;
     private static Integer IDEmployeeGlobal;
     private static Integer IDCertificateGlobal;
+    private static String PublicKeyGlobal;
+    private static String PrivateKeyGlobal;
+
+
+
+    private static ArrayList<PrivateKeyObject> PrivateKeysList;
     private static final String ipAdres = "192.168.137.1:8000";
     private static Users UserSend;
-    private static ArrayList<Users> UsersListGlobal;
+    public static ArrayList<Users> UsersListGlobal;
     private static Date ExpirationCertificateDate;
 
     public static String getLoginGlobal() {
@@ -86,6 +92,39 @@ public class GlobalValue extends Application {
 
     public static void setExpirationCertificateDate(Date expirationCertificateDate) {
         ExpirationCertificateDate = expirationCertificateDate;
+    }
+    public static Users getUserFromID(int ID)
+    {
+        for(int i = 0; i < UsersListGlobal.size(); i++)
+        {
+            Users u = UsersListGlobal.get(i);
+            if(u.getID().equals(ID))
+            {
+                return u;
+            }
+        }
+        return null;
+    }
+    public static String getPrivateKeyGlobal() {
+        return PrivateKeyGlobal;
+    }
+
+    public static void setPrivateKeyGlobal(String privateKeyGlobal) {
+        PrivateKeyGlobal = privateKeyGlobal;
+    }
+    public static String getPublicKeyGlobal() {
+        return PublicKeyGlobal;
+    }
+
+    public static void setPublicKeyGlobal(String publicKeyGlobal) {
+        PublicKeyGlobal = publicKeyGlobal;
+    }
+    public static ArrayList<PrivateKeyObject> getPrivateKeysList() {
+        return PrivateKeysList;
+    }
+
+    public static void setPrivateKeysList(ArrayList<PrivateKeyObject> privateKeysList) {
+        PrivateKeysList = privateKeysList;
     }
     public static void setNulls()
     {

@@ -84,6 +84,7 @@ public class SearchAsync extends AsyncTask<String, String, String>{
                     counter++;
                 }
                 GlobalValue.setUsersListGlobal(users);
+                SaveOtherCert();
                 Intent intent = new Intent(activity, SearchActivity.class);
                 activity.startActivity(intent);
                 return returnMessage;
@@ -131,4 +132,70 @@ public class SearchAsync extends AsyncTask<String, String, String>{
         }
         return response;
     }
+
+    public String getOtherCert(Integer id)
+    {
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/employee/" + id.toString() + "/cert/";
+        URL url;
+        String response = "";
+        try {
+            url = new URL(requestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000);
+            conn.setConnectTimeout(15000);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
+            conn.connect();
+
+            int responseCode=conn.getResponseCode();
+
+
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line=br.readLine()) != null) {
+                    response+=line;
+                }
+            }
+            else {
+                response="";
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public void SaveOtherCert()
+    {
+        String returnMessage = "";
+        String token = "";
+
+        ArrayList<Users> users = GlobalValue.getUsersListGlobal();
+        for(int i = 0; i < users.size(); i++)
+        {
+            String wynik = getOtherCert(users.get(i).getID());
+            if (wynik != null) {
+                try {
+                    JSONObject jsonObj = new JSONObject(wynik);
+
+                    String cert =jsonObj.getString("cert");
+                    String id = jsonObj.getString("id");
+                    users.get(i).setCert(cert);
+                    users.get(i).setCertID(id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }  catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        GlobalValue.setUsersListGlobal(users);
+
+
+    }
+
 }

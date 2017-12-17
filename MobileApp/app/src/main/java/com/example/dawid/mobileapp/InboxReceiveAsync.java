@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -21,6 +22,8 @@ import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import kotlin.collections.GroupingKt;
 
 /**
  * Created by Dawid on 28.10.2017.
@@ -70,14 +73,20 @@ public class InboxReceiveAsync extends AsyncTask<String, String, String>{
                     JSONObject objectJS = docs.getJSONObject(i);
                     int MessageID = objectJS.getInt("id");
                     int SenderID = objectJS.getInt("sender_id");
-
+                    String userName = GlobalValue.UsersListGlobal.get(SenderID).getName() + " <" + GlobalValue.UsersListGlobal.get(SenderID).getEmail() + ">";
                     String encTopic = objectJS.getString("enc_topic");
                     String encMessage = objectJS.getString("enc_message");
                     String sendDate = objectJS.getString("send_date");
-                    MessageListsGlobal.MessageInboxList.add(new Message(MessageID, encTopic, encTopic, encMessage, TimeMethothds.getDateToMessage(sendDate)));
+
+                    Log.d("odszy", "porzed");
+                  //  encTopic = testCzasu.Odszyfrowanie(encTopic);
+                    Log.d("odszy", "po");
+                    MessageListsGlobal.MessageInboxList.add(new Message(MessageID, userName, encTopic, encMessage, TimeMethothds.getDateToMessage(sendDate)));
 
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -88,6 +97,7 @@ public class InboxReceiveAsync extends AsyncTask<String, String, String>{
 
     public String getInboxMessage()
     {
+        Log.d("wiadomosci wyslane", "tk");
         String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/outbox/";
         URL url;
         String response = "";

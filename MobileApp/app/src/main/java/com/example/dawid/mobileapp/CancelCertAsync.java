@@ -68,7 +68,7 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
                 JSONObject jsonObj = new JSONObject(wynik);
                 token = jsonObj.getString("status");
                 if(token.equals("ok")) {
-                    SaveCeriticate();
+
                     Intent intent = new Intent(activity, MenuActivity.class);
                     activity.startActivity(intent);
                     return returnMessage;
@@ -133,56 +133,6 @@ public class CancelCertAsync extends AsyncTask<Integer, String, String> {
         return response;
     }
 
-    public String getCerttificate()
-    {
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/cert/";
-        URL url;
-        String response = "";
-        try {
-            url = new URL(requestURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000);
-            conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
-            conn.connect();
 
-            int responseCode=conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-                String line;
-                BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line=br.readLine()) != null) {
-                    response+=line;
-                }
-            }
-            else {
-                response="";
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response;
-    }
-
-    public void SaveCeriticate()
-    {
-        String wynik = getCerttificate();
-        String certificate;
-        Integer IDemployee;
-        if (wynik != null) {
-            try {
-                JSONObject jsonObj = new JSONObject(wynik);
-
-                certificate = jsonObj.getString("cert");
-                GlobalValue.setPublicCertificateGlobal(certificate);
-                IDemployee = jsonObj.getInt("employee_id");
-                GlobalValue.setIDEmployeeGlobal(IDemployee);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
 

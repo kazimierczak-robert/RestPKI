@@ -7,7 +7,24 @@ package com.example.dawid.mobileapp;
 public class Users {
     String name, email;
     Integer UserID;
+    String Cert;
 
+    public String getCertID() {
+        return CertID;
+    }
+
+    public void setCertID(String certID) {
+        CertID = certID;
+    }
+
+    String CertID;
+    public Users(String name, String email, Integer UserID, String Cert)
+    {
+        this.UserID = UserID;
+        this.name = name;
+        this.Cert = Cert;
+        this.email = email;
+    }
     public Users(String name, String email, Integer UserID)
     {
         this.UserID = UserID;
@@ -16,6 +33,14 @@ public class Users {
         this.email = email;
     }
 
+
+    public String getCert() {
+        return Cert;
+    }
+
+    public void setCert(String cert) {
+        Cert = cert;
+    }
     public String getName() {
         return name;
     }

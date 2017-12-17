@@ -21,8 +21,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.microedition.khronos.opengles.GL;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -74,13 +76,38 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
             return returnMessage;
         }
 
+        Users userToSend;
+        ArrayList<Users> usersList = GlobalValue.getUsersListGlobal();
+        String cert = "";
+
         String token = "";
-        String wynik = sendCopy(topic, content);
-        String wynik1 = sendNotCopy(topic, content);
+        String encTopic =  "";
+        String encContent = "";
+        try {
+            encTopic = CryptographyMethonds.SzyfowanieCopy(topic);
+            encContent =CryptographyMethonds.SzyfowanieCopy(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        String wynik = sendCopy(encTopic, encContent);
+        try {
+            encTopic = CryptographyMethonds.Szyfowanie(topic);
+            encContent =CryptographyMethonds.Szyfowanie(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String wynik1 = sendNotCopy(encTopic, encContent);
+
         if (wynik != null) {
             try {
+
                 JSONObject jsonObj = new JSONObject(wynik);
                 token = jsonObj.getString("recipient_id");
+                Integer ID = jsonObj.getInt("id");
+                String sendDate = jsonObj.getString("send_date");
+                MessageListsGlobal.MessageInboxList.add(new Message(ID, user, topic, content, TimeMethothds.getDateToMessage(sendDate)));
                 if(token.equals(GlobalValue.getUserSend().getID().toString())) {
 
                     Snackbar.make(activity.getCurrentFocus(), "Wiadomość została wysłana", Snackbar.LENGTH_LONG).show();
@@ -99,6 +126,7 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
     }
 
     public String sendCopy(String topic, String content){ // uniewaznienie certyfikatu
+        Log.d("Id cert", GlobalValue.getUserSend().getCert() + " cos \n" + GlobalValue.getUserSend().getCertID());
         String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/message/";
         URL url;
         String response = "";
@@ -114,6 +142,7 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
 
 
             Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("certificate_id", GlobalValue.getIDCertificateGlobal().toString())
                     .appendQueryParameter("sender_id", GlobalValue.getIDEmployeeGlobal().toString())
                     .appendQueryParameter("recipient_id", GlobalValue.getUserSend().getID().toString())
                    .appendQueryParameter("send_date", TimeMethothds.getDateNowToString())
@@ -167,6 +196,7 @@ public class SendMessageAsync extends AsyncTask<String, String, String> {
 
 
             Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("certificate_id", GlobalValue.getUserSend().getCertID())
                     .appendQueryParameter("sender_id", GlobalValue.getIDEmployeeGlobal().toString())
                     .appendQueryParameter("recipient_id", GlobalValue.getUserSend().getID().toString())
                     .appendQueryParameter("send_date", TimeMethothds.getDateNowToString())

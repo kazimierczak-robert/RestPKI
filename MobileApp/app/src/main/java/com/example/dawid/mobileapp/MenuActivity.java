@@ -29,21 +29,22 @@ public class MenuActivity extends AppCompatActivity {
         new SearchAsync(this).execute("");
     }
 
-    public void Inbox(View view)
-    {
-
-        Intent intent = new Intent(this, InboxActivity.class);
+    public void Inbox(View view) {
+        //new InboxAsync(this).execute("");
+       Intent intent = new Intent(this, InboxActivity.class);
         this.startActivity(intent);
     }
     public void InboxReceive(View view)
     {
 
-        Intent intent = new Intent(this, InboxReceiveActivity.class);
-        this.startActivity(intent);
+       /* Intent intent = new Intent(this, InboxReceiveActivity.class);
+        this.startActivity(intent);*/
+       new OutboxAsync(this).execute("");
     }
 
     public void Settings(View view){
         Intent intent = new Intent(this, SettingsActivity.class);
         this.startActivity(intent);
     }
+
 }

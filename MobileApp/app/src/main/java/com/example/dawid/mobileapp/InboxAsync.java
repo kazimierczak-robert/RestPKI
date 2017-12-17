@@ -2,8 +2,10 @@ package com.example.dawid.mobileapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -13,7 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -69,26 +74,31 @@ public class InboxAsync extends AsyncTask<String, String, String>{
                 {
                     JSONObject objectJS = docs.getJSONObject(i);
                     int MessageID = objectJS.getInt("id");
-                    int SenderID = objectJS.getInt("sender_id");
-
+                    int SenderID = objectJS.getInt("recipient_id");
+                    Users user = GlobalValue.getUserFromID(SenderID);
                     String encTopic = objectJS.getString("enc_topic");
                     String encMessage = objectJS.getString("enc_message");
                     String sendDate = objectJS.getString("send_date");
-                    MessageListsGlobal.MessageOutboxList.add(new Message(MessageID, encTopic, encTopic, encMessage, TimeMethothds.getDateToMessage(sendDate)));
+                    String certificateID = objectJS.getString("certificate_id");
+                    encTopic = CryptographyMethonds.Odszyfrowanie(encTopic, certificateID);
+                    encMessage = CryptographyMethonds.Odszyfrowanie(encMessage, certificateID);
+                    MessageListsGlobal.MessageInboxList.add(new Message(MessageID, user.getName() + " <" + user.getEmail()+ ">", encTopic, encMessage, TimeMethothds.getDateToMessage(sendDate)));
 
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-      /*  Intent intent = new Intent(activity, InboxActivity.class);
-        activity.startActivity(intent);*/
+        Intent intent = new Intent(activity, InboxActivity.class);
+        activity.startActivity(intent);
         return  returnMessage;
     }
 
     public String getInboxMessage()
     {
-        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/inbox/";
+        String requestURL = "http://"+ GlobalValue.getIpAdres() + "/api/refresh_inbox/";
         URL url;
         String response = "";
         try {
@@ -96,10 +106,28 @@ public class InboxAsync extends AsyncTask<String, String, String>{
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
             conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
-            conn.connect();
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
 
+            ArrayList<Message> messageList =  MessageListsGlobal.MessageInboxList;
+            Integer sizeList = MessageListsGlobal.MessageInboxList.size();
+            Log.d("co to", sizeList.toString());
+            Log.d("co to1", messageList.get(sizeList-1).getID().toString());
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("id", messageList.get(sizeList-1).getID().toString());
+
+            String query = builder.build().getEncodedQuery();
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+
+            writer.write(query);
+            writer.flush();
+            writer.close();
+            os.close();
             int responseCode=conn.getResponseCode();
 
             if (responseCode == HttpsURLConnection.HTTP_OK) {
