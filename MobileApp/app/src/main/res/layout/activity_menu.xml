@@ -24,7 +24,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:onClick="Outbox"
-        android:text="Skrzynka nadawcza" />
+        android:text="Napisz wiadomość" />
 
     <Button
         android:id="@+id/buttonInbox"

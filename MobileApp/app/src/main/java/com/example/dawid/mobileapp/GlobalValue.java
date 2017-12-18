@@ -22,7 +22,7 @@ public class GlobalValue extends Application {
 
 
     private static ArrayList<PrivateKeyObject> PrivateKeysList;
-    private static final String ipAdres = "192.168.137.1:8000";
+    private static final String ipAdres = "195.181.212.93"; //"192.168.137.1:8000";//
     private static Users UserSend;
     public static ArrayList<Users> UsersListGlobal;
     private static Date ExpirationCertificateDate;

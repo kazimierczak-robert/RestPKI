@@ -29,10 +29,12 @@ public class CancelCertActivity extends AppCompatActivity {
 
         ArrayList<ReasonOverturn> messages = new ArrayList<>();
 
-        messages.add(new ReasonOverturn(1, "Ujawnienie klucza prywatnego"));
-        messages.add(new ReasonOverturn(2, "Zagubienie klucza prywatnego"));
-        messages.add(new ReasonOverturn(3, "Inny powód"));
-        messages.add(new ReasonOverturn(4, "Uaktualnienie certyfikatu"));
+        messages.add(new ReasonOverturn(1, "Uaktualnienie certyfikatu"));
+        messages.add(new ReasonOverturn(2, "Kradzież klucza prywatnego"));
+        messages.add(new ReasonOverturn(3, "Zwolnienie pracownika"));
+        messages.add(new ReasonOverturn(4, "Błąd w certyfikacie"));
+        messages.add(new ReasonOverturn(5, "Zmiana informacji w certyfikacie"));
+        messages.add(new ReasonOverturn(6, "Inny"));
         recyclerView.setAdapter(new AdapterForReason(this, messages, recyclerView));
 
     }

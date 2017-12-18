@@ -286,7 +286,7 @@ public class LoginAsync extends AsyncTask<String, String, String> {
                 JSONObject jsonObj = new JSONObject(wynik);
 
             PrivateKeyl =jsonObj.getString("privatekey");
-                Log.d("privatekeees", PrivateKeyl);
+
                 GlobalValue.setPrivateKeyGlobal(PrivateKeyl);
 
 

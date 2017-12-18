@@ -48,7 +48,9 @@ public class CryptographyMethonds {
         String privateK = "";
         for (PrivateKeyObject x: GlobalValue.getPrivateKeysList())
         {
+            Log.d("znalazlo1 ", IDCert + " x.getid"  + x.getID());
             if(IDCert.equals(x.getID())) {
+
                 privateK = x.getCertyficate();
             Log.d("znalazlo", "tak");
             }
@@ -56,6 +58,7 @@ public class CryptographyMethonds {
         java.security.PrivateKey privateKey = getRSAPrivateKeyFromString(privateK);
         byte[] privateKeyBytes = privateKey.getEncoded();
         String privateKeyBytesBase64 = new String(Base64.encode(privateKeyBytes, Base64.DEFAULT));
+        Log.d("private", privateKeyBytesBase64);
         String decrypted = decryptRSAToString(dataToDecrypt, privateKeyBytesBase64);
         return  decrypted;
     }
@@ -121,7 +124,7 @@ public class CryptographyMethonds {
 
 
         StringBuilder pkcs8Lines = new StringBuilder();
-        BufferedReader rdr = new BufferedReader(new StringReader(GlobalValue.getPrivateKeyGlobal()));
+        BufferedReader rdr = new BufferedReader(new StringReader(privateKey));
         String line;
         while ((line = rdr.readLine()) != null) {
             pkcs8Lines.append(line);

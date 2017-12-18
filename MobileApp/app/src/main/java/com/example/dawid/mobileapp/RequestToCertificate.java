@@ -1,7 +1,9 @@
 package com.example.dawid.mobileapp;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -10,7 +12,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -62,12 +67,14 @@ public class RequestToCertificate extends AsyncTask<String, String, String> {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(15000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod("POST");
             conn.setRequestProperty("Authorization", "Token "+GlobalValue.getTokenGlobal());
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
             conn.connect();
 
-            int responseCode=conn.getResponseCode();
 
+            int responseCode=conn.getResponseCode();
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 String line;
                 BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -88,6 +95,7 @@ public class RequestToCertificate extends AsyncTask<String, String, String> {
     public String SaveCeriticate()
     {
         String wynik = getCerttificate();
+        Log.d("wynik cer", wynik);
         String certificate;
         Integer IDemployee;
         String DateExpiration;
