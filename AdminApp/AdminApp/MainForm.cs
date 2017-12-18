@@ -221,6 +221,7 @@ namespace AdminApp
                     request.AddHeader("Authorization", "Token " + Program.token);
 
                     var mailTemp = TBName.Text.ToLower()[0] + TBName.Text.Substring(1).ToLower() + "." + TBSurname.Text.ToLower()[0] + TBSurname.Text.Substring(1).ToLower();
+                    mailTemp = mailTemp.Replace('ą', 'a').Replace('ć', 'c').Replace('ę', 'e').Replace('ł', 'l').Replace('ń', 'n').Replace('ó', 'o').Replace('ś', 's').Replace('ź', 'z').Replace('ż', 'z');
                     var mail = mailTemp;
                     if (!CheckMailAvailability(mail, "-1"))
                     {
@@ -304,6 +305,7 @@ namespace AdminApp
                     else
                     {
                         var mailTemp = TBName.Text.ToLower()[0] + TBName.Text.Substring(1).ToLower() + "." + TBSurname.Text.ToLower()[0] + TBSurname.Text.Substring(1).ToLower();
+                        mailTemp = mailTemp.Replace('ą', 'a').Replace('ć', 'c').Replace('ę', 'e').Replace('ł', 'l').Replace('ń', 'n').Replace('ó', 'o').Replace('ś', 's').Replace('ź', 'z').Replace('ż', 'z');
                         mail = mailTemp;
                         if (!CheckMailAvailability(mail, TBID.Text))
                         {
